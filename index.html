@@ -2,14 +2,41 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Trang web của VN-KEEN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Tiền Fast - VN-KEEN</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #0d1117; color: #fff; }
-        h1 { color: #58a6ff; }
+        body { font-family: Arial, sans-serif; background: #0d1117; color: #fff; padding: 20px; text-align: center; }
+        .box { background: #161b22; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; border: 1px solid #30363d; }
+        button { background: #238636; color: white; border: none; padding: 10px 15px; margin: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #2ea043; }
+        .total { font-size: 1.5rem; color: #3fb950; margin: 15px 0; }
     </style>
 </head>
 <body>
-    <h1>Chào mừng đến với trang web của VN-KEEN!</h1>
-    <p>Website đang hoạt động trên GitHub Pages.</p>
+
+    <div class="box">
+        <h2>CỬA HÀNG VN-KEEN</h2>
+        <p>Bấm chọn món để tính tiền:</p>
+        
+        <button onclick="addItem(50000)">+ Áo thun (50k)</button>
+        <button onclick="addItem(120000)">+ Quần Jeams (120k)</button>
+        <button onclick="addItem(30000)">+ Mũ (30k)</button>
+        
+        <div class="total">Tổng tiền: <span id="total-price">0</span> VNĐ</div>
+        <button onclick="resetCart()" style="background: #da3633;">Làm mới</button>
+    </div>
+
+    <script>
+        let total = 0;
+        function addItem(price) {
+            total += price;
+            document.getElementById('total-price').innerText = total.toLocaleString('vi-VN');
+        }
+        function resetCart() {
+            total = 0;
+            document.getElementById('total-price').innerText = '0';
+        }
+    </script>
+
 </body>
 </html>
