@@ -1,3 +1,3 @@
-# VN-KEEN.github.io
+# VN-KEEN
 
-Trang cá nhân của [VN-KEEN](https://github.com/VN-KEEN), phục vụ tại https://vn-keen.github.io.
+Website: https://VN-KEEN.github.io

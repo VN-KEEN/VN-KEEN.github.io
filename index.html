@@ -1,126 +1,491 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="scroll-smooth">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#efe7d6">
-  <title>VN-KEEN</title>
-  <meta name="description" content="Trang cá nhân của VN-KEEN.">
-  <link rel="icon" href="avatar.jpg" type="image/jpeg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VN-KEEN — Tùy chỉnh giao diện & hỗ trợ đỉnh cao</title>
+  <meta name="description" content="Nền tảng tùy biến giao diện đặc vụ Counter-Strike 2: ESP, Aimbot, skin, overlay chiến thuật. Cập nhật nhanh, tối ưu FPS.">
+  <meta name="theme-color" content="#0b0f19">
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <meta property="og:title" content="VN-KEEN">
+  <meta property="og:description" content="Tùy chỉnh giao diện & hỗ trợ đỉnh cao cho Counter-Strike 2.">
+  <meta property="og:image" content="og.jpg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0b0f19',
+            surface: '#131c2e',
+            surface2: '#192338',
+            fg: '#e8eef6',
+            muted: '#8b9bb4',
+            subtle: '#5c6d86',
+            accent: '#00e5ee',
+            accent2: '#4facfe',
+            ok: '#34d399',
+          },
+          fontFamily: {
+            sans: ['IBM Plex Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
+            display: ['Rajdhani', 'Segoe UI', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    :root {
-      --paper: #efe7d6;
-      --ink: #1c1916;
-      --muted: #5c534a;
-      --rule: #d4c8b0;
-      --accent: #9a3412;
+    body { background: #0b0f19; color: #e8eef6; }
+    .glass {
+      background: rgba(19, 28, 46, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 0 0 1px rgba(232, 238, 246, 0.08);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; }
-    body {
-      font-family: Outfit, system-ui, sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      line-height: 1.5;
+    .text-glow { text-shadow: 0 0 28px rgba(0, 229, 238, 0.35); }
+    .tactical-grid {
+      background-image:
+        linear-gradient(rgba(0, 229, 238, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 238, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
     }
-    .page {
-      min-height: 100vh;
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 48px 28px 32px;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid var(--rule);
-      padding-bottom: 14px;
-      font-size: 13px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 56px;
-      align-items: center;
-      padding: 72px 0;
-    }
-    .avatar {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 6px;
-      background: #ddd4c2;
-    }
-    h1 {
-      font-family: Fraunces, Georgia, serif;
-      font-weight: 600;
-      font-size: clamp(48px, 8vw, 84px);
-      letter-spacing: -0.04em;
-      line-height: 0.95;
-    }
-    .rule {
-      width: 48px;
-      height: 2px;
-      background: var(--accent);
-      margin: 22px 0 20px;
-    }
-    p.lead {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 34ch;
-    }
-    a.gh {
-      display: inline-block;
-      margin-top: 28px;
-      color: var(--ink);
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1.5px solid var(--ink);
-      padding-bottom: 2px;
-    }
-    a.gh:hover { color: var(--accent); border-color: var(--accent); }
-    footer {
-      border-top: 1px solid var(--rule);
-      padding-top: 14px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    @media (max-width: 700px) {
-      .page { padding: 28px 20px 24px; }
-      main {
-        grid-template-columns: 1fr;
-        gap: 28px;
-        padding: 40px 0;
-      }
-      .avatar { width: 120px; height: 120px; }
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
-<body>
-  <div class="page">
-    <header>
-      <span>VN-KEEN</span>
-      <span>Trang cá nhân</span>
-    </header>
-    <main>
-      <img class="avatar" src="avatar.jpg" alt="Ảnh đại diện VN-KEEN" width="200" height="200">
-      <div>
-        <h1>VN-KEEN</h1>
-        <div class="rule" aria-hidden="true"></div>
-        <p class="lead">Đây là trang cá nhân của mình. Hiện đang xây mọi thứ trên GitHub.</p>
-        <a class="gh" href="https://github.com/VN-KEEN">GitHub</a>
+<body class="tactical-grid font-sans antialiased">
+  <header id="nav" class="fixed inset-x-0 top-0 z-50 transition-colors">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <a href="#top" class="flex items-center gap-3">
+        <img src="images/VN-KEEN.jpg" alt="KEEN" class="size-10 rounded-lg object-cover">
+        <span class="font-display text-xl font-bold tracking-[0.14em]">VN<span class="text-accent">-KEEN</span></span>
+      </a>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-muted md:flex">
+        <a href="#features" class="hover:text-accent">Tính năng</a>
+        <a href="#demo" class="hover:text-accent">Demo overlay</a>
+        <a href="#showcase" class="hover:text-accent">Đặc vụ</a>
+        <a href="#pricing" class="hover:text-accent">Bảng giá</a>
+        <a href="#testimonials" class="hover:text-accent">Đánh giá</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="openLogin()" class="hidden rounded-lg px-3 py-2 text-sm text-muted hover:text-fg md:inline">Đăng nhập</button>
+        <button type="button" onclick="openCheckout('monthly')" class="rounded-lg bg-accent px-4 py-2 font-display text-sm font-semibold text-[#071018] hover:opacity-90">Tải xuống</button>
       </div>
-    </main>
-    <footer>© 2026 VN-KEEN</footer>
+    </div>
+  </header>
+
+  <section id="top" class="relative min-h-screen overflow-hidden pt-20">
+    <img src="images/hero.jpg" alt="Năm đặc vụ KEEN trước két sắt" class="absolute inset-0 size-full object-cover" style="object-position: center 28%">
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,15,25,.4), rgba(11,15,25,.58), #0b0f19)"></div>
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-20">
+      <div class="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 glass">
+        <span class="size-2 rounded-full bg-accent"></span>
+        <span class="font-display text-xs font-semibold tracking-[0.18em] text-accent uppercase">Cập nhật v2.1 · Hỗ trợ CS2 mới nhất</span>
+      </div>
+      <h1 class="font-display max-w-5xl text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+        Làm chủ trận đấu với
+        <span class="mt-1 block bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent text-glow">giao diện đặc vụ đỉnh cao</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
+        Nâng tầm Counter-Strike 2 với bộ công cụ tùy biến đặc vụ, overlay chiến thuật mượt mà, tối ưu khung hình và lớp bảo vệ tài khoản.
+      </p>
+      <div class="mt-10 flex w-full max-w-md flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+        <button type="button" onclick="openCheckout('monthly')" class="w-full rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018] sm:w-auto">
+          <i class="fa-solid fa-bolt mr-2"></i>Trải nghiệm ngay miễn phí
+        </button>
+        <a href="#demo" class="w-full rounded-lg px-6 py-3 font-display font-semibold glass sm:w-auto">
+          <i class="fa-solid fa-play mr-2"></i>Khám phá tính năng
+        </a>
+      </div>
+      <div class="mt-16 w-full max-w-5xl rounded-2xl p-2 glass sm:p-3">
+        <div class="overflow-hidden rounded-xl bg-bg">
+          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2">
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-accent/80"></span>
+            <span class="ml-2 font-mono text-[11px] tracking-widest text-muted uppercase">VN-KEEN Client · overlay.live</span>
+            <span class="ml-auto font-mono text-[11px] text-ok">ONLINE</span>
+          </div>
+          <div class="relative">
+            <img src="images/overlay-live.jpg" alt="Overlay VN-KEEN" class="aspect-video w-full object-cover">
+            <div class="pointer-events-none absolute top-[43%] left-[47.8%] h-[18.4%] w-[4.4%]">
+              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">BOT YURI <span class="text-muted">14m</span></div>
+            </div>
+            <div class="pointer-events-none absolute top-[45%] left-[52.9%] h-[10.8%] w-[4%]">
+              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">ĐỊCH <span class="text-muted">17m</span></div>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">ESP</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">AIM</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">CHAMS</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">NADES</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">SKIN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative bg-bg py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Tại sao game thủ CS2 chọn <span class="text-accent">VN-KEEN</span>?</h2>
+      <div class="grid gap-5 md:grid-cols-3">
+        <article class="rounded-2xl p-6 glass">
+          <i class="fa-solid fa-shield-halved mb-4 text-2xl text-accent"></i>
+          <h3 class="font-display text-xl font-semibold">An toàn tuyệt đối</h3>
+          <p class="mt-2 text-sm text-muted">Hệ thống mã hóa độc quyền giúp vượt qua các lớp kiểm tra tự động, bảo vệ tài khoản Steam của bạn.</p>
+        </article>
+        <article class="rounded-2xl p-6 glass">
+          <i class="fa-solid fa-gauge-high mb-4 text-2xl text-accent"></i>
+          <h3 class="font-display text-xl font-semibold">Không tụt khung hình</h3>
+          <p class="mt-2 text-sm text-muted">Tối ưu mã nguồn tối đa, chiếm dụng tài nguyên cực thấp — FPS luôn ở đỉnh trong mọi pha đấu súng.</p>
+        </article>
+        <article class="rounded-2xl p-6 glass">
+          <i class="fa-solid fa-rotate mb-4 text-2xl text-accent"></i>
+          <h3 class="font-display text-xl font-semibold">Cập nhật liên tục</h3>
+          <p class="mt-2 text-sm text-muted">Tự động đồng bộ ngay sau mỗi bản vá lớn từ Valve, không gián đoạn trải nghiệm.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="relative py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">10.000+</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Game thủ tin dùng</p></div>
+        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">v2.1</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Bản dựng hiện tại</p></div>
+        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">< 2ms</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Overhead trung bình</p></div>
+        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">24/7</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Kênh hỗ trợ</p></div>
+      </div>
+      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Hệ thống tính năng <span class="text-accent">toàn diện</span></h2>
+      <p class="mx-auto mb-14 max-w-3xl text-center text-muted">Mọi công cụ để thống trị bản đồ nằm gọn trong một giao diện.</p>
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-eye mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Hệ thống ESP thông minh</h3><p class="mt-2 text-sm text-muted">Hiển thị địch, khoảng cách, máu và trang bị xuyên tường — trực quan, không rối mắt.</p></article>
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-crosshairs mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Aimbot tùy chỉnh linh hoạt</h3><p class="mt-2 text-sm text-muted">Thuật toán chuyển động tự nhiên, RCS chuẩn xác theo từng loại vũ khí.</p></article>
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-shirt mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Quản lý skin & đặc vụ</h3><p class="mt-2 text-sm text-muted">Đổi diện mạo đặc vụ và kho vũ khí yêu thích ngay trong trận, một cú nhấp.</p></article>
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-bomb mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Hỗ trợ ném lựu đạn</h3><p class="mt-2 text-sm text-muted">Xem trước quỹ đạo Smoke, Molotov và Flashbang để set-up chiến thuật hoàn hảo.</p></article>
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-expand mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Chams & giao diện sáng tạo</h3><p class="mt-2 text-sm text-muted">Tùy màu mô hình địch / đồng đội với Wireframe hoặc Fill Color sắc nét.</p></article>
+        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-sliders mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Menu tiện lợi</h3><p class="mt-2 text-sm text-muted">Bảng điều khiển trực quan, phím tắt nhanh, lưu config linh hoạt theo từng bản đồ.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Demo overlay <span class="text-accent">trực tiếp</span></h2>
+      <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Bật/tắt ESP, chams, vòng FOV — overlay khớp nhân vật trên bản đồ.</p>
+      <div class="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div class="overflow-hidden rounded-xl bg-bg" style="box-shadow: 0 0 0 1px rgba(232,238,246,.1)">
+          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2">
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-accent/80"></span>
+            <span class="ml-2 font-mono text-[11px] tracking-widest text-muted uppercase">VN-KEEN Client · overlay.live</span>
+            <span class="ml-auto font-mono text-[11px] text-ok">ONLINE</span>
+          </div>
+          <div class="relative" id="demo-stage">
+            <img src="images/overlay-live.jpg" alt="Demo overlay" class="aspect-video w-full object-cover">
+            <div id="fov-ring" class="pointer-events-none absolute top-1/2 left-1/2 rounded-full" style="width:76.8px;height:76.8px;transform:translate(-50%,-50%);box-shadow:inset 0 0 0 1px rgba(0,229,238,.5)"></div>
+            <div class="esp-box pointer-events-none absolute" data-hp="100" style="top:43%;left:47.8%;width:4.4%;height:18.4%">
+              <div class="esp-chams absolute inset-0 hidden rounded-sm bg-accent/20 mix-blend-screen"></div>
+              <div class="esp-rect h-full w-full rounded-[2px]" style="box-shadow:inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="esp-hp absolute -left-1.5 top-0 h-full w-1 overflow-hidden rounded-full bg-bg/60"><div class="absolute bottom-0 w-full bg-ok" style="height:100%"></div></div>
+              <div class="esp-label absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">BOT YURI <span class="dist text-muted">14m</span></div>
+            </div>
+            <div class="esp-box pointer-events-none absolute" data-hp="78" style="top:45%;left:52.9%;width:4%;height:10.8%">
+              <div class="esp-chams absolute inset-0 hidden rounded-sm bg-accent/20 mix-blend-screen"></div>
+              <div class="esp-rect h-full w-full rounded-[2px]" style="box-shadow:inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="esp-hp absolute -left-1.5 top-0 h-full w-1 overflow-hidden rounded-full bg-bg/60"><div class="absolute bottom-0 w-full bg-ok" style="height:78%"></div></div>
+              <div class="esp-label absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">ĐỊCH <span class="dist text-muted">17m</span></div>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">ESP</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">AIM</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">CHAMS</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">NADES</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">SKIN</span>
+              <span id="hud-meta" class="ml-auto rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-muted">SMOOTH 72 · FOV 48</span>
+            </div>
+          </div>
+        </div>
+        <aside class="flex flex-col gap-4 rounded-2xl p-5 glass">
+          <p class="font-display text-sm font-semibold tracking-[0.2em] text-muted uppercase">Bảng điều khiển</p>
+          <label class="flex items-center justify-between text-sm">ESP box <input type="checkbox" id="t-esp" checked class="accent-accent"></label>
+          <label class="flex items-center justify-between text-sm">Tên địch <input type="checkbox" id="t-names" checked class="accent-accent"></label>
+          <label class="flex items-center justify-between text-sm">Thanh máu <input type="checkbox" id="t-health" checked class="accent-accent"></label>
+          <label class="flex items-center justify-between text-sm">Khoảng cách <input type="checkbox" id="t-distance" checked class="accent-accent"></label>
+          <label class="flex items-center justify-between text-sm">Chams <input type="checkbox" id="t-chams" class="accent-accent"></label>
+          <label class="flex items-center justify-between text-sm">Vòng FOV aimbot <input type="checkbox" id="t-aimbot" checked class="accent-accent"></label>
+          <label class="block text-sm">Độ mượt aimbot <span id="v-smooth" class="float-right font-mono text-accent">72</span>
+            <input id="r-smooth" type="range" min="10" max="100" value="72" class="mt-2 w-full accent-accent">
+          </label>
+          <label class="block text-sm">FOV <span id="v-fov" class="float-right font-mono text-accent">48</span>
+            <input id="r-fov" type="range" min="20" max="90" value="48" class="mt-2 w-full accent-accent">
+          </label>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="showcase" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bộ sưu tập <span class="text-accent">đặc vụ đỉnh cao</span></h2>
+      <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Diện mạo hoàn toàn mới với các mẫu đặc vụ độc quyền, tối ưu riêng trên nền tảng.</p>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5" id="agent-grid">
+        <button type="button" data-agent="royale" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 2px #00e5ee">
+          <div class="aspect-square bg-white"><img src="images/agent-royale.png" alt="" class="size-full object-contain"></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+        </button>
+        <button type="button" data-agent="skullhead" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+          <div class="aspect-square bg-white"><img src="images/agent-skullhead.png" alt="" class="size-full object-contain"></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+        </button>
+        <button type="button" data-agent="loudmouth" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+          <div class="aspect-square bg-white"><img src="images/agent-loudmouth.png" alt="" class="size-full object-contain"></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+        </button>
+        <button type="button" data-agent="miami" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+          <div class="aspect-square bg-white"><img src="images/agent-miami.png" alt="" class="size-full object-contain"></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+        </button>
+        <button type="button" data-agent="silent" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+          <div class="aspect-square bg-white"><img src="images/agent-silent.png" alt="" class="size-full object-contain"></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+        </button>
+      </div>
+      <div class="mt-6 rounded-2xl p-5 glass">
+        <p id="agent-tag" class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase">Royale</p>
+        <h3 id="agent-name" class="font-display mt-1 text-2xl font-semibold">Sir Bloody Darryl</h3>
+        <p id="agent-blurb" class="mt-2 max-w-2xl text-sm text-muted">Mặt nạ đồng vương miện, kit trắng-vàng. Biến thể gốc của đội Professionals.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bảng giá <span class="text-accent">linh hoạt</span></h2>
+      <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn.</p>
+      <div class="grid gap-6 md:grid-cols-3 md:items-center">
+        <article class="rounded-2xl p-8 glass">
+          <h3 class="font-display text-lg font-semibold text-muted">Trải nghiệm ngắn hạn</h3>
+          <p class="mt-3 font-display text-4xl font-bold">9.999đ <span class="text-sm font-medium text-muted">/ 1 ngày</span></p>
+          <p class="mt-4 text-sm text-muted">Phù hợp để thử toàn bộ tính năng cao cấp trong thời gian ngắn.</p>
+          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Mở khóa toàn bộ ESP & Aimbot</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Skin & đặc vụ đầy đủ</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Hỗ trợ kỹ thuật 24/7</li></ul>
+          <button type="button" onclick="openCheckout('daily')" class="mt-8 w-full rounded-lg px-4 py-3 font-display font-semibold glass">Chọn gói này</button>
+        </article>
+        <article class="relative rounded-2xl p-8 glass md:-translate-y-3" style="box-shadow:0 0 0 1px #00e5ee,0 24px 60px rgba(0,229,238,.12)">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent to-accent2 px-3 py-1 font-display text-[11px] font-semibold tracking-widest text-[#071018] uppercase">Phổ biến nhất</span>
+          <h3 class="font-display text-lg font-semibold text-muted">Gói chuyên nghiệp</h3>
+          <p class="mt-3 font-display text-4xl font-bold">199.999đ <span class="text-sm font-medium text-muted">/ 1 tháng</span></p>
+          <p class="mt-4 text-sm text-muted">Lựa chọn tối ưu cho game thủ chơi lâu dài và leo rank.</p>
+          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Toàn bộ tính năng cao cấp</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Cập nhật ưu tiên trước</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Tặng kèm config tối ưu</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Kênh Discord VIP riêng</li></ul>
+          <button type="button" onclick="openCheckout('monthly')" class="mt-8 w-full rounded-lg bg-accent px-4 py-3 font-display font-semibold text-[#071018]">Đăng ký ngay</button>
+        </article>
+        <article class="rounded-2xl p-8 glass">
+          <h3 class="font-display text-lg font-semibold text-muted">Gói trọn đời</h3>
+          <p class="mt-3 font-display text-4xl font-bold">999.999đ <span class="text-sm font-medium text-muted">/ vĩnh viễn</span></p>
+          <p class="mt-4 text-sm text-muted">Đầu tư một lần, dùng suốt đời với mọi bản cập nhật lớn nhỏ.</p>
+          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Quyền lợi VIP vĩnh viễn</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Miễn phí mọi phiên bản update</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Hỗ trợ riêng 1-1 từ admin</li></ul>
+          <button type="button" onclick="openCheckout('lifetime')" class="mt-8 w-full rounded-lg px-4 py-3 font-display font-semibold glass">Mua vĩnh viễn</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Cộng đồng nói gì về <span class="text-accent">VN-KEEN</span>?</h2>
+      <div class="grid gap-5 md:grid-cols-3">
+        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">H</div><p class="text-sm text-muted">“Giao diện đặc vụ cực kỳ đẹp mắt, dùng mượt mà không hề giật lag hay tụt FPS. Rất đáng tiền!”</p><p class="mt-4 font-display font-semibold">Hoàng Nam</p><p class="text-xs text-subtle">Global Elite Player</p></blockquote>
+        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">M</div><p class="text-sm text-muted">“Support nhiệt tình, tool cập nhật cực nhanh sau mỗi lần CS2 ra patch mới. An toàn tuyệt đối.”</p><p class="mt-4 font-display font-semibold">Minh Tuấn</p><p class="text-xs text-subtle">Streamer CS2</p></blockquote>
+        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">T</div><p class="text-sm text-muted">“Tính năng ESP và custom skin hoạt động hoàn hảo. Đã mua gói trọn đời và rất hài lòng.”</p><p class="mt-4 font-display font-semibold">Thanh Long</p><p class="text-xs text-subtle">CS2 Community Leader</p></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="font-display mb-10 text-center text-3xl font-semibold sm:text-4xl">Câu hỏi thường gặp</h2>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">VN-KEEN có an toàn với tài khoản Steam không?</summary><p class="mt-3 text-sm text-muted">VN-KEEN dùng lớp mã hóa độc quyền và cập nhật ngay sau mỗi bản vá. Không có hệ thống nào cam kết 100% tuyệt đối, nhưng kiến trúc của chúng tôi được thiết kế để giảm thiểu rủi ro tối đa.</p></details>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi có thể dùng thử trước khi mua gói dài hạn?</summary><p class="mt-3 text-sm text-muted">Có. Gói theo ngày mở khóa toàn bộ tính năng cao cấp — phù hợp để bạn kiểm tra ESP, Aimbot, skin và overlay trên chính máy của mình.</p></details>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Cập nhật sau patch Valve mất bao lâu?</summary><p class="mt-3 text-sm text-muted">Gói Chuyên nghiệp và Trọn đời được ưu tiên. Thông thường client sẵn sàng trong vài giờ sau khi bản vá ổn định.</p></details>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi nhận license và client như thế nào?</summary><p class="mt-3 text-sm text-muted">Sau khi đăng ký, bạn nhận mã license ngay trên trang. Dùng mã đó để kích hoạt client VN-KEEN trên Windows.</p></details>
+      <details class="rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Có hỗ trợ tiếng Việt không?</summary><p class="mt-3 text-sm text-muted">Có. Toàn bộ giao diện, tài liệu và kênh hỗ trợ Telegram / Discord đều dùng tiếng Việt.</p></details>
+    </div>
+  </section>
+
+  <section id="terms" class="relative bg-bg py-20">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Điều khoản sử dụng</h2>
+      <p class="mx-auto max-w-2xl text-center text-muted">Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu.</p>
+      <p class="mt-3 text-center text-sm">Hỗ trợ Telegram: <a href="https://t.me/VN_KEEN" class="text-accent hover:underline" target="_blank" rel="noopener">@VN_KEEN</a></p>
+      <ul class="mt-10 space-y-3 text-sm">
+        <li class="rounded-xl px-5 py-4 glass">Key thuê KHÔNG hoàn trả nếu như đã sử dụng.</li>
+        <li class="rounded-xl px-5 py-4 glass">Tiền nạp KHÔNG hoàn trả. Bạn có thể bán lại cho người khác.</li>
+        <li class="rounded-xl px-5 py-4 glass">Hack thì không sợ ban. Sợ ban thì không nên hack.</li>
+        <li class="rounded-xl px-5 py-4 glass">Chơi hack chấp nhận rủi ro. Nên test acc clone trước khi hack.</li>
+        <li class="rounded-xl px-5 py-4 glass">Với mỗi bản hax hãy nhờ admin tư vấn trước khi xài.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="relative border-t border-white/10 bg-bg py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h2 class="font-display text-3xl font-semibold sm:text-4xl">Sẵn sàng nâng tầm trình độ của bạn?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-muted">Tham gia nhóm Discord để nhận cập nhật tính năng mới, ưu đãi và hỗ trợ trực tiếp.</p>
+      <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="mt-8 inline-block rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018]">Tham gia nhóm Discord</a>
+    </div>
+    <div class="mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 px-4 pt-10 text-sm text-subtle md:flex-row">
+      <div class="flex items-center gap-3">
+        <img src="images/VN-KEEN.jpg" alt="KEEN" class="size-8 rounded-md object-cover">
+        <span class="font-display font-semibold tracking-wider text-fg">VN-KEEN © 2026</span>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="#terms" class="hover:text-accent">Điều khoản dịch vụ</a>
+        <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="hover:text-accent">Hỗ trợ / Telegram</a>
+        <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="hover:text-accent">Hỗ trợ / Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-bg/70 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-2xl p-6 glass">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 id="modal-title" class="font-display text-2xl font-semibold">Đăng ký VN-KEEN</h3>
+        <button type="button" onclick="closeModal()" class="text-muted hover:text-fg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="checkout-form" class="space-y-4">
+        <label class="block text-sm">Email
+          <input id="email" type="email" required class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2 text-fg" placeholder="ban@email.com">
+        </label>
+        <label id="plan-wrap" class="block text-sm">Gói
+          <select id="plan" class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2">
+            <option value="daily">Trải nghiệm ngắn hạn — 9.999đ</option>
+            <option value="monthly" selected>Gói chuyên nghiệp — 199.999đ</option>
+            <option value="lifetime">Gói trọn đời — 999.999đ</option>
+          </select>
+        </label>
+        <p id="login-hint" class="hidden text-sm text-red-400"></p>
+        <button type="submit" class="w-full rounded-lg bg-accent py-3 font-display font-semibold text-[#071018]">Nhận license</button>
+      </form>
+      <div id="issued" class="hidden space-y-3">
+        <p class="text-sm text-muted">Lưu mã này. Dùng để mở khóa client VN-KEEN trên máy tính.</p>
+        <p id="issued-key" class="rounded-lg bg-surface px-3 py-3 font-mono text-accent"></p>
+        <button type="button" onclick="copyKey()" class="w-full rounded-lg glass py-2 font-display">Sao chép mã</button>
+      </div>
+    </div>
   </div>
+
+  <script>
+    const PLANS = { daily: 'Trải nghiệm ngắn hạn', monthly: 'Gói chuyên nghiệp', lifetime: 'Gói trọn đời' };
+    const AGENTS = {
+      royale: { tag: 'Royale', name: 'Sir Bloody Darryl', blurb: 'Mặt nạ đồng vương miện, kit trắng-vàng. Biến thể gốc của đội Professionals.' },
+      skullhead: { tag: 'Skullhead', name: 'Sir Bloody Skullhead Darryl', blurb: 'Mặt nạ sọ trắng-đen. Lurker lạnh, đọc rotate rồi cắt đường về.' },
+      loudmouth: { tag: 'Loudmouth', name: 'Sir Bloody Loudmouth Darryl', blurb: 'Mặt nạ hề, giáp đỏ. Entry gây áp lực — nhìn là biết đang bị săn.' },
+      miami: { tag: 'Miami', name: 'Sir Bloody Miami Darryl', blurb: 'Áo Hawaii, mặt nạ khúc côn cầu. Nhận diện ngay trên site, không lẫn với ai.' },
+      silent: { tag: 'Silent', name: 'Sir Bloody Silent Darryl', blurb: 'Mặt nạ X đen. Entry im lặng, khó đọc ý đồ từ góc hẹp.' },
+    };
+    let mode = 'checkout';
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('glass', window.scrollY > 24);
+    });
+    document.querySelectorAll('#t-esp,#t-names,#t-health,#t-distance,#t-chams,#t-aimbot').forEach(el => el.addEventListener('change', syncDemo));
+    document.getElementById('r-smooth').addEventListener('input', e => { document.getElementById('v-smooth').textContent = e.target.value; syncDemo(); });
+    document.getElementById('r-fov').addEventListener('input', e => { document.getElementById('v-fov').textContent = e.target.value; syncDemo(); });
+    function syncDemo() {
+      const esp = document.getElementById('t-esp').checked;
+      const names = document.getElementById('t-names').checked;
+      const health = document.getElementById('t-health').checked;
+      const distance = document.getElementById('t-distance').checked;
+      const chams = document.getElementById('t-chams').checked;
+      const aimbot = document.getElementById('t-aimbot').checked;
+      const fov = Number(document.getElementById('r-fov').value);
+      const smooth = document.getElementById('r-smooth').value;
+      document.getElementById('fov-ring').style.display = aimbot ? 'block' : 'none';
+      document.getElementById('fov-ring').style.width = (fov * 1.6) + 'px';
+      document.getElementById('fov-ring').style.height = (fov * 1.6) + 'px';
+      document.getElementById('hud-meta').textContent = 'SMOOTH ' + smooth + ' · FOV ' + fov;
+      document.querySelectorAll('.esp-box').forEach(box => {
+        box.querySelector('.esp-rect').style.display = esp ? 'block' : 'none';
+        box.querySelector('.esp-hp').style.display = health ? 'block' : 'none';
+        box.querySelector('.esp-chams').classList.toggle('hidden', !chams);
+        const label = box.querySelector('.esp-label');
+        label.style.display = (names || distance) ? 'block' : 'none';
+        const name = box.querySelector('.esp-label').childNodes[0];
+        if (!names) label.childNodes[0].textContent = '';
+        else if (!label.childNodes[0].textContent.trim()) label.childNodes[0].textContent = box.querySelector('.esp-label').textContent.includes('YURI') ? 'BOT YURI ' : 'ĐỊCH ';
+        box.querySelector('.dist').style.display = distance ? 'inline' : 'none';
+      });
+    }
+    document.querySelectorAll('.agent-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.agent-card').forEach(c => c.style.boxShadow = '0 0 0 1px rgba(232,238,246,.1)');
+        card.style.boxShadow = '0 0 0 2px #00e5ee';
+        const a = AGENTS[card.dataset.agent];
+        document.getElementById('agent-tag').textContent = a.tag;
+        document.getElementById('agent-name').textContent = a.name;
+        document.getElementById('agent-blurb').textContent = a.blurb;
+      });
+    });
+    function openCheckout(plan) {
+      mode = 'checkout';
+      document.getElementById('modal-title').textContent = 'Đăng ký VN-KEEN';
+      document.getElementById('plan-wrap').classList.remove('hidden');
+      document.getElementById('plan').value = plan || 'monthly';
+      document.getElementById('checkout-form').classList.remove('hidden');
+      document.getElementById('issued').classList.add('hidden');
+      document.getElementById('login-hint').classList.add('hidden');
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+    }
+    function openLogin() {
+      mode = 'login';
+      document.getElementById('modal-title').textContent = 'Đăng nhập license';
+      document.getElementById('plan-wrap').classList.add('hidden');
+      document.getElementById('checkout-form').classList.remove('hidden');
+      document.getElementById('issued').classList.add('hidden');
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+      document.getElementById('modal').classList.remove('flex');
+    }
+    function chunk() { return Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4); }
+    document.getElementById('checkout-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if (mode === 'login') {
+        const raw = localStorage.getItem('vn-keen-license');
+        const license = raw ? JSON.parse(raw) : null;
+        if (license && license.email.toLowerCase() === email.toLowerCase()) {
+          document.getElementById('issued-key').textContent = license.key;
+          document.getElementById('checkout-form').classList.add('hidden');
+          document.getElementById('issued').classList.remove('hidden');
+        } else {
+          const hint = document.getElementById('login-hint');
+          hint.textContent = license ? 'Email không khớp với license đã lưu trên thiết bị này.' : 'Chưa có license trên thiết bị. Hãy đăng ký một gói trước.';
+          hint.classList.remove('hidden');
+        }
+        return;
+      }
+      const planId = document.getElementById('plan').value;
+      const next = { key: 'VNKN-' + chunk() + '-' + chunk() + '-' + chunk(), planId, planName: PLANS[planId], email, createdAt: Date.now() };
+      localStorage.setItem('vn-keen-license', JSON.stringify(next));
+      document.getElementById('issued-key').textContent = next.key;
+      document.getElementById('checkout-form').classList.add('hidden');
+      document.getElementById('issued').classList.remove('hidden');
+    });
+    function copyKey() {
+      navigator.clipboard.writeText(document.getElementById('issued-key').textContent);
+    }
+  </script>
 </body>
 </html>
