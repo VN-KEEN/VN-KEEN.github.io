@@ -71,7 +71,9 @@
 <body class="font-sans antialiased">
   <div class="site-bg" aria-hidden="true">
     <div class="site-bg-layer" id="bg-layer">
-      <img src="images/hero-bg.jpg" alt="">
+      <video autoplay muted loop playsinline preload="auto" poster="images/hero-bg.jpg" id="bg-video" style="width:100%;height:100%;object-fit:cover;object-position:center 42%">
+        <source src="videos/hero-bg.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="site-bg-veil"></div>
     <div class="tactical-grid" style="position:absolute;inset:0;opacity:.4"></div>
@@ -487,6 +489,32 @@
       cinemaFrame = requestAnimationFrame(onCinema);
     }, { passive: true });
     onCinema();
+    const bgVideo = document.getElementById('bg-video');
+    if (bgVideo) { bgVideo.playbackRate = 0.8; }
+    (function smoothDesktop() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      document.documentElement.style.scrollBehavior = 'auto';
+      let current = window.scrollY, target = window.scrollY, running = true;
+      const maxY = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const dialogOpen = () => Boolean(document.getElementById('modal') && !document.getElementById('modal').classList.contains('hidden'));
+      function tick() {
+        if (!running) return;
+        if (!dialogOpen()) {
+          current += (target - current) * 0.085;
+          if (Math.abs(target - current) < 0.3) current = target;
+          window.scrollTo(0, current);
+        }
+        requestAnimationFrame(tick);
+      }
+      window.addEventListener('wheel', (e) => {
+        if (dialogOpen() || e.ctrlKey) return;
+        e.preventDefault();
+        target = Math.max(0, Math.min(maxY(), target + e.deltaY));
+      }, { passive: false });
+      requestAnimationFrame(tick);
+    })();
+
     document.querySelectorAll('.reveal').forEach(el => {
       if (reduce) { el.classList.add('is-in'); return; }
       const io = new IntersectionObserver(([e]) => {
