@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VN-KEEN — Tùy chỉnh giao diện & hỗ trợ đỉnh cao</title>
   <meta name="description" content="Nền tảng tùy biến giao diện đặc vụ Counter-Strike 2: ESP, Aimbot, skin, overlay chiến thuật. Cập nhật nhanh, tối ưu FPS.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0b0f19">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <meta property="og:title" content="VN-KEEN">
   <meta property="og:description" content="Tùy chỉnh giao diện & hỗ trợ đỉnh cao cho Counter-Strike 2.">
@@ -16,9 +16,9 @@
       theme: {
         extend: {
           colors: {
-            bg: '#000000',
-            surface: '#0a0a0a',
-            surface2: '#141414',
+            bg: '#0b0f19',
+            surface: '#131c2e',
+            surface2: '#192338',
             fg: '#e8eef6',
             muted: '#8b9bb4',
             subtle: '#5c6d86',
@@ -30,7 +30,6 @@
             sans: ['IBM Plex Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
             display: ['Rajdhani', 'Segoe UI', 'sans-serif'],
             mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
-            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
           }
         }
       }
@@ -38,15 +37,15 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    body { background: #000; color: #e8eef6; }
+    body { background: #0b0f19; color: #e8eef6; }
     .glass {
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(19, 28, 46, 0.72);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 1px rgba(232, 238, 246, 0.08);
     }
     .text-glow { text-shadow: 0 0 28px rgba(0, 229, 238, 0.35); }
     .tactical-grid {
@@ -55,42 +54,10 @@
         linear-gradient(90deg, rgba(0, 229, 238, 0.035) 1px, transparent 1px);
       background-size: 48px 48px;
     }
-
-    .site-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-    .site-bg-layer { position: absolute; inset: -18%; transform: translate3d(0,0,0) scale(1.12); will-change: transform; }
-    .site-bg-layer img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
-    .site-bg-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,15,25,.25), rgba(11,15,25,.5), rgba(11,15,25,.8)); }
-    .site-content { position: relative; z-index: 10; }
-    .reveal { opacity: 0; transform: translateY(36px); filter: blur(8px); transition: opacity 800ms cubic-bezier(.22,1,.36,1), transform 800ms cubic-bezier(.22,1,.36,1), filter 800ms cubic-bezier(.22,1,.36,1); }
-    .reveal.is-in { opacity: 1; transform: none; filter: none; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; filter: none; transition: none; }
-    }
-
-    .wordmark {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(4.25rem, 16vw, 12rem);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      line-height: 0.85;
-      color: #f4efe6;
-      text-shadow: 0 0 48px rgba(201,163,106,.28);
-    }
-    .site-bg-veil { background: rgba(0,0,0,.8) !important; }
     .hidden { display: none !important; }
   </style>
 </head>
-<body class="font-sans antialiased">
-  <div class="site-bg" aria-hidden="true">
-    <div class="site-bg-layer" id="bg-layer">
-      <video autoplay muted loop playsinline preload="auto" poster="images/hero-bg.jpg" id="bg-video" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;opacity:.25">
-        <source src="videos/hero-bg.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="site-bg-veil"></div>
-    <div class="tactical-grid" style="position:absolute;inset:0;opacity:.4"></div>
-  </div>
-  <div class="site-content">
+<body class="tactical-grid font-sans antialiased">
   <header id="nav" class="fixed inset-x-0 top-0 z-50 transition-colors">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
       <a href="#top" class="flex items-center gap-3">
@@ -111,30 +78,62 @@
     </div>
   </header>
 
-  <section id="top" class="relative" style="height:200vh">
-    <div class="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
-      <div id="hero-copy" class="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center">
-        <p class="mb-5 font-display text-xs font-semibold tracking-[0.48em] uppercase" style="color:#e4d5b3">CS2 Overlay</p>
-        <h1 class="wordmark">VN-KEEN</h1>
-        <div class="absolute bottom-10 flex w-full max-w-md flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-          <button type="button" onclick="openCheckout('monthly')" class="w-full rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018] sm:w-auto">
-            <i class="fa-solid fa-bolt mr-2"></i>Trải nghiệm ngay miễn phí
-          </button>
-          <a href="#demo" class="w-full rounded-lg px-6 py-3 font-display font-semibold glass sm:w-auto">
-            <i class="fa-solid fa-play mr-2"></i>Khám phá tính năng
-          </a>
-        </div>
+  <section id="top" class="relative min-h-screen overflow-hidden pt-20">
+    <img src="images/hero.jpg" alt="Năm đặc vụ KEEN trước két sắt" class="absolute inset-0 size-full object-cover" style="object-position: center 28%">
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,15,25,.4), rgba(11,15,25,.58), #0b0f19)"></div>
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-20">
+      <div class="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 glass">
+        <span class="size-2 rounded-full bg-accent"></span>
+        <span class="font-display text-xs font-semibold tracking-[0.18em] text-accent uppercase">Cập nhật v2.1 · Hỗ trợ CS2 mới nhất</span>
       </div>
-      <div id="hero-chapter" class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-6" style="opacity:0">
-        <div class="max-w-4xl text-center">
-          <p class="font-display mb-5 text-xs tracking-[0.4em] uppercase" style="color:#e4d5b3">Làm chủ trận đấu</p>
-          <h2 class="text-4xl leading-tight sm:text-6xl lg:text-7xl" style="font-family:'Cormorant Garamond',Georgia,serif;color:#f4efe6">Giao diện đặc vụ đỉnh cao</h2>
+      <h1 class="font-display max-w-5xl text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+        Làm chủ trận đấu với
+        <span class="mt-1 block bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent text-glow">giao diện đặc vụ đỉnh cao</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
+        Nâng tầm Counter-Strike 2 với bộ công cụ tùy biến đặc vụ, overlay chiến thuật mượt mà, tối ưu khung hình và lớp bảo vệ tài khoản.
+      </p>
+      <div class="mt-10 flex w-full max-w-md flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+        <button type="button" onclick="openCheckout('monthly')" class="w-full rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018] sm:w-auto">
+          <i class="fa-solid fa-bolt mr-2"></i>Trải nghiệm ngay miễn phí
+        </button>
+        <a href="#demo" class="w-full rounded-lg px-6 py-3 font-display font-semibold glass sm:w-auto">
+          <i class="fa-solid fa-play mr-2"></i>Khám phá tính năng
+        </a>
+      </div>
+      <div class="mt-16 w-full max-w-5xl rounded-2xl p-2 glass sm:p-3">
+        <div class="overflow-hidden rounded-xl bg-bg">
+          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2">
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-subtle/50"></span>
+            <span class="size-2.5 rounded-full bg-accent/80"></span>
+            <span class="ml-2 font-mono text-[11px] tracking-widest text-muted uppercase">VN-KEEN Client · overlay.live</span>
+            <span class="ml-auto font-mono text-[11px] text-ok">ONLINE</span>
+          </div>
+          <div class="relative">
+            <img src="images/overlay-live.jpg" alt="Overlay VN-KEEN" class="aspect-video w-full object-cover">
+            <div class="pointer-events-none absolute top-[43%] left-[47.8%] h-[18.4%] w-[4.4%]">
+              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">BOT YURI <span class="text-muted">14m</span></div>
+            </div>
+            <div class="pointer-events-none absolute top-[45%] left-[52.9%] h-[10.8%] w-[4%]">
+              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
+              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">ĐỊCH <span class="text-muted">17m</span></div>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">ESP</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">AIM</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">CHAMS</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">NADES</span>
+              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">SKIN</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="relative py-20 reveal">
+  <section class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Tại sao game thủ CS2 chọn <span class="text-accent">VN-KEEN</span>?</h2>
       <div class="grid gap-5 md:grid-cols-3">
@@ -157,7 +156,7 @@
     </div>
   </section>
 
-  <section id="features" class="relative py-20 reveal">
+  <section id="features" class="relative py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">10.000+</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Game thủ tin dùng</p></div>
@@ -178,7 +177,7 @@
     </div>
   </section>
 
-  <section id="demo" class="relative py-20 reveal">
+  <section id="demo" class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Demo overlay <span class="text-accent">trực tiếp</span></h2>
       <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Bật/tắt ESP, chams, vòng FOV — overlay khớp nhân vật trên bản đồ.</p>
@@ -235,30 +234,30 @@
     </div>
   </section>
 
-  <section id="showcase" class="relative py-20 reveal">
+  <section id="showcase" class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bộ sưu tập <span class="text-accent">đặc vụ đỉnh cao</span></h2>
       <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Diện mạo hoàn toàn mới với các mẫu đặc vụ độc quyền, tối ưu riêng trên nền tảng.</p>
       <div class="grid grid-cols-2 gap-4 md:grid-cols-5" id="agent-grid">
         <button type="button" data-agent="royale" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 2px #00e5ee">
           <div class="aspect-square bg-white"><img src="images/agent-royale.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="skullhead" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-skullhead.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="loudmouth" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-loudmouth.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="miami" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-miami.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="silent" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-silent.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
       </div>
       <div class="mt-6 rounded-2xl p-5 glass">
@@ -269,7 +268,7 @@
     </div>
   </section>
 
-  <section id="pricing" class="relative py-20 reveal">
+  <section id="pricing" class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bảng giá <span class="text-accent">linh hoạt</span></h2>
       <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn. Thanh toán VietQR qua MB · NGUYEN PHU QUY — nhận KEY sau khi CK.</p>
@@ -300,7 +299,7 @@
     </div>
   </section>
 
-  <section id="testimonials" class="relative py-20 reveal">
+  <section id="testimonials" class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Cộng đồng nói gì về <span class="text-accent">VN-KEEN</span>?</h2>
       <div class="grid gap-5 md:grid-cols-3">
@@ -311,7 +310,7 @@
     </div>
   </section>
 
-  <section id="faq" class="relative py-20 reveal">
+  <section id="faq" class="relative bg-bg py-20">
     <div class="mx-auto max-w-3xl px-4">
       <h2 class="font-display mb-10 text-center text-3xl font-semibold sm:text-4xl">Câu hỏi thường gặp</h2>
       <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">VN-KEEN có an toàn với tài khoản Steam không?</summary><p class="mt-3 text-sm text-muted">VN-KEEN dùng lớp mã hóa độc quyền và cập nhật ngay sau mỗi bản vá. Không có hệ thống nào cam kết 100% tuyệt đối, nhưng kiến trúc của chúng tôi được thiết kế để giảm thiểu rủi ro tối đa.</p></details>
@@ -323,7 +322,7 @@
     </div>
   </section>
 
-  <section id="terms" class="relative py-20 reveal">
+  <section id="terms" class="relative bg-bg py-20">
     <div class="mx-auto max-w-3xl px-4">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Điều khoản sử dụng</h2>
       <p class="mx-auto max-w-2xl text-center text-muted">Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu.</p>
@@ -338,7 +337,7 @@
     </div>
   </section>
 
-  <section class="relative border-t border-white/10 py-20 reveal">
+  <section class="relative border-t border-white/10 bg-bg py-20">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h2 class="font-display text-3xl font-semibold sm:text-4xl">Sẵn sàng nâng tầm trình độ của bạn?</h2>
       <p class="mx-auto mt-4 max-w-xl text-muted">Tham gia nhóm Discord để nhận cập nhật tính năng mới, ưu đãi và hỗ trợ trực tiếp.</p>
@@ -356,8 +355,6 @@
       </div>
     </div>
   </section>
-
-  </div>
 
   <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-bg/70 p-4 backdrop-blur-sm">
     <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 glass">
@@ -447,85 +444,9 @@
     let currentAmount = 199999;
     let currentContent = '';
 
-
-    const bgLayer = document.getElementById('bg-layer');
-    const heroCopy = document.getElementById('hero-copy');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const pin = document.getElementById('top');
-    const chapter = document.getElementById('hero-chapter');
-    function onHeroPin() {
-      if (!pin || !heroCopy) return;
-      const travel = pin.offsetHeight - window.innerHeight;
-      const p = travel <= 0 ? 0 : Math.min(1, Math.max(0, -pin.getBoundingClientRect().top / travel));
-      const markFade = Math.max(0, 1 - p / 0.42);
-      heroCopy.style.opacity = String(markFade);
-      heroCopy.style.transform = 'translate3d(0,' + (p * -40) + 'px,0) scale(' + (1 + p * 0.28) + ')';
-      let ch = 0;
-      if (p > 0.32 && p < 0.88) ch = Math.min(1, (p - 0.32) / 0.28);
-      if (p >= 0.88) ch = Math.max(0, 1 - (p - 0.88) / 0.12);
-      if (chapter) {
-        chapter.style.opacity = String(ch);
-        chapter.style.transform = 'translate3d(0,' + ((1 - ch) * 28) + 'px,0)';
-      }
-    }
-
-    function onCinema() {
-      const y = window.scrollY;
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const p = Math.min(1, y / max);
-      if (bgLayer && !reduce) {
-        bgLayer.style.transform = 'translate3d(0,' + (y * -0.18) + 'px,0) scale(' + (1.12 + p * 0.22) + ')';
-      }
-      if (heroCopy && !reduce) {
-        heroCopy.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0)';
-        heroCopy.style.opacity = String(Math.max(0, 1 - y / 520));
-      }
-      document.getElementById('nav').classList.toggle('glass', y > 24);
-      onHeroPin();
-    }
-    let cinemaFrame = 0;
     window.addEventListener('scroll', () => {
-      cancelAnimationFrame(cinemaFrame);
-      cinemaFrame = requestAnimationFrame(onCinema);
-    }, { passive: true });
-    onCinema();
-    const bgVideo = document.getElementById('bg-video');
-    if (bgVideo) { bgVideo.playbackRate = 0.8; }
-    (function smoothDesktop() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.matchMedia('(pointer: coarse)').matches) return;
-      document.documentElement.style.scrollBehavior = 'auto';
-      let current = window.scrollY, target = window.scrollY, running = true;
-      const maxY = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      const dialogOpen = () => Boolean(document.getElementById('modal') && !document.getElementById('modal').classList.contains('hidden'));
-      function tick() {
-        if (!running) return;
-        if (!dialogOpen()) {
-          current += (target - current) * 0.085;
-          if (Math.abs(target - current) < 0.3) current = target;
-          window.scrollTo(0, current);
-        }
-        requestAnimationFrame(tick);
-      }
-      window.addEventListener('wheel', (e) => {
-        if (dialogOpen() || e.ctrlKey) return;
-        e.preventDefault();
-        target = Math.max(0, Math.min(maxY(), target + e.deltaY));
-      }, { passive: false });
-      requestAnimationFrame(tick);
-    })();
-
-    document.querySelectorAll('.reveal').forEach(el => {
-      if (reduce) { el.classList.add('is-in'); return; }
-      const io = new IntersectionObserver(([e]) => {
-        if (!e.isIntersecting) return;
-        el.classList.add('is-in');
-        io.disconnect();
-      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
-      io.observe(el);
+      document.getElementById('nav').classList.toggle('glass', window.scrollY > 24);
     });
-
     document.querySelectorAll('#t-esp,#t-names,#t-health,#t-distance,#t-chams,#t-aimbot').forEach(el => el.addEventListener('change', syncDemo));
     document.getElementById('r-smooth').addEventListener('input', e => { document.getElementById('v-smooth').textContent = e.target.value; syncDemo(); });
     document.getElementById('r-fov').addEventListener('input', e => { document.getElementById('v-fov').textContent = e.target.value; syncDemo(); });
