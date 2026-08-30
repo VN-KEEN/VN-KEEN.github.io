@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VN-KEEN — Tùy chỉnh giao diện & hỗ trợ đỉnh cao</title>
   <meta name="description" content="Nền tảng tùy biến giao diện đặc vụ Counter-Strike 2: ESP, Aimbot, skin, overlay chiến thuật. Cập nhật nhanh, tối ưu FPS.">
-  <meta name="theme-color" content="#0b0f19">
+  <meta name="theme-color" content="#000000">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <meta property="og:title" content="VN-KEEN">
   <meta property="og:description" content="Tùy chỉnh giao diện & hỗ trợ đỉnh cao cho Counter-Strike 2.">
@@ -16,9 +16,9 @@
       theme: {
         extend: {
           colors: {
-            bg: '#0b0f19',
-            surface: '#131c2e',
-            surface2: '#192338',
+            bg: '#000000',
+            surface: '#0a0a0a',
+            surface2: '#141414',
             fg: '#e8eef6',
             muted: '#8b9bb4',
             subtle: '#5c6d86',
@@ -41,12 +41,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    body { background: #0b0f19; color: #e8eef6; }
+    body { background: #000; color: #e8eef6; }
     .glass {
-      background: rgba(19, 28, 46, 0.72);
+      background: rgba(0, 0, 0, 0.55);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 0 0 1px rgba(232, 238, 246, 0.08);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
     }
     .text-glow { text-shadow: 0 0 28px rgba(0, 229, 238, 0.35); }
     .tactical-grid {
@@ -76,14 +76,14 @@
       color: #f4efe6;
       text-shadow: 0 0 48px rgba(201,163,106,.28);
     }
-    .site-bg-veil { background: linear-gradient(to bottom, rgba(11,15,25,.1), rgba(11,15,25,.28), rgba(11,15,25,.62)) !important; }
+    .site-bg-veil { background: rgba(0,0,0,.8) !important; }
     .hidden { display: none !important; }
   </style>
 </head>
 <body class="font-sans antialiased">
   <div class="site-bg" aria-hidden="true">
     <div class="site-bg-layer" id="bg-layer">
-      <video autoplay muted loop playsinline preload="auto" poster="images/hero-bg.jpg" id="bg-video" style="width:100%;height:100%;object-fit:cover;object-position:center 42%">
+      <video autoplay muted loop playsinline preload="auto" poster="images/hero-bg.jpg" id="bg-video" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;opacity:.25">
         <source src="videos/hero-bg.mp4" type="video/mp4">
       </video>
     </div>
@@ -242,23 +242,23 @@
       <div class="grid grid-cols-2 gap-4 md:grid-cols-5" id="agent-grid">
         <button type="button" data-agent="royale" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 2px #00e5ee">
           <div class="aspect-square bg-white"><img src="images/agent-royale.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="skullhead" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-skullhead.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="loudmouth" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-loudmouth.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="miami" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-miami.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
         <button type="button" data-agent="silent" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
           <div class="aspect-square bg-white"><img src="images/agent-silent.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
+          <div class="bg-black px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
         </button>
       </div>
       <div class="mt-6 rounded-2xl p-5 glass">
