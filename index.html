@@ -271,7 +271,7 @@
   <section id="pricing" class="relative bg-bg py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bảng giá <span class="text-accent">linh hoạt</span></h2>
-      <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn.</p>
+      <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn. Thanh toán VietQR qua MB · NGUYEN PHU QUY — nhận KEY sau khi CK.</p>
       <div class="grid gap-6 md:grid-cols-3 md:items-center">
         <article class="rounded-2xl p-8 glass">
           <h3 class="font-display text-lg font-semibold text-muted">Trải nghiệm ngắn hạn</h3>
@@ -314,9 +314,10 @@
     <div class="mx-auto max-w-3xl px-4">
       <h2 class="font-display mb-10 text-center text-3xl font-semibold sm:text-4xl">Câu hỏi thường gặp</h2>
       <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">VN-KEEN có an toàn với tài khoản Steam không?</summary><p class="mt-3 text-sm text-muted">VN-KEEN dùng lớp mã hóa độc quyền và cập nhật ngay sau mỗi bản vá. Không có hệ thống nào cam kết 100% tuyệt đối, nhưng kiến trúc của chúng tôi được thiết kế để giảm thiểu rủi ro tối đa.</p></details>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi thanh toán và nhận KEY như thế nào?</summary><p class="mt-3 text-sm text-muted">Chọn gói → quét QR VietQR (STK MB NGUYEN PHU QUY). Chuyển đúng số tiền và nội dung KEEN…. Sau đó nhắn Telegram @VN_KEEN kèm nội dung CK để nhận KEY.</p></details>
       <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi có thể dùng thử trước khi mua gói dài hạn?</summary><p class="mt-3 text-sm text-muted">Có. Gói theo ngày mở khóa toàn bộ tính năng cao cấp — phù hợp để bạn kiểm tra ESP, Aimbot, skin và overlay trên chính máy của mình.</p></details>
       <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Cập nhật sau patch Valve mất bao lâu?</summary><p class="mt-3 text-sm text-muted">Gói Chuyên nghiệp và Trọn đời được ưu tiên. Thông thường client sẵn sàng trong vài giờ sau khi bản vá ổn định.</p></details>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi nhận license và client như thế nào?</summary><p class="mt-3 text-sm text-muted">Sau khi đăng ký, bạn nhận mã license ngay trên trang. Dùng mã đó để kích hoạt client VN-KEEN trên Windows.</p></details>
+      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi nhận license và client như thế nào?</summary><p class="mt-3 text-sm text-muted">Sau khi chuyển khoản, gửi nội dung CK cho @VN_KEEN trên Telegram. KEY dùng để kích hoạt client VN-KEEN trên Windows.</p></details>
       <details class="rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Có hỗ trợ tiếng Việt không?</summary><p class="mt-3 text-sm text-muted">Có. Toàn bộ giao diện, tài liệu và kênh hỗ trợ Telegram / Discord đều dùng tiếng Việt.</p></details>
     </div>
   </section>
@@ -356,35 +357,81 @@
   </section>
 
   <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-bg/70 p-4 backdrop-blur-sm">
-    <div class="w-full max-w-md rounded-2xl p-6 glass">
+    <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 glass">
       <div class="mb-4 flex items-center justify-between">
-        <h3 id="modal-title" class="font-display text-2xl font-semibold">Đăng ký VN-KEEN</h3>
-        <button type="button" onclick="closeModal()" class="text-muted hover:text-fg"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="modal-title" class="font-display text-2xl font-semibold">Thanh toán VietQR</h3>
+        <button type="button" onclick="closeModal()" class="text-muted hover:text-fg" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <form id="checkout-form" class="space-y-4">
-        <label class="block text-sm">Email
-          <input id="email" type="email" required class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2 text-fg" placeholder="ban@email.com">
+
+      <div id="pay-pick" class="space-y-4">
+        <p class="text-sm text-muted">QR gắn sẵn STK MB <span class="text-fg">NGUYEN PHU QUY</span> — mỗi đơn một nội dung riêng.</p>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" id="pick-daily" onclick="selectPlan('daily')" class="rounded-lg px-2 py-3 text-center text-xs">
+            <span class="block font-display text-sm font-semibold text-fg">9.999đ</span>1 ngày
+          </button>
+          <button type="button" id="pick-monthly" onclick="selectPlan('monthly')" class="rounded-lg px-2 py-3 text-center text-xs">
+            <span class="block font-display text-sm font-semibold text-fg">199.999đ</span>1 tháng
+          </button>
+          <button type="button" id="pick-lifetime" onclick="selectPlan('lifetime')" class="rounded-lg px-2 py-3 text-center text-xs">
+            <span class="block font-display text-sm font-semibold text-fg">999.999đ</span>vĩnh viễn
+          </button>
+        </div>
+        <div class="rounded-xl bg-bg p-4 text-sm" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+          <p id="pick-summary" class="text-muted"></p>
+          <p class="mt-2 text-xs text-subtle">MB Bank · 789789999888 · NGUYEN PHU QUY</p>
+        </div>
+        <button type="button" onclick="createQr()" class="w-full rounded-lg bg-accent py-3 font-display font-semibold text-[#071018]">
+          <i class="fa-solid fa-qrcode mr-1"></i> Tạo QR thanh toán
+        </button>
+      </div>
+
+      <div id="pay-qr" class="hidden space-y-4">
+        <p class="text-sm text-muted">Chuyển khoản đúng số tiền và nội dung. Sau đó nhắn Telegram để nhận KEY.</p>
+        <div class="flex justify-center rounded-2xl bg-fg p-3">
+          <img id="qr-img" alt="VietQR MB NGUYEN PHU QUY" class="h-auto w-full max-w-[280px] rounded-lg">
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Ngân hàng</p><p class="font-mono">MB Bank</p></div>
+          </div>
+          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Chủ TK</p><p class="font-mono">NGUYEN PHU QUY</p></div>
+          </div>
+          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Số tài khoản</p><p class="font-mono">789789999888</p></div>
+            <button type="button" onclick="copyText('789789999888')" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép STK"><i class="fa-regular fa-copy"></i></button>
+          </div>
+          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Số tiền</p><p id="qr-amount" class="font-mono"></p></div>
+            <button type="button" onclick="copyText(String(currentAmount))" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép số tiền"><i class="fa-regular fa-copy"></i></button>
+          </div>
+          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
+            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Nội dung CK</p><p id="qr-content" class="font-mono text-accent"></p></div>
+            <button type="button" onclick="copyText(currentContent)" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép nội dung"><i class="fa-regular fa-copy"></i></button>
+          </div>
+        </div>
+        <p class="rounded-lg px-3 py-2 text-xs" style="background:rgba(251,191,36,.1);color:#fbbf24">Sai nội dung hoặc sai số tiền thì không cấp KEY.</p>
+        <a id="tg-after-pay" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full rounded-lg bg-accent py-3 text-center font-display font-semibold text-[#071018]">Đã CK — nhắn Telegram nhận KEY</a>
+        <button type="button" onclick="showPick()" class="w-full rounded-lg py-2 font-display text-sm text-muted hover:text-fg">Tạo QR gói khác</button>
+      </div>
+
+      <div id="pay-login" class="hidden space-y-4">
+        <p class="text-sm text-muted">Nhập nội dung chuyển khoản rồi nhắn Telegram @VN_KEEN để nhận KEY.</p>
+        <label class="block text-sm">Nội dung CK
+          <input id="lookup-code" class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2 font-mono uppercase text-fg" placeholder="KEEN7K2M9Q">
         </label>
-        <label id="plan-wrap" class="block text-sm">Gói
-          <select id="plan" class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2">
-            <option value="daily">Trải nghiệm ngắn hạn — 9.999đ</option>
-            <option value="monthly" selected>Gói chuyên nghiệp — 199.999đ</option>
-            <option value="lifetime">Gói trọn đời — 999.999đ</option>
-          </select>
-        </label>
-        <p id="login-hint" class="hidden text-sm text-red-400"></p>
-        <button type="submit" class="w-full rounded-lg bg-accent py-3 font-display font-semibold text-[#071018]">Nhận license</button>
-      </form>
-      <div id="issued" class="hidden space-y-3">
-        <p class="text-sm text-muted">Lưu mã này. Dùng để mở khóa client VN-KEEN trên máy tính.</p>
-        <p id="issued-key" class="rounded-lg bg-surface px-3 py-3 font-mono text-accent"></p>
-        <button type="button" onclick="copyKey()" class="w-full rounded-lg glass py-2 font-display">Sao chép mã</button>
+        <a id="tg-lookup" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full rounded-lg bg-accent py-3 text-center font-display font-semibold text-[#071018]">Nhắn @VN_KEEN lấy KEY</a>
       </div>
     </div>
   </div>
 
   <script>
-    const PLANS = { daily: 'Trải nghiệm ngắn hạn', monthly: 'Gói chuyên nghiệp', lifetime: 'Gói trọn đời' };
+    const BANK = { bin: '970422', bankName: 'MB Bank', account: '789789999888', accountName: 'NGUYEN PHU QUY' };
+    const PLAN_META = {
+      daily: { name: 'Trải nghiệm ngắn hạn', amount: 9999, price: '9.999đ', period: '/ 1 ngày' },
+      monthly: { name: 'Gói chuyên nghiệp', amount: 199999, price: '199.999đ', period: '/ 1 tháng' },
+      lifetime: { name: 'Gói trọn đời', amount: 999999, price: '999.999đ', period: '/ vĩnh viễn' },
+    };
     const AGENTS = {
       royale: { tag: 'Royale', name: 'Sir Bloody Darryl', blurb: 'Mặt nạ đồng vương miện, kit trắng-vàng. Biến thể gốc của đội Professionals.' },
       skullhead: { tag: 'Skullhead', name: 'Sir Bloody Skullhead Darryl', blurb: 'Mặt nạ sọ trắng-đen. Lurker lạnh, đọc rotate rồi cắt đường về.' },
@@ -392,7 +439,11 @@
       miami: { tag: 'Miami', name: 'Sir Bloody Miami Darryl', blurb: 'Áo Hawaii, mặt nạ khúc côn cầu. Nhận diện ngay trên site, không lẫn với ai.' },
       silent: { tag: 'Silent', name: 'Sir Bloody Silent Darryl', blurb: 'Mặt nạ X đen. Entry im lặng, khó đọc ý đồ từ góc hẹp.' },
     };
-    let mode = 'checkout';
+    const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let currentPlan = 'monthly';
+    let currentAmount = 199999;
+    let currentContent = '';
+
     window.addEventListener('scroll', () => {
       document.getElementById('nav').classList.toggle('glass', window.scrollY > 24);
     });
@@ -418,7 +469,6 @@
         box.querySelector('.esp-chams').classList.toggle('hidden', !chams);
         const label = box.querySelector('.esp-label');
         label.style.display = (names || distance) ? 'block' : 'none';
-        const name = box.querySelector('.esp-label').childNodes[0];
         if (!names) label.childNodes[0].textContent = '';
         else if (!label.childNodes[0].textContent.trim()) label.childNodes[0].textContent = box.querySelector('.esp-label').textContent.includes('YURI') ? 'BOT YURI ' : 'ĐỊCH ';
         box.querySelector('.dist').style.display = distance ? 'inline' : 'none';
@@ -434,23 +484,48 @@
         document.getElementById('agent-blurb').textContent = a.blurb;
       });
     });
+
+    function randCode(n) {
+      let out = '';
+      const buf = new Uint8Array(n);
+      crypto.getRandomValues(buf);
+      for (let i = 0; i < n; i++) out += ALPHA[buf[i] % ALPHA.length];
+      return out;
+    }
+    function formatVnd(n) { return n.toLocaleString('vi-VN') + 'đ'; }
+    function planButtonClass(id) {
+      const on = 'rounded-lg px-2 py-3 text-center text-xs bg-accent/10 text-accent';
+      const off = 'rounded-lg px-2 py-3 text-center text-xs';
+      ['daily','monthly','lifetime'].forEach(p => {
+        const el = document.getElementById('pick-' + p);
+        el.className = p === id ? on : off;
+        el.style.boxShadow = p === id ? '0 0 0 1px #00e5ee' : '0 0 0 1px rgba(232,238,246,.1)';
+      });
+    }
+    function selectPlan(id) {
+      currentPlan = id;
+      const meta = PLAN_META[id];
+      currentAmount = meta.amount;
+      document.getElementById('pick-summary').innerHTML = meta.name + ' · <span class="text-fg">' + meta.price + '</span>' + meta.period;
+      planButtonClass(id);
+    }
+    function show(id) {
+      ['pay-pick','pay-qr','pay-login'].forEach(x => document.getElementById(x).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function showPick() {
+      document.getElementById('modal-title').textContent = 'Thanh toán VietQR';
+      show('pay-pick');
+    }
     function openCheckout(plan) {
-      mode = 'checkout';
-      document.getElementById('modal-title').textContent = 'Đăng ký VN-KEEN';
-      document.getElementById('plan-wrap').classList.remove('hidden');
-      document.getElementById('plan').value = plan || 'monthly';
-      document.getElementById('checkout-form').classList.remove('hidden');
-      document.getElementById('issued').classList.add('hidden');
-      document.getElementById('login-hint').classList.add('hidden');
+      selectPlan(plan || 'monthly');
+      showPick();
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
     }
     function openLogin() {
-      mode = 'login';
-      document.getElementById('modal-title').textContent = 'Đăng nhập license';
-      document.getElementById('plan-wrap').classList.add('hidden');
-      document.getElementById('checkout-form').classList.remove('hidden');
-      document.getElementById('issued').classList.add('hidden');
+      document.getElementById('modal-title').textContent = 'Tra cứu KEY';
+      show('pay-login');
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
     }
@@ -458,34 +533,30 @@
       document.getElementById('modal').classList.add('hidden');
       document.getElementById('modal').classList.remove('flex');
     }
-    function chunk() { return Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4); }
-    document.getElementById('checkout-form').addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      if (mode === 'login') {
-        const raw = localStorage.getItem('vn-keen-license');
-        const license = raw ? JSON.parse(raw) : null;
-        if (license && license.email.toLowerCase() === email.toLowerCase()) {
-          document.getElementById('issued-key').textContent = license.key;
-          document.getElementById('checkout-form').classList.add('hidden');
-          document.getElementById('issued').classList.remove('hidden');
-        } else {
-          const hint = document.getElementById('login-hint');
-          hint.textContent = license ? 'Email không khớp với license đã lưu trên thiết bị này.' : 'Chưa có license trên thiết bị. Hãy đăng ký một gói trước.';
-          hint.classList.remove('hidden');
-        }
-        return;
-      }
-      const planId = document.getElementById('plan').value;
-      const next = { key: 'VNKN-' + chunk() + '-' + chunk() + '-' + chunk(), planId, planName: PLANS[planId], email, createdAt: Date.now() };
-      localStorage.setItem('vn-keen-license', JSON.stringify(next));
-      document.getElementById('issued-key').textContent = next.key;
-      document.getElementById('checkout-form').classList.add('hidden');
-      document.getElementById('issued').classList.remove('hidden');
-    });
-    function copyKey() {
-      navigator.clipboard.writeText(document.getElementById('issued-key').textContent);
+    function createQr() {
+      currentContent = 'KEEN' + randCode(6);
+      const params = new URLSearchParams({
+        amount: String(currentAmount),
+        addInfo: currentContent,
+        accountName: BANK.accountName,
+      });
+      document.getElementById('qr-img').src = 'https://img.vietqr.io/image/' + BANK.bin + '-' + BANK.account + '-compact2.png?' + params.toString();
+      document.getElementById('qr-amount').textContent = formatVnd(currentAmount);
+      document.getElementById('qr-content').textContent = currentContent;
+      const msg = encodeURIComponent('Mình đã CK VN-KEEN ' + currentContent + ' ' + formatVnd(currentAmount));
+      document.getElementById('tg-after-pay').href = 'https://t.me/VN_KEEN?text=' + msg;
+      document.getElementById('modal-title').textContent = 'Quét QR thanh toán';
+      show('pay-qr');
     }
+    function copyText(value) {
+      navigator.clipboard.writeText(value);
+    }
+    document.getElementById('lookup-code').addEventListener('input', () => {
+      const code = document.getElementById('lookup-code').value.trim().toUpperCase();
+      const msg = encodeURIComponent(code ? 'Mình cần KEY cho ' + code : 'Mình cần KEY VN-KEEN');
+      document.getElementById('tg-lookup').href = 'https://t.me/VN_KEEN?text=' + msg;
+    });
+    selectPlan('monthly');
   </script>
 </body>
 </html>
