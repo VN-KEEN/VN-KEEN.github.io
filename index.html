@@ -54,10 +54,29 @@
         linear-gradient(90deg, rgba(0, 229, 238, 0.035) 1px, transparent 1px);
       background-size: 48px 48px;
     }
+
+    .site-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .site-bg-layer { position: absolute; inset: -18%; transform: translate3d(0,0,0) scale(1.12); will-change: transform; }
+    .site-bg-layer img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+    .site-bg-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,15,25,.25), rgba(11,15,25,.5), rgba(11,15,25,.8)); }
+    .site-content { position: relative; z-index: 10; }
+    .reveal { opacity: 0; transform: translateY(36px); filter: blur(8px); transition: opacity 800ms cubic-bezier(.22,1,.36,1), transform 800ms cubic-bezier(.22,1,.36,1), filter 800ms cubic-bezier(.22,1,.36,1); }
+    .reveal.is-in { opacity: 1; transform: none; filter: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+    }
     .hidden { display: none !important; }
   </style>
 </head>
-<body class="tactical-grid font-sans antialiased">
+<body class="font-sans antialiased">
+  <div class="site-bg" aria-hidden="true">
+    <div class="site-bg-layer" id="bg-layer">
+      <img src="images/hero-bg.jpg" alt="">
+    </div>
+    <div class="site-bg-veil"></div>
+    <div class="tactical-grid" style="position:absolute;inset:0;opacity:.4"></div>
+  </div>
+  <div class="site-content">
   <header id="nav" class="fixed inset-x-0 top-0 z-50 transition-colors">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
       <a href="#top" class="flex items-center gap-3">
@@ -79,9 +98,8 @@
   </header>
 
   <section id="top" class="relative min-h-screen overflow-hidden pt-20">
-    <img src="images/hero-bg.jpg" alt="" class="absolute inset-0 size-full object-cover" style="object-position: center 42%">
-    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,15,25,.25), rgba(11,15,25,.4), #0b0f19)"></div>
-    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-20">
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent, transparent, rgba(11,15,25,.7))"></div>
+    <div id="hero-copy" class="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-20">
       <div class="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 glass">
         <span class="size-2 rounded-full bg-accent"></span>
         <span class="font-display text-xs font-semibold tracking-[0.18em] text-accent uppercase">Cập nhật v2.1 · Hỗ trợ CS2 mới nhất</span>
@@ -133,7 +151,7 @@
     </div>
   </section>
 
-  <section class="relative bg-bg py-20">
+  <section class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Tại sao game thủ CS2 chọn <span class="text-accent">VN-KEEN</span>?</h2>
       <div class="grid gap-5 md:grid-cols-3">
@@ -156,7 +174,7 @@
     </div>
   </section>
 
-  <section id="features" class="relative py-20">
+  <section id="features" class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">10.000+</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Game thủ tin dùng</p></div>
@@ -177,7 +195,7 @@
     </div>
   </section>
 
-  <section id="demo" class="relative bg-bg py-20">
+  <section id="demo" class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Demo overlay <span class="text-accent">trực tiếp</span></h2>
       <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Bật/tắt ESP, chams, vòng FOV — overlay khớp nhân vật trên bản đồ.</p>
@@ -234,7 +252,7 @@
     </div>
   </section>
 
-  <section id="showcase" class="relative bg-bg py-20">
+  <section id="showcase" class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bộ sưu tập <span class="text-accent">đặc vụ đỉnh cao</span></h2>
       <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Diện mạo hoàn toàn mới với các mẫu đặc vụ độc quyền, tối ưu riêng trên nền tảng.</p>
@@ -268,7 +286,7 @@
     </div>
   </section>
 
-  <section id="pricing" class="relative bg-bg py-20">
+  <section id="pricing" class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bảng giá <span class="text-accent">linh hoạt</span></h2>
       <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn. Thanh toán VietQR qua MB · NGUYEN PHU QUY — nhận KEY sau khi CK.</p>
@@ -299,7 +317,7 @@
     </div>
   </section>
 
-  <section id="testimonials" class="relative bg-bg py-20">
+  <section id="testimonials" class="relative py-20 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Cộng đồng nói gì về <span class="text-accent">VN-KEEN</span>?</h2>
       <div class="grid gap-5 md:grid-cols-3">
@@ -310,7 +328,7 @@
     </div>
   </section>
 
-  <section id="faq" class="relative bg-bg py-20">
+  <section id="faq" class="relative py-20 reveal">
     <div class="mx-auto max-w-3xl px-4">
       <h2 class="font-display mb-10 text-center text-3xl font-semibold sm:text-4xl">Câu hỏi thường gặp</h2>
       <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">VN-KEEN có an toàn với tài khoản Steam không?</summary><p class="mt-3 text-sm text-muted">VN-KEEN dùng lớp mã hóa độc quyền và cập nhật ngay sau mỗi bản vá. Không có hệ thống nào cam kết 100% tuyệt đối, nhưng kiến trúc của chúng tôi được thiết kế để giảm thiểu rủi ro tối đa.</p></details>
@@ -322,7 +340,7 @@
     </div>
   </section>
 
-  <section id="terms" class="relative bg-bg py-20">
+  <section id="terms" class="relative py-20 reveal">
     <div class="mx-auto max-w-3xl px-4">
       <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Điều khoản sử dụng</h2>
       <p class="mx-auto max-w-2xl text-center text-muted">Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu.</p>
@@ -355,6 +373,8 @@
       </div>
     </div>
   </section>
+
+  </div>
 
   <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-bg/70 p-4 backdrop-blur-sm">
     <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 glass">
@@ -444,9 +464,39 @@
     let currentAmount = 199999;
     let currentContent = '';
 
+
+    const bgLayer = document.getElementById('bg-layer');
+    const heroCopy = document.getElementById('hero-copy');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function onCinema() {
+      const y = window.scrollY;
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const p = Math.min(1, y / max);
+      if (bgLayer && !reduce) {
+        bgLayer.style.transform = 'translate3d(0,' + (y * -0.18) + 'px,0) scale(' + (1.12 + p * 0.22) + ')';
+      }
+      if (heroCopy && !reduce) {
+        heroCopy.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0)';
+        heroCopy.style.opacity = String(Math.max(0, 1 - y / 520));
+      }
+      document.getElementById('nav').classList.toggle('glass', y > 24);
+    }
+    let cinemaFrame = 0;
     window.addEventListener('scroll', () => {
-      document.getElementById('nav').classList.toggle('glass', window.scrollY > 24);
+      cancelAnimationFrame(cinemaFrame);
+      cinemaFrame = requestAnimationFrame(onCinema);
+    }, { passive: true });
+    onCinema();
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (reduce) { el.classList.add('is-in'); return; }
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        el.classList.add('is-in');
+        io.disconnect();
+      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+      io.observe(el);
     });
+
     document.querySelectorAll('#t-esp,#t-names,#t-health,#t-distance,#t-chams,#t-aimbot').forEach(el => el.addEventListener('change', syncDemo));
     document.getElementById('r-smooth').addEventListener('input', e => { document.getElementById('v-smooth').textContent = e.target.value; syncDemo(); });
     document.getElementById('r-fov').addEventListener('input', e => { document.getElementById('v-fov').textContent = e.target.value; syncDemo(); });
