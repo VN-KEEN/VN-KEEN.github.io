@@ -484,8 +484,8 @@
     </div>
   </footer>
 
-  <!-- LOAD THE CATALOG DATASET -->
-  <script src="catalog_data.js"></script>
+  <!-- LOAD THE CATALOG DATASET (With Cache-Busting Version) -->
+  <script src="catalog_data.js?v=2.2"></script>
 
   <!-- CATALOG LOGIC ENGINE -->
   <script>
@@ -527,6 +527,9 @@
     let modelCounts = {};
 
     document.addEventListener('DOMContentLoaded', () => {
+      if (typeof CS2_SKIN_CATALOG === 'undefined' && typeof SKIN_DATABASE !== 'undefined') {
+        window.CS2_SKIN_CATALOG = SKIN_DATABASE;
+      }
       if (typeof CS2_SKIN_CATALOG === 'undefined' || !Array.isArray(CS2_SKIN_CATALOG)) {
         console.error('CS2_SKIN_CATALOG is missing');
         return;
