@@ -199,8 +199,37 @@
       transform: translateY(120%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    #toast.show { transform: translateY(0); }
-
+    #webgl-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -3;
+      pointer-events: none;
+    }
+    #plexus-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      pointer-events: none;
+    }
+    #cursor-spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      width: 550px;
+      height: 550px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 238, 0.14) 0%, rgba(168, 85, 247, 0.05) 45%, transparent 70%);
+      will-change: left, top;
+    }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #070a12; }
     ::-webkit-scrollbar-thumb {
@@ -211,10 +240,40 @@
     ::-webkit-scrollbar-thumb:hover { background: #00e5ee; }
   </style>
 </head>
-<body class="tactical-grid font-sans antialiased text-fg selection:bg-accent selection:text-black">
+  <!-- Epic KEEN Warrior Emblem Background Layer (Thu nhỏ lại gọn gàng ~4cm) -->
+  <div class="fixed inset-0 pointer-events-none z-[-5] overflow-hidden">
+    <div class="absolute inset-0 bg-[#070a12]"></div>
+    
+    <!-- Centered Scaled KEEN Mascot Cover -->
+    <div id="bg-mascot" class="absolute inset-0 flex items-center justify-center p-8 sm:p-14 md:p-20 transition-transform duration-300 ease-out">
+      <img 
+        src="images/keen_logo_bg.png" 
+        alt="VN-KEEN Mascot" 
+        class="max-w-[78vw] max-h-[78vh] w-auto h-auto object-contain opacity-85 filter drop-shadow-[0_0_100px_rgba(245,158,11,0.6)] transition-all duration-700 animate-pulse"
+        style="animation-duration: 4s;"
+      >
+    </div>
+
+    <!-- Cinematic Vignette & Gradient Overlays -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#070a12]/70 via-transparent to-[#070a12]/80"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#070a12_85%)]"></div>
+  </div>
+
+  <!-- Interactive Cyber Aurora Background Atmosphere (Golden & Cyan Flame Glow) -->
+  <div class="fixed inset-0 pointer-events-none z-[-4] overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-[700px] h-[700px] bg-cyan-400/20 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute top-1/4 -right-32 w-[800px] h-[800px] bg-amber-500/25 rounded-full blur-[140px] animate-pulse" style="animation-duration: 6s;"></div>
+    <div class="absolute -bottom-32 left-1/4 w-[750px] h-[750px] bg-orange-600/20 rounded-full blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
+  </div>
 
   <!-- 3D Three.js Cyber Landscape Canvas -->
   <canvas id="webgl-bg"></canvas>
+
+  <!-- Interactive Neural Plexus Network Canvas -->
+  <canvas id="plexus-canvas"></canvas>
+
+  <!-- Interactive Cursor Spotlight Glow -->
+  <div id="cursor-spotlight"></div>
 
   <!-- Custom Tactical Reticle Cursor -->
   <div id="custom-cursor"></div>
@@ -587,8 +646,6 @@
       </div>
     </div>
   </section>
-    </div>
-  </section>
 
   <!-- CS2 CASE OPENING SIMULATOR MINI-GAME -->
   <section id="case-opening" class="relative py-24 bg-bg/90 overflow-hidden border-t border-cyan-500/20">
@@ -633,7 +690,7 @@
         <div id="case-winner-modal" class="mt-6 hidden p-5 rounded-2xl bg-slate-900 border-2 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.4)] animate-pulse-glow flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4">
             <div class="size-20 rounded-xl bg-slate-950 p-2 border border-yellow-400 flex items-center justify-center">
-              <img id="winner-img" src="CS2_Assets/knives/%3F%20Karambit%20_%20Doppler.png" alt="Winner" class="max-h-full max-w-full object-contain">
+              <img id="winner-img" src="https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1iDwP5muOh7Sha-lA8lvziMgIr9HifOOV5kFMRxFuEM5hi_xNXhMbmx5VCMjd9MyCv6jigc6n064ucLAvZ3_6bViV3fcepqpLtspE0" alt="Winner" class="max-h-full max-w-full object-contain">
             </div>
             <div>
               <p class="text-xs font-mono text-yellow-400 font-bold uppercase tracking-widest">CHÚC MỪNG BẠN VỪA TRÚNG THƯỞNG!</p>
@@ -1053,96 +1110,133 @@
     }
 
     /* ============================================================
-       2. THREE.JS 3D CYBERPUNK SCENE (Floating Weapon Particles)
+       2. THREE.JS 3D CYBERPUNK SCENE (Dark CS2 Embers & Holo Rings)
        ============================================================ */
-    let scene, camera, renderer, landscapeGroup, sunGroup, starParticles;
+    let scene, camera, renderer, landscapeGroup, holoRingsGroup, starParticles;
     let is3DActive = true;
     let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
     let clock = new THREE.Clock();
+    let gridGeometry, gridOriginalPositions;
+    let floatingCrystals = [];
+    let pPositions, particleCount = 1200;
 
     function init3DLandscape() {
       const canvas = document.getElementById('webgl-bg');
       if (!canvas) return;
 
       scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x070a12, 0.022);
+      scene.fog = new THREE.FogExp2(0x070a12, 0.012);
 
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 3, 22);
+      camera.position.set(0, 3, 24);
 
-      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
 
       landscapeGroup = new THREE.Group();
       scene.add(landscapeGroup);
 
-      // Sky Gradient
-      const skyCanvas = document.createElement('canvas');
-      skyCanvas.width = 128; skyCanvas.height = 256;
-      const ctx = skyCanvas.getContext('2d');
-      const grad = ctx.createLinearGradient(0, 0, 0, 256);
-      grad.addColorStop(0, '#070a12');
-      grad.addColorStop(0.35, '#1e1035');
-      grad.addColorStop(0.7, '#ff3366');
-      grad.addColorStop(1.0, '#00e5ee');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 128, 256);
+      // 1. Concentric 3D Holographic Gyroscope Rings (Vòng xoay Hologram công nghệ CS2)
+      holoRingsGroup = new THREE.Group();
+      holoRingsGroup.position.set(0, 6, -30);
 
-      const skyTex = new THREE.CanvasTexture(skyCanvas);
-      const skyGeo = new THREE.PlaneGeometry(160, 90);
-      const skyMat = new THREE.MeshBasicMaterial({ map: skyTex, depthWrite: false });
-      const skyMesh = new THREE.Mesh(skyGeo, skyMat);
-      skyMesh.position.set(0, 10, -45);
-      landscapeGroup.add(skyMesh);
+      const r1 = new THREE.Mesh(
+        new THREE.TorusGeometry(12, 0.08, 16, 100),
+        new THREE.MeshBasicMaterial({ color: 0x00e5ee, transparent: true, opacity: 0.6 })
+      );
+      const r2 = new THREE.Mesh(
+        new THREE.TorusGeometry(9, 0.07, 16, 80),
+        new THREE.MeshBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.65 })
+      );
+      const r3 = new THREE.Mesh(
+        new THREE.TorusGeometry(6, 0.06, 16, 60),
+        new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.55 })
+      );
 
-      // Sun
-      sunGroup = new THREE.Group();
-      sunGroup.position.set(0, 8, -35);
-      const sunGeo = new THREE.CircleGeometry(7, 64);
-      const sunMat = new THREE.MeshBasicMaterial({ color: 0xff3366, transparent: true, opacity: 0.9 });
-      const sunMesh = new THREE.Mesh(sunGeo, sunMat);
-      sunGroup.add(sunMesh);
+      holoRingsGroup.add(r1);
+      holoRingsGroup.add(r2);
+      holoRingsGroup.add(r3);
+      landscapeGroup.add(holoRingsGroup);
 
-      const coronaGeo = new THREE.RingGeometry(7.2, 8.5, 64);
-      const coronaMat = new THREE.MeshBasicMaterial({ color: 0x00e5ee, transparent: true, opacity: 0.6 });
-      const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
-      sunGroup.add(coronaMesh);
-      landscapeGroup.add(sunGroup);
-
-      // Grid Terrain
-      const gridGeo = new THREE.PlaneGeometry(160, 100, 60, 40);
-      gridGeo.rotateX(-Math.PI / 2);
-      const gridMat = new THREE.MeshBasicMaterial({ color: 0x00e5ee, wireframe: true, transparent: true, opacity: 0.22 });
-      const gridMesh = new THREE.Mesh(gridGeo, gridMat);
-      gridMesh.position.set(0, -5, -10);
+      // 2. Dynamic Undulating Cyber Wave Terrain Grid
+      gridGeometry = new THREE.PlaneGeometry(160, 100, 60, 40);
+      gridGeometry.rotateX(-Math.PI / 2);
+      gridOriginalPositions = gridGeometry.attributes.position.clone();
+      
+      const gridMat = new THREE.MeshBasicMaterial({ 
+        color: 0x00e5ee, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.32 
+      });
+      const gridMesh = new THREE.Mesh(gridGeometry, gridMat);
+      gridMesh.position.set(0, -6, -10);
       landscapeGroup.add(gridMesh);
 
-      // Floating Particles
-      const particleCount = 1000;
+      // 3. Floating Holographic Cyber Crystals
+      const crystalGeos = [
+        new THREE.IcosahedronGeometry(1.6, 0),
+        new THREE.OctahedronGeometry(1.4, 0),
+        new THREE.TetrahedronGeometry(1.5, 0),
+        new THREE.IcosahedronGeometry(2.0, 0),
+        new THREE.OctahedronGeometry(1.3, 0),
+        new THREE.DodecahedronGeometry(1.5, 0)
+      ];
+
+      const crystalColors = [0x00e5ee, 0xf59e0b, 0xa855f7, 0x00e5ee, 0xf59e0b, 0x38bdf8];
+      floatingCrystals = [];
+
+      crystalGeos.forEach((geo, idx) => {
+        const mat = new THREE.MeshBasicMaterial({
+          color: crystalColors[idx % crystalColors.length],
+          wireframe: true,
+          transparent: true,
+          opacity: 0.55
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(
+          (idx % 2 === 0 ? -1 : 1) * (14 + (idx * 3)),
+          (Math.sin(idx) * 6) + 1,
+          -10 - (idx * 4)
+        );
+        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+        mesh.userData = {
+          rotSpeedX: 0.006 + (idx * 0.002),
+          rotSpeedY: 0.009 + (idx * 0.002),
+          floatOffset: idx * 1.5
+        };
+        floatingCrystals.push(mesh);
+        landscapeGroup.add(mesh);
+      });
+
+      // 4. Volumetric CS2 Golden & Cyan Rising Embers (1,200 hạt tàn lửa bốc lên)
       const particleGeo = new THREE.BufferGeometry();
-      const pPositions = new Float32Array(particleCount * 3);
+      pPositions = new Float32Array(particleCount * 3);
       const pColors = new Float32Array(particleCount * 3);
-      const color1 = new THREE.Color(0x00e5ee);
-      const color2 = new THREE.Color(0xa855f7);
-      const color3 = new THREE.Color(0xff3366);
+      const colGold = new THREE.Color(0xf59e0b);
+      const colAmber = new THREE.Color(0xd97706);
+      const colCyan = new THREE.Color(0x00e5ee);
+      const colPurple = new THREE.Color(0xa855f7);
 
       for (let i = 0; i < particleCount; i++) {
-        pPositions[i * 3] = (Math.random() - 0.5) * 80;
-        pPositions[i * 3 + 1] = (Math.random() - 0.5) * 40 + 5;
-        pPositions[i * 3 + 2] = (Math.random() - 0.5) * 60;
+        pPositions[i * 3] = (Math.random() - 0.5) * 90;
+        pPositions[i * 3 + 1] = (Math.random() - 0.5) * 50 - 5;
+        pPositions[i * 3 + 2] = (Math.random() - 0.5) * 70;
+
         const rnd = Math.random();
-        const col = rnd < 0.4 ? color1 : (rnd < 0.7 ? color2 : color3);
+        const col = rnd < 0.5 ? colGold : (rnd < 0.75 ? colAmber : (rnd < 0.9 ? colCyan : colPurple));
         pColors[i * 3] = col.r;
         pColors[i * 3 + 1] = col.g;
         pColors[i * 3 + 2] = col.b;
       }
       particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
       particleGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
-      const particleMat = new THREE.PointsMaterial({ size: 0.15, vertexColors: true, transparent: true, opacity: 0.75 });
+      const particleMat = new THREE.PointsMaterial({ size: 0.16, vertexColors: true, transparent: true, opacity: 0.85 });
       starParticles = new THREE.Points(particleGeo, particleMat);
       landscapeGroup.add(starParticles);
 
+      // Event Listeners
       window.addEventListener('mousemove', (e) => {
         mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
         mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -1166,18 +1260,59 @@
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
       mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
+      // Parallax Rotation
       if (landscapeGroup) {
-        landscapeGroup.rotation.y = THREE.MathUtils.lerp(landscapeGroup.rotation.y, mouse.x * 0.15, 0.05);
+        landscapeGroup.rotation.y = THREE.MathUtils.lerp(landscapeGroup.rotation.y, mouse.x * 0.14, 0.05);
         landscapeGroup.rotation.x = THREE.MathUtils.lerp(landscapeGroup.rotation.x, -mouse.y * 0.08, 0.05);
       }
 
-      if (sunGroup) {
-        const pulse = 1 + Math.sin(elapsed * 2) * 0.03;
-        sunGroup.scale.set(pulse, pulse, 1);
+      // Parallax Mascot Float
+      const bgMascot = document.getElementById('bg-mascot');
+      if (bgMascot) {
+        bgMascot.style.transform = `translate(${mouse.x * 22}px, ${-mouse.y * 14}px) scale(1.02)`;
       }
 
-      if (starParticles) {
-        starParticles.rotation.y = elapsed * 0.02;
+      // Animate Concentric Holo Rings
+      if (holoRingsGroup) {
+        holoRingsGroup.children[0].rotation.x = elapsed * 0.25;
+        holoRingsGroup.children[0].rotation.y = elapsed * 0.15;
+        holoRingsGroup.children[1].rotation.y = -elapsed * 0.3;
+        holoRingsGroup.children[1].rotation.z = elapsed * 0.2;
+        holoRingsGroup.children[2].rotation.x = -elapsed * 0.2;
+        holoRingsGroup.children[2].rotation.z = -elapsed * 0.25;
+      }
+
+      // Animate Dynamic Wave Terrain
+      if (gridGeometry && gridOriginalPositions) {
+        const pos = gridGeometry.attributes.position;
+        const orig = gridOriginalPositions;
+        for (let i = 0; i < pos.count; i++) {
+          const uX = orig.getX(i);
+          const uZ = orig.getZ(i);
+          const wave = Math.sin(uX * 0.12 + elapsed * 1.8) * 1.4 + Math.cos(uZ * 0.15 + elapsed * 1.4) * 1.0;
+          pos.setY(i, orig.getY(i) + wave);
+        }
+        pos.needsUpdate = true;
+      }
+
+      // Animate Floating Crystals
+      floatingCrystals.forEach(crystal => {
+        crystal.rotation.x += crystal.userData.rotSpeedX;
+        crystal.rotation.y += crystal.userData.rotSpeedY;
+        crystal.position.y += Math.sin(elapsed * 1.5 + crystal.userData.floatOffset) * 0.02;
+      });
+
+      // Animate Rising CS2 Embers
+      if (starParticles && pPositions) {
+        const posAttr = starParticles.geometry.attributes.position;
+        for (let i = 0; i < particleCount; i++) {
+          let y = posAttr.getY(i);
+          y += 0.04;
+          if (y > 25) y = -25;
+          posAttr.setY(i, y);
+        }
+        posAttr.needsUpdate = true;
+        starParticles.rotation.y = elapsed * 0.015;
       }
 
       renderer.render(scene, camera);
@@ -1605,9 +1740,124 @@
     }
 
     /* ============================================================
-       5. CUSTOM TACTICAL RETICLE CURSOR & 3D TILT CARDS
+       5. INTERACTIVE CYBER PLEXUS NETWORK & CURSOR SPOTLIGHT
+       ============================================================ */
+    const plexusCanvas = document.getElementById('plexus-canvas');
+    let pCtx = null;
+    let plexusNodes = [];
+    const NODE_COUNT = 85;
+    const MAX_DIST = 135;
+    const MOUSE_DIST = 180;
+
+    class PlexusNode {
+      constructor(w, h) {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.vx = (Math.random() - 0.5) * 0.9;
+        this.vy = (Math.random() - 0.5) * 0.9;
+        this.radius = Math.random() * 2.2 + 1.2;
+        const colors = ['#00e5ee', '#f59e0b', '#a855f7', '#38bdf8', '#ff3366'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update(w, h) {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > w) this.vx *= -1;
+        if (this.y < 0 || this.y > h) this.vy *= -1;
+      }
+
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    function initPlexusNetwork() {
+      if (!plexusCanvas) return;
+      pCtx = plexusCanvas.getContext('2d');
+      resizePlexus();
+      window.addEventListener('resize', resizePlexus);
+
+      plexusNodes = [];
+      for (let i = 0; i < NODE_COUNT; i++) {
+        plexusNodes.push(new PlexusNode(plexusCanvas.width, plexusCanvas.height));
+      }
+      renderPlexus();
+    }
+
+    function resizePlexus() {
+      if (!plexusCanvas) return;
+      plexusCanvas.width = window.innerWidth;
+      plexusCanvas.height = window.innerHeight;
+    }
+
+    function renderPlexus() {
+      if (!pCtx || !plexusCanvas) return;
+      pCtx.clearRect(0, 0, plexusCanvas.width, plexusCanvas.height);
+
+      const w = plexusCanvas.width;
+      const h = plexusCanvas.height;
+
+      // Update & Draw Nodes
+      for (let i = 0; i < plexusNodes.length; i++) {
+        const n1 = plexusNodes[i];
+        n1.update(w, h);
+        n1.draw(pCtx);
+
+        // Connect nearby nodes
+        for (let j = i + 1; j < plexusNodes.length; j++) {
+          const n2 = plexusNodes[j];
+          const dx = n1.x - n2.x;
+          const dy = n1.y - n2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.45;
+            pCtx.beginPath();
+            pCtx.moveTo(n1.x, n1.y);
+            pCtx.lineTo(n2.x, n2.y);
+            pCtx.strokeStyle = `rgba(0, 229, 238, ${alpha})`;
+            pCtx.lineWidth = 1;
+            pCtx.stroke();
+          }
+        }
+
+        // Connect to mouse cursor with golden/cyan laser beam
+        if (targetCursorX && targetCursorY) {
+          const dxM = n1.x - targetCursorX;
+          const dyM = n1.y - targetCursorY;
+          const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+
+          if (distM < MOUSE_DIST) {
+            const alphaM = (1 - distM / MOUSE_DIST) * 0.85;
+            pCtx.beginPath();
+            pCtx.moveTo(n1.x, n1.y);
+            pCtx.lineTo(targetCursorX, targetCursorY);
+            pCtx.strokeStyle = `rgba(245, 158, 11, ${alphaM})`;
+            pCtx.lineWidth = 1.4;
+            pCtx.stroke();
+
+            // Magnetic gentle attraction
+            n1.x -= dxM * 0.015;
+            n1.y -= dyM * 0.015;
+          }
+        }
+      }
+
+      requestAnimationFrame(renderPlexus);
+    }
+
+    /* ============================================================
+       6. CUSTOM TACTICAL RETICLE CURSOR & 3D TILT CARDS
        ============================================================ */
     const cursor = document.getElementById('custom-cursor');
+    const spotlight = document.getElementById('cursor-spotlight');
     let cursorX = 0, cursorY = 0, targetCursorX = 0, targetCursorY = 0;
 
     window.addEventListener('mousemove', (e) => {
@@ -1620,6 +1870,10 @@
       cursorY += (targetCursorY - cursorY) * 0.35;
       if (cursor) {
         cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+      }
+      if (spotlight) {
+        spotlight.style.left = `${cursorX}px`;
+        spotlight.style.top = `${cursorY}px`;
       }
       requestAnimationFrame(renderCursor);
     }
@@ -1645,7 +1899,7 @@
     });
 
     /* ============================================================
-       6. VIETQR & CHECKOUT SYSTEM (100% PRESERVED PAYMENT DATA)
+       7. VIETQR & CHECKOUT SYSTEM (100% PRESERVED PAYMENT DATA)
        ============================================================ */
     const BANK = {
       bin: '970422',
@@ -1764,6 +2018,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       init3DLandscape();
+      initPlexusNetwork();
       buildCaseCarousel();
       setStudioViewMode('fpv_weapon');
       selectPlan('vip');
