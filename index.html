@@ -514,110 +514,79 @@
     </div>
   </section>
 
-  <!-- INTERACTIVE CS2 SKIN STUDIO & CUSTOMIZER (Phòng Thử Đồ Live) -->
-  <section id="studio" class="relative py-24 bg-bg/80 border-t border-cyan-500/20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-14">
-        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">INTERACTIVE CUSTOMIZER</span>
+  <!-- INTERACTIVE CS2 SKIN STUDIO & IN-GAME PREVIEW (Phòng Xem Trước Thực Tế 100%) -->
+  <section id="studio" class="relative py-20 bg-bg/80 border-t border-cyan-500/20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center mb-10">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">
+          <i class="fa-solid fa-eye mr-1"></i> REAL IN-GAME CS2 PREVIEW
+        </span>
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
-          PHÒNG THỬ SKIN <span class="bg-gradient-to-r from-accent via-cyan-400 to-accent2 bg-clip-text text-transparent">CS2 LIVE STUDIO</span>
+          XEM TRƯỚC <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-accent bg-clip-text text-transparent">SKIN IN-GAME THỰC TẾ</span>
         </h2>
-        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Tùy chọn danh mục, thử đổi skin dao, găng, súng, dán sticker Katowice và nghe thử nhạc MVP ngay trên trình duyệt.
+        <p class="mt-3 max-w-2xl mx-auto text-muted text-sm sm:text-base">
+          Trải nghiệm hình ảnh thực tế 100% góc nhìn người thứ nhất (First-Person Viewmodel) và sảnh chờ game Counter-Strike 2.
         </p>
       </div>
 
-      <!-- Studio Interactive Workspace -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <!-- Main Clean Showcase Card -->
+      <div class="glass-panel rounded-3xl p-5 sm:p-7 border border-cyan-500/20 shadow-2xl relative overflow-hidden">
         
-        <!-- Controls: Category & Skin Selector -->
-        <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-          <div>
-            <h3 class="font-cyber text-sm font-bold text-accent uppercase mb-3">CHỌN TÍNH NĂNG TÙY BIẾN</h3>
-            
-            <!-- Category Tabs -->
-            <div class="grid grid-cols-3 gap-2 mb-4">
-              <button type="button" onclick="selectStudioCategory('weapons')" id="cat-btn-weapons" class="py-2 px-2 rounded-xl border-2 border-accent bg-accent/10 font-cyber text-[11px] font-bold text-accent">WEAPONS</button>
-              <button type="button" onclick="selectStudioCategory('knives')" id="cat-btn-knives" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">KNIVES</button>
-              <button type="button" onclick="selectStudioCategory('gloves')" id="cat-btn-gloves" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">GLOVES</button>
-            </div>
-            <div class="grid grid-cols-3 gap-2 mb-4">
-              <button type="button" onclick="selectStudioCategory('stickers')" id="cat-btn-stickers" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">STICKERS</button>
-              <button type="button" onclick="selectStudioCategory('keychains')" id="cat-btn-keychains" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">KEYCHAINS</button>
-              <button type="button" onclick="selectStudioCategory('music')" id="cat-btn-music" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">MUSIC KITS</button>
-            </div>
-
-            <!-- Item List Injected by JS -->
-            <div class="space-y-2 mt-4 max-h-56 overflow-y-auto pr-1" id="studio-item-list"></div>
+        <!-- Stage Top: 3 Clean Viewport Toggle Buttons -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="size-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-xs font-cyber font-bold text-fg uppercase tracking-wider" id="studio-active-pose-title">
+              GÓC NHÌN IN-GAME · CẦM SÚNG
+            </span>
           </div>
 
-          <div class="mt-4 pt-3 border-t border-white/10 text-xs font-mono text-muted flex items-center justify-between">
-            <span>Client-side Hook: <strong class="text-ok">ACTIVE</strong></span>
-            <button type="button" onclick="applyToGameSim()" class="px-3 py-1.5 rounded-lg bg-accent/20 hover:bg-accent/30 text-accent font-bold text-xs transition-colors">
-              <i class="fa-solid fa-check mr-1"></i> ÁP DỤNG
+          <!-- 3 Mode Toggle Buttons -->
+          <div class="flex items-center gap-1.5 bg-slate-950/90 p-1.5 rounded-2xl border border-white/10 shadow-inner">
+            <button type="button" onclick="setStudioViewMode('fpv_weapon')" id="pose-btn-fpv-weapon" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black transition-all flex items-center gap-2 shadow-md">
+              <i class="fa-solid fa-gun"></i> Cầm Súng
+            </button>
+            <button type="button" onclick="setStudioViewMode('fpv_knife')" id="pose-btn-fpv-knife" class="px-4 py-2 rounded-xl hover:bg-white/10 text-muted font-cyber text-xs font-bold transition-all flex items-center gap-2">
+              <i class="fa-solid fa-khanda"></i> Cầm Dao
+            </button>
+            <button type="button" onclick="setStudioViewMode('lobby')" id="pose-btn-lobby" class="px-4 py-2 rounded-xl hover:bg-white/10 text-muted font-cyber text-xs font-bold transition-all flex items-center gap-2">
+              <i class="fa-solid fa-user"></i> Sảnh Chờ
             </button>
           </div>
         </div>
 
-        <!-- Live Preview Showcase -->
-        <div class="lg:col-span-2 glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
-          <div>
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-              <div>
-                <span class="text-[10px] font-mono text-accent uppercase tracking-widest font-bold" id="studio-preview-type">COVERT SNIPER RIFLE</span>
-                <h4 class="font-cyber text-2xl font-black text-fg" id="studio-preview-name">AWP | Dragon Lore</h4>
-              </div>
-              <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-cyber font-bold" id="studio-preview-rarity">COVERT ★</span>
-            </div>
-
-            <!-- Skin Visual Card Display -->
-            <div class="rounded-2xl bg-slate-950 p-6 border border-white/10 relative overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
-              <div class="size-24 rounded-2xl bg-gradient-to-tr from-cyan-400/20 to-purple-500/20 flex items-center justify-center text-5xl text-accent mb-4 shadow-[0_0_30px_rgba(0,229,238,0.3)]" id="studio-preview-icon">
-                <i class="fa-solid fa-dragon"></i>
-              </div>
-              
-              <!-- Stickers & Keychain Attached Preview Badges -->
-              <div class="flex items-center gap-2 mt-2">
-                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-purple-400/40 text-[10px] font-mono text-purple-300" id="studio-sticker-badge">
-                  <i class="fa-solid fa-certificate text-purple-400 mr-1"></i> 4x Titan Holo (Kato 14)
-                </span>
-                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-emerald-400/40 text-[10px] font-mono text-emerald-300" id="studio-charm-badge">
-                  <i class="fa-solid fa-key text-emerald-400 mr-1"></i> StickerSlab Diamond
-                </span>
-              </div>
-            </div>
-
-            <!-- Real-time Float & Seed Customizer Sliders -->
-            <div class="mt-6 grid grid-cols-2 gap-4 text-xs font-mono">
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-muted">ĐỘ MÒN (FLOAT)</span>
-                  <span class="text-accent font-bold" id="studio-float-val">0.00014 (FN)</span>
-                </div>
-                <input type="range" min="1" max="100" value="1" class="w-full accent-accent cursor-pointer" oninput="updateFloat(this.value)">
-              </div>
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-muted">PATTERN SEED</span>
-                  <span class="text-purple-400 font-bold" id="studio-seed-val">#661 (Blue Gem)</span>
-                </div>
-                <input type="range" min="1" max="999" value="661" class="w-full accent-purple-400 cursor-pointer" oninput="updateSeed(this.value)">
-              </div>
-            </div>
+        <!-- Main Visual Clean In-Game Viewport (Zero Clutter) -->
+        <div class="relative rounded-2xl border border-white/15 min-h-[380px] sm:min-h-[480px] flex items-center justify-center overflow-hidden shadow-2xl group bg-black">
+          
+          <!-- Viewport 1: First-Person In-Game Weapon / Knife (Clean 100% In-Game) -->
+          <div id="stage-fpv-view" class="relative z-10 w-full h-full flex items-center justify-center transition-all duration-300">
+            <img id="stage-fpv-img" src="images/real_ak47_nightwish.jpg" alt="CS2 Viewmodel" class="w-full h-auto max-h-[500px] object-cover rounded-xl transition-all duration-300">
           </div>
 
-          <!-- Bottom Action Buttons in Studio -->
-          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-            <button type="button" onclick="playMusicKitPreview()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-fg border border-white/10 transition-colors">
-              <i class="fa-solid fa-play text-accent mr-1"></i> NGHE THỬ NHẠC MVP
-            </button>
-            <button type="button" onclick="openCheckout('monthly'); playSfx('success')" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-accent to-accent2 text-black font-cyber font-bold text-xs shadow-[0_0_20px_rgba(0,229,238,0.5)] hover:scale-105 transition-all">
-              MỞ KHÓA BỘ SKIN NÀY &rarr;
-            </button>
+          <!-- Viewport 2: CS2 Main Menu Lobby View (Clean 100% In-Game) -->
+          <div id="stage-lobby-view" class="hidden relative z-10 w-full h-full flex items-center justify-center transition-all duration-300">
+            <img id="stage-lobby-img" src="images/cs2_real_lobby_darryl_clean.jpg" alt="CS2 Lobby" class="w-full h-auto max-h-[500px] object-cover rounded-xl transition-all duration-300">
           </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <a href="catalog.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-cyber font-bold text-fg border border-white/10 transition flex items-center gap-2">
+              <i class="fa-solid fa-cubes text-accent"></i> <span>Mở Kho 14,000+ Skin</span>
+            </a>
+          </div>
+
+          <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-black font-cyber font-black text-xs sm:text-sm shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:scale-105 transition-all flex items-center gap-2">
+            <i class="fa-solid fa-download"></i> MUA FILE MOD SKIN CHẠY NGAY (999.999đ)
+          </button>
         </div>
 
       </div>
+    </div>
+  </section>
     </div>
   </section>
 
@@ -663,8 +632,8 @@
 
         <div id="case-winner-modal" class="mt-6 hidden p-5 rounded-2xl bg-slate-900 border-2 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.4)] animate-pulse-glow flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4">
-            <div class="size-16 rounded-xl bg-slate-950 p-2 border border-yellow-400 flex items-center justify-center text-2xl text-yellow-400">
-              <i class="fa-solid fa-gem"></i>
+            <div class="size-20 rounded-xl bg-slate-950 p-2 border border-yellow-400 flex items-center justify-center">
+              <img id="winner-img" src="CS2_Assets/knives/%3F%20Karambit%20_%20Doppler.png" alt="Winner" class="max-h-full max-w-full object-contain">
             </div>
             <div>
               <p class="text-xs font-mono text-yellow-400 font-bold uppercase tracking-widest">CHÚC MỪNG BẠN VỪA TRÚNG THƯỞNG!</p>
@@ -672,8 +641,8 @@
               <p class="text-xs text-muted font-mono" id="winner-wear">Exterior: Factory New · Float: 0.0142</p>
             </div>
           </div>
-          <button type="button" onclick="openCheckout('monthly'); playSfx('success')" class="px-6 py-3 rounded-xl bg-accent font-display font-bold text-black text-sm hover:scale-105 transition-all whitespace-nowrap">
-            <i class="fa-solid fa-gift mr-1"></i> NHẬN NGAY KEY MOD SKIN
+          <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 font-cyber font-black text-black text-sm hover:scale-105 transition-all whitespace-nowrap shadow-lg">
+            <i class="fa-solid fa-gift mr-1"></i> NHẬN NGAY SKIN NÀY VÀO GAME
           </button>
         </div>
 
@@ -906,9 +875,9 @@
           Mở ứng dụng ngân hàng bất kỳ để quét mã QR. Thông tin tài khoản người nhận sẽ tự động hiển thị bảo mật trên app của bạn.
         </div>
 
-        <!-- Big QR Container -->
-        <div class="flex justify-center p-4 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)]">
-          <img id="qr-img" alt="VietQR CS2 Mod Skin" class="h-auto w-full max-w-[240px] rounded-lg">
+        <!-- Pure Clean QR Container (Khớp khung chuẩn - Bảo mật thông tin) -->
+        <div class="flex justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[240px] mx-auto border border-blue-900/30">
+          <img id="qr-img" src="images/vietqr_payment.png" alt="VietQR CS2 Mod Skin" class="h-auto w-full max-w-[220px] aspect-square object-contain">
         </div>
 
         <!-- Payment Fields (Amount & Content only) -->
@@ -1246,117 +1215,309 @@
     }
 
     /* ============================================================
-       3. INTERACTIVE CS2 MOD SKIN STUDIO LOGIC
+       3. INTERACTIVE CS2 FULL LOADOUT FITTING ROOM ENGINE
        ============================================================ */
-    const STUDIO_CATEGORIES = {
-      weapons: [
-        { id: 'w1', name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'Covert ★', icon: 'fa-dragon', color: 'text-csred', stickers: '4x Titan Holo (Kato 14)', charm: 'StickerSlab Diamond' },
-        { id: 'w2', name: 'AK-47 | Case Hardened (#661)', type: 'Classified Rifle', rarity: 'Blue Gem #1', icon: 'fa-fire', color: 'text-accent', stickers: '4x iBUYPOWER Holo', charm: 'Lucky Cat Charm' },
-        { id: 'w3', name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'Contraband', icon: 'fa-dog', color: 'text-red-500', stickers: 'Howling Dawn Foil', charm: 'C4 Mini Charm' },
-        { id: 'w4', name: 'USP-S | Printstream', type: 'Covert Pistol', rarity: 'Covert', icon: 'fa-cube', color: 'text-cspink', stickers: '4x Reason Holo', charm: 'Dice Charm' }
-      ],
-      knives: [
-        { id: 'k1', name: '★ Karambit | Doppler Sapphire', type: 'Special Rare Knife', rarity: 'Doppler Phase Gem', icon: 'fa-gem', color: 'text-csgold', stickers: 'N/A', charm: 'N/A' },
-        { id: 'k2', name: '★ Butterfly Knife | Fade (100%)', type: 'Special Rare Knife', rarity: 'Full 100% Fade', icon: 'fa-scissors', color: 'text-csgold', stickers: 'N/A', charm: 'N/A' },
-        { id: 'k3', name: '★ M9 Bayonet | Crimson Web', type: 'Special Rare Knife', rarity: '3 Webs Centered', icon: 'fa-spider', color: 'text-csred', stickers: 'N/A', charm: 'N/A' }
+    const STUDIO_ITEMS = {
+      agents: [
+        { id: 'agent_darryl', name: 'Sir Bloody Miami Darryl | The Professionals', type: 'T-Side Master Agent', rarity: 'Master ★', color: 'text-amber-400', image: 'CS2_Assets/agents/Sir%20Bloody%20Miami%20Darryl%20_%20The%20Professionals.png', fallback: 'images/agent-miami.png', lobbyImg: 'images/cs2_real_lobby_darryl_clean.jpg' },
+        { id: 'agent_romanov', name: "'The Doctor' Romanov | Sabre", type: 'T-Side Master Agent', rarity: 'Master ★', color: 'text-amber-400', image: 'CS2_Assets/agents/%27The%20Doctor%27%20Romanov%20_%20Sabre.png', fallback: 'images/agent-skullhead.png', lobbyImg: 'images/cs2_real_lobby_romanov.jpg' },
+        { id: 'agent_ricksaw', name: 'Lt. Commander Ricksaw | NSWC SEAL', type: 'CT-Side Master Agent', rarity: 'Master ★', color: 'text-amber-400', image: 'CS2_Assets/agents/Lt.%20Commander%20Ricksaw%20_%20NSWC%20SEAL.png', fallback: 'images/agent-royale.png', lobbyImg: 'images/cs2_real_lobby_ricksaw.jpg' },
+        { id: 'agent_ava', name: 'Special Agent Ava | FBI', type: 'CT-Side Master Agent', rarity: 'Master ★', color: 'text-amber-400', image: 'CS2_Assets/agents/Special%20Agent%20Ava%20_%20FBI%20SWAT.png', fallback: 'images/agent-silent.png', lobbyImg: 'images/cs2_real_lobby_ava.jpg' },
+        { id: 'agent_crasswater', name: "'Medium Rare' Crasswater | Guerrilla Warfare", type: 'T-Side Superior Agent', rarity: 'Superior ★', color: 'text-pink-400', image: 'CS2_Assets/agents/%27Medium%20Rare%27%20Crasswater%20_%20Guerrilla%20Warfare.png', fallback: 'images/agent-loudmouth.png', lobbyImg: 'images/cs2_real_lobby_crasswater.jpg' },
+        { id: 'agent_mccoy', name: "'Two Times' McCoy | USAF TACP", type: 'CT-Side Superior Agent', rarity: 'Superior ★', color: 'text-pink-400', image: 'CS2_Assets/agents/%27Two%20Times%27%20McCoy%20_%20TACP%20Cavalry.png', fallback: 'images/agent-miami.png', lobbyImg: 'images/cs2_real_lobby_ricksaw.jpg' }
       ],
       gloves: [
-        { id: 'g1', name: '★ Sport Gloves | Pandora\'s Box', type: 'Extraordinary Gloves', rarity: 'Tier 1 Sport', icon: 'fa-mitten', color: 'text-cspurple', stickers: 'N/A', charm: 'N/A' },
-        { id: 'g2', name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'Tier 1 Sport', icon: 'fa-mitten', color: 'text-cspink', stickers: 'N/A', charm: 'N/A' },
-        { id: 'g3', name: '★ Driver Gloves | Snow Leopard', type: 'Extraordinary Gloves', rarity: 'Clean Knuckles', icon: 'fa-mitten', color: 'text-fg', stickers: 'N/A', charm: 'N/A' }
+        { id: 'gloves_hedge', name: '★ Sport Gloves | Hedge Maze', type: 'Extraordinary Gloves', rarity: 'Special Gold ★', color: 'text-emerald-400', image: 'CS2_Assets/gloves/%3F%20Sport%20Gloves%20_%20Hedge%20Maze.png' },
+        { id: 'gloves_vice', name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'Special Gold ★', color: 'text-pink-400', image: 'CS2_Assets/gloves/%3F%20Sport%20Gloves%20_%20Vice.png' },
+        { id: 'gloves_pandora', name: "★ Sport Gloves | Pandora's Box", type: 'Extraordinary Gloves', rarity: 'Special Gold ★', color: 'text-purple-400', image: 'CS2_Assets/gloves/%3F%20Sport%20Gloves%20_%20Pandora%27s%20Box.png' },
+        { id: 'gloves_amphibious', name: '★ Sport Gloves | Amphibious', type: 'Extraordinary Gloves', rarity: 'Special Gold ★', color: 'text-cyan-400', image: 'CS2_Assets/gloves/%3F%20Sport%20Gloves%20_%20Amphibious.png' },
+        { id: 'gloves_kimono', name: '★ Specialist Gloves | Crimson Kimono', type: 'Specialist Gloves', rarity: 'Special Gold ★', color: 'text-red-400', image: 'CS2_Assets/gloves/%3F%20Specialist%20Gloves%20_%20Crimson%20Kimono.png' },
+        { id: 'gloves_marble', name: '★ Specialist Gloves | Marble Fade', type: 'Specialist Gloves', rarity: 'Special Gold ★', color: 'text-amber-400', image: 'CS2_Assets/gloves/%3F%20Specialist%20Gloves%20_%20Marble%20Fade.png' },
+        { id: 'gloves_snow', name: '★ Driver Gloves | Snow Leopard', type: 'Driver Gloves', rarity: 'Special Gold ★', color: 'text-white', image: 'CS2_Assets/gloves/%3F%20Driver%20Gloves%20_%20Snow%20Leopard.png' },
+        { id: 'gloves_spearmint', name: '★ Moto Gloves | Spearmint', type: 'Moto Gloves', rarity: 'Special Gold ★', color: 'text-emerald-400', image: 'CS2_Assets/gloves/%3F%20Moto%20Gloves%20_%20Spearmint.png' },
+        { id: 'gloves_skulls', name: '★ Hand Wraps | Cobalt Skulls', type: 'Hand Wraps', rarity: 'Special Gold ★', color: 'text-blue-400', image: 'CS2_Assets/gloves/%3F%20Hand%20Wraps%20_%20Cobalt%20Skulls.png' }
+      ],
+      knives: [
+        { id: 'knife_karambit_doppler', name: '★ Karambit | Doppler (Phase 2)', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-pink-400', image: 'CS2_Assets/knives/%3F%20Karambit%20_%20Doppler.png' },
+        { id: 'knife_butterfly_fade', name: '★ Butterfly Knife | Fade (100%)', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-amber-400', image: 'CS2_Assets/knives/%3F%20Butterfly%20Knife%20_%20Fade.png' },
+        { id: 'knife_m9_crimson', name: '★ M9 Bayonet | Crimson Web', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-red-400', image: 'CS2_Assets/knives/%3F%20M9%20Bayonet%20_%20Crimson%20Web.png' },
+        { id: 'knife_skeleton_slaughter', name: '★ Skeleton Knife | Slaughter', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-rose-400', image: 'CS2_Assets/knives/%3F%20Skeleton%20Knife%20_%20Slaughter.png' },
+        { id: 'knife_talon_tiger', name: '★ Talon Knife | Tiger Tooth', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-amber-300', image: 'CS2_Assets/knives/%3F%20Talon%20Knife%20_%20Tiger%20Tooth.png' },
+        { id: 'knife_bayonet_gamma', name: '★ Bayonet | Gamma Doppler', type: 'Covert Knife', rarity: 'Special Gold ★', color: 'text-emerald-400', image: 'CS2_Assets/knives/%3F%20Bayonet%20_%20Gamma%20Doppler.png' }
+      ],
+      weapons: [
+        { id: 'weapon_ak47_nightwish', name: 'AK-47 | Nightwish', type: 'Covert Rifle', rarity: 'Covert ★', color: 'text-purple-400', image: 'CS2_Assets/weapons/AK-47%20_%20Nightwish.png' },
+        { id: 'weapon_ak47_asiimov', name: 'AK-47 | Asiimov', type: 'Covert Rifle', rarity: 'Covert ★', color: 'text-orange-400', image: 'CS2_Assets/weapons/AK-47%20_%20Asiimov.png' },
+        { id: 'weapon_ak47_fire', name: 'AK-47 | Fire Serpent', type: 'Covert Rifle', rarity: 'Covert ★', color: 'text-amber-400', image: 'CS2_Assets/weapons/AK-47%20_%20Fire%20Serpent.png' },
+        { id: 'weapon_ak47_vulcan', name: 'AK-47 | Vulcan', type: 'Covert Rifle', rarity: 'Covert ★', color: 'text-cyan-400', image: 'CS2_Assets/weapons/AK-47%20_%20Vulcan.png' },
+        { id: 'weapon_ak47_lotus', name: 'AK-47 | Wild Lotus', type: 'Covert Rifle', rarity: 'Contraband ★', color: 'text-emerald-400', image: 'CS2_Assets/weapons/AK-47%20_%20Wild%20Lotus.png' },
+        { id: 'weapon_awp_dragon', name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'Contraband ★', color: 'text-yellow-400', image: 'CS2_Assets/weapons/AWP%20_%20Dragon%20Lore.png' },
+        { id: 'weapon_awp_gungnir', name: 'AWP | Gungnir', type: 'Covert Sniper Rifle', rarity: 'Contraband ★', color: 'text-cyan-300', image: 'CS2_Assets/weapons/AWP%20_%20Gungnir.png' },
+        { id: 'weapon_m4a4_howl', name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'Contraband ★', color: 'text-red-500', image: 'CS2_Assets/weapons/M4A4%20_%20Howl.png' },
+        { id: 'weapon_m4a1_print', name: 'M4A1-S | Printstream', type: 'Covert Rifle', rarity: 'Covert ★', color: 'text-white', image: 'CS2_Assets/weapons/M4A1-S%20_%20Printstream.png' },
+        { id: 'weapon_deagle_print', name: 'Desert Eagle | Printstream', type: 'Classified Pistol', rarity: 'Classified ★', color: 'text-pink-400', image: 'CS2_Assets/weapons/Desert%20Eagle%20_%20Printstream.png' },
+        { id: 'weapon_glock_fade', name: 'Glock-18 | Fade', type: 'Restricted Pistol', rarity: 'Restricted ★', color: 'text-purple-400', image: 'CS2_Assets/weapons/Glock-18%20_%20Fade.png' }
       ],
       stickers: [
-        { id: 's1', name: 'Titan (Holo) | Katowice 2014', type: 'Tournament Sticker', rarity: 'Ultra Rare Holo', icon: 'fa-certificate', color: 'text-cyan-400', stickers: 'Custom Placement 5x', charm: 'StickerSlab' },
-        { id: 's2', name: 'iBUYPOWER (Holo) | Katowice 2014', type: 'Tournament Sticker', rarity: 'Ultra Rare Holo', icon: 'fa-certificate', color: 'text-red-500', stickers: 'Custom Placement 5x', charm: 'StickerSlab' },
-        { id: 's3', name: 'Crown (Foil)', type: 'High Tier Sticker', rarity: 'Foil Crown', icon: 'fa-crown', color: 'text-csgold', stickers: 'Position: Wood', charm: 'N/A' }
-      ],
-      keychains: [
-        { id: 'ch1', name: 'StickerSlab™ | Titan Holo Vault', type: 'Weapon Charm Slab', rarity: 'Sticker Protector', icon: 'fa-key', color: 'text-emerald-400', stickers: 'Attached to Barrel', charm: 'Slab Case #1' },
-        { id: 'ch2', name: 'Hot Wurst / Golden Sausage', type: 'CS2 Weapon Charm', rarity: 'Rare Charm', icon: 'fa-hotdog', color: 'text-amber-400', stickers: 'Attached to Magazine', charm: 'Charm Box' }
-      ],
-      music: [
-        { id: 'm1', name: 'The Verkkars | EZ4ENCE', type: 'StatTrak™ Music Kit', rarity: 'MVP Anthem', icon: 'fa-music', color: 'text-amber-400', stickers: 'Round Win Music', charm: '10s Bomb Beep' },
-        { id: 'm2', name: 'Scarlxrd | King, Scar', type: 'StatTrak™ Music Kit', rarity: 'MVP Anthem', icon: 'fa-music', color: 'text-purple-400', stickers: 'Heavy Trap Beat', charm: 'MVP Fanfare' }
+        { id: 'stk_titan', name: '4x Titan (Holo) | Katowice 2014', type: 'Holo Sticker Combo', rarity: 'Exotic ★', color: 'text-cyan-400', image: 'CS2_Assets/stickers/Titan%20%28Holo%29%20_%20Katowice%202014.png' },
+        { id: 'stk_ibp', name: '4x iBUYPOWER (Holo) | Katowice 2014', type: 'Holo Sticker Combo', rarity: 'Exotic ★', color: 'text-red-400', image: 'CS2_Assets/stickers/iBUYPOWER%20%28Holo%29%20_%20Katowice%202014.png' },
+        { id: 'stk_dignitas', name: '4x Dignitas (Holo) | Katowice 2014', type: 'Holo Sticker Combo', rarity: 'Exotic ★', color: 'text-yellow-400', image: 'CS2_Assets/stickers/Team%20Dignitas%20%28Holo%29%20_%20Katowice%202014.png' },
+        { id: 'charm_diamond', name: 'Charm | StickerSlab Diamond', type: 'Weapon Charm (Keychain)', rarity: 'Covert ★', color: 'text-emerald-400', image: 'CS2_Assets/keychains/StickerSlab%20_%20Diamond.png' },
+        { id: 'charm_baby_karat', name: 'Charm | Baby Karat CT', type: 'Weapon Charm (Keychain)', rarity: 'Covert ★', color: 'text-amber-400', image: 'CS2_Assets/keychains/Baby%20Karat%20CT.png' }
       ]
     };
 
-    let currentCategory = 'weapons';
-    let currentItem = STUDIO_CATEGORIES['weapons'][0];
+    let studioLoadout = {
+      agent: STUDIO_ITEMS.agents[0],
+      gloves: STUDIO_ITEMS.gloves[0],
+      knife: STUDIO_ITEMS.knives[0],
+      weapon: STUDIO_ITEMS.weapons[0],
+      stickers: '4x Titan Holo (Kato 14)',
+      charm: 'StickerSlab Diamond',
+      viewMode: 'fpv_weapon',
+      floatVal: '0.00014 (Factory New)',
+      seedVal: '#661 (Blue Gem)'
+    };
 
-    function selectStudioCategory(cat) {
-      currentCategory = cat;
-      ['weapons', 'knives', 'gloves', 'stickers', 'keychains', 'music'].forEach(c => {
-        const btn = document.getElementById(`cat-btn-${c}`);
+    let activeStudioSlot = 'weapons';
+    let studioSearchTerm = '';
+
+    function selectStudioSlot(slot) {
+      activeStudioSlot = slot;
+      ['agents', 'gloves', 'knives', 'weapons', 'stickers'].forEach(s => {
+        const btn = document.getElementById(`slot-btn-${s}`);
         if (btn) {
-          if (c === cat) {
-            btn.className = 'py-2 px-2 rounded-xl border-2 border-accent bg-accent/10 font-cyber text-[11px] font-bold text-accent';
+          if (s === slot) {
+            btn.className = 'slot-tab-btn py-2 px-1 rounded-xl border-2 border-accent bg-accent/15 font-cyber text-[10px] font-bold text-accent flex flex-col items-center gap-1 transition-all shadow-md';
           } else {
-            btn.className = 'py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30';
+            btn.className = 'slot-tab-btn py-2 px-1 rounded-xl border border-white/10 bg-slate-900/60 font-cyber text-[10px] font-bold text-muted hover:border-accent flex flex-col items-center gap-1 transition-all';
           }
         }
       });
 
-      renderStudioItemList();
-      selectStudioItem(STUDIO_CATEGORIES[cat][0]);
+      renderStudioGrid();
       playSfx('click');
     }
 
-    function renderStudioItemList() {
-      const container = document.getElementById('studio-item-list');
+    function filterStudioItems(query) {
+      studioSearchTerm = (query || '').toLowerCase().trim();
+      renderStudioGrid();
+    }
+
+    function renderStudioGrid() {
+      const container = document.getElementById('studio-item-grid');
+      const countEl = document.getElementById('studio-category-count');
       if (!container) return;
       container.innerHTML = '';
 
-      STUDIO_CATEGORIES[currentCategory].forEach(item => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = () => selectStudioItem(item);
-        btn.className = `w-full text-left p-2.5 rounded-xl border transition-all ${item.id === currentItem?.id ? 'border-accent bg-accent/10 text-fg' : 'border-white/10 hover:border-white/20 text-muted'}`;
-        btn.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-fg truncate">${item.name}</span>
-            <span class="text-[10px] ${item.color} font-bold ml-1">${item.rarity}</span>
+      let items = STUDIO_ITEMS[activeStudioSlot] || [];
+      if (studioSearchTerm) {
+        items = items.filter(it => it.name.toLowerCase().includes(studioSearchTerm) || it.type.toLowerCase().includes(studioSearchTerm));
+      }
+
+      if (countEl) countEl.textContent = `${items.length} Món`;
+
+      if (items.length === 0) {
+        container.innerHTML = '<div class="col-span-2 py-8 text-center text-xs text-gray-500 font-mono">Không tìm thấy skin phù hợp</div>';
+        return;
+      }
+
+      const currentEquippedId = studioLoadout[activeStudioSlot === 'stickers' ? 'stickers' : (activeStudioSlot === 'agents' ? 'agent' : (activeStudioSlot === 'gloves' ? 'gloves' : (activeStudioSlot === 'knives' ? 'knife' : 'weapon')))]?.id;
+
+      items.forEach(item => {
+        const isEquipped = item.id === currentEquippedId || (activeStudioSlot === 'stickers' && studioLoadout.stickers.includes(item.name));
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.onclick = () => equipStudioItem(item);
+        card.className = `w-full text-left p-2.5 rounded-xl border transition-all flex flex-col justify-between relative group ${isEquipped ? 'border-amber-400 bg-amber-400/15 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-white/10 bg-slate-950/60 hover:border-white/30 hover:bg-slate-900/60'}`;
+        
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[9px] font-mono ${item.color} font-bold truncate max-w-[110px]">${item.rarity}</span>
+            ${isEquipped ? '<span class="px-1.5 py-0.2 rounded bg-amber-400 text-black font-mono text-[8px] font-black uppercase">ĐANG CHỌN</span>' : ''}
           </div>
-          <p class="text-[10px] text-subtle font-mono">${item.type}</p>
+          <div class="h-16 w-full flex items-center justify-center p-1 my-1">
+            <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; if('${item.fallback || ''}') this.src='${item.fallback || ''}'; else this.style.display='none';" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform">
+          </div>
+          <div class="mt-1">
+            <p class="font-cyber text-[11px] font-bold text-fg truncate">${item.name}</p>
+            <p class="text-[9px] text-gray-400 font-mono truncate">${item.type}</p>
+          </div>
         `;
-        container.appendChild(btn);
+        container.appendChild(card);
       });
     }
 
-    function selectStudioItem(item) {
-      currentItem = item;
-      document.getElementById('studio-preview-type').textContent = item.type.toUpperCase();
-      document.getElementById('studio-preview-name').textContent = item.name;
-      document.getElementById('studio-preview-rarity').textContent = item.rarity;
-      document.getElementById('studio-preview-icon').innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
+    function equipStudioItem(item) {
+      if (activeStudioSlot === 'agents') {
+        studioLoadout.agent = item;
+        setStudioViewMode('lobby');
+      } else if (activeStudioSlot === 'gloves') {
+        studioLoadout.gloves = item;
+      } else if (activeStudioSlot === 'knives') {
+        studioLoadout.knife = item;
+        setStudioViewMode('fpv_knife');
+      } else if (activeStudioSlot === 'weapons') {
+        studioLoadout.weapon = item;
+        setStudioViewMode('fpv_weapon');
+      } else if (activeStudioSlot === 'stickers') {
+        if (item.type.includes('Charm')) {
+          studioLoadout.charm = item.name.replace('Charm | ', '');
+        } else {
+          studioLoadout.stickers = item.name;
+        }
+      }
+
+      updateStageDisplay();
+      renderStudioGrid();
+      playSfx('click');
+      showToast(`Đã chọn ${item.name}!`);
+    }
+
+    function setStudioViewMode(mode) {
+      studioLoadout.viewMode = mode;
       
-      const stickerBadge = document.getElementById('studio-sticker-badge');
-      if (item.stickers && item.stickers !== 'N/A') {
-        stickerBadge.classList.remove('hidden');
-        stickerBadge.innerHTML = `<i class="fa-solid fa-certificate text-purple-400 mr-1"></i> ${item.stickers}`;
+      const fpvWeaponBtn = document.getElementById('pose-btn-fpv-weapon');
+      const fpvKnifeBtn = document.getElementById('pose-btn-fpv-knife');
+      const lobbyBtn = document.getElementById('pose-btn-lobby');
+
+      [fpvWeaponBtn, fpvKnifeBtn, lobbyBtn].forEach(b => {
+        if (b) {
+          b.className = 'px-3 py-1.5 rounded-lg hover:bg-white/10 text-muted font-cyber text-xs font-bold transition-all flex items-center gap-1.5';
+        }
+      });
+
+      const titleEl = document.getElementById('studio-active-pose-title');
+      const fpvView = document.getElementById('stage-fpv-view');
+      const lobbyView = document.getElementById('stage-lobby-view');
+
+      if (mode === 'fpv_weapon') {
+        if (fpvWeaponBtn) fpvWeaponBtn.className = 'px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black transition-all flex items-center gap-1.5 shadow-md';
+        if (titleEl) titleEl.textContent = 'GÓC NHÌN IN-GAME · CẦM SÚNG';
+        if (fpvView) fpvView.classList.remove('hidden');
+        if (lobbyView) lobbyView.classList.add('hidden');
+      } else if (mode === 'fpv_knife') {
+        if (fpvKnifeBtn) fpvKnifeBtn.className = 'px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black transition-all flex items-center gap-1.5 shadow-md';
+        if (titleEl) titleEl.textContent = 'GÓC NHÌN IN-GAME · CẦM DAO';
+        if (fpvView) fpvView.classList.remove('hidden');
+        if (lobbyView) lobbyView.classList.add('hidden');
       } else {
-        stickerBadge.classList.add('hidden');
+        if (lobbyBtn) lobbyBtn.className = 'px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black transition-all flex items-center gap-1.5 shadow-md';
+        if (titleEl) titleEl.textContent = 'SẢNH CHỜ CS2 · ĐẶC VỤ';
+        if (fpvView) fpvView.classList.add('hidden');
+        if (lobbyView) lobbyView.classList.remove('hidden');
       }
 
-      const charmBadge = document.getElementById('studio-charm-badge');
-      if (item.charm && item.charm !== 'N/A') {
-        charmBadge.classList.remove('hidden');
-        charmBadge.innerHTML = `<i class="fa-solid fa-key text-emerald-400 mr-1"></i> ${item.charm}`;
-      } else {
-        charmBadge.classList.add('hidden');
-      }
-
-      renderStudioItemList();
+      updateStageDisplay();
       playSfx('hover');
+    }
+
+    function setStudioPose(pose) {
+      if (pose === 'weapon') setStudioViewMode('fpv_weapon');
+      else if (pose === 'knife') setStudioViewMode('fpv_knife');
+      else setStudioViewMode('lobby');
+    }
+
+    function updateStageDisplay() {
+      const mode = studioLoadout.viewMode || 'fpv_weapon';
+      const fpvImg = document.getElementById('stage-fpv-img');
+      const lobbyImg = document.getElementById('stage-lobby-img');
+
+      // 1. In-Game FPV (Góc nhìn thứ nhất thực tế như ảnh của bạn)
+      if (fpvImg) {
+        if (mode === 'fpv_knife') {
+          if (studioLoadout.knife?.id === 'knife_butterfly_fade') {
+            fpvImg.src = 'images/real_butterfly_fade.jpg';
+          } else if (studioLoadout.gloves?.id === 'gloves_vice') {
+            fpvImg.src = 'images/real_karambit_vice.jpg';
+          } else {
+            fpvImg.src = 'images/real_karambit_hedge.jpg';
+          }
+        } else if (mode === 'fpv_weapon') {
+          if (studioLoadout.weapon?.id === 'weapon_awp_dragon' || studioLoadout.weapon?.id === 'weapon_awp_gungnir') {
+            fpvImg.src = 'images/real_awp_pandora.jpg';
+          } else if (studioLoadout.weapon?.id === 'weapon_m4a4_howl') {
+            fpvImg.src = 'images/fpv_howl_kimono.jpg';
+          } else if (studioLoadout.weapon?.id === 'weapon_ak47_asiimov') {
+            fpvImg.src = 'images/real_ak47_vice.jpg';
+          } else {
+            fpvImg.src = 'images/real_ak47_nightwish.jpg';
+          }
+        }
+      }
+
+      // 2. CS2 Main Menu Lobby View
+      if (lobbyImg) {
+        lobbyImg.src = studioLoadout.agent?.lobbyImg || 'images/cs2_real_lobby_darryl.jpg';
+      }
+
+      // 3. Equipped Loadout 4-Slot Bar Summary
+      const sumAgent = document.getElementById('summary-agent-name');
+      if (sumAgent && studioLoadout.agent) sumAgent.textContent = studioLoadout.agent.name;
+
+      const sumGlove = document.getElementById('summary-glove-name');
+      if (sumGlove && studioLoadout.gloves) sumGlove.textContent = studioLoadout.gloves.name;
+
+      const sumKnife = document.getElementById('summary-knife-name');
+      if (sumKnife && studioLoadout.knife) sumKnife.textContent = studioLoadout.knife.name;
+
+      const sumWeapon = document.getElementById('summary-weapon-name');
+      if (sumWeapon && studioLoadout.weapon) sumWeapon.textContent = studioLoadout.weapon.name;
+    }
+
+    function applyPresetCombo(presetId) {
+      if (presetId === 'vice_doppler') {
+        studioLoadout.agent = STUDIO_ITEMS.agents[0]; // Darryl
+        studioLoadout.gloves = STUDIO_ITEMS.gloves[1]; // Vice
+        studioLoadout.knife = STUDIO_ITEMS.knives[0]; // Doppler
+        studioLoadout.weapon = STUDIO_ITEMS.weapons[1]; // Asiimov
+        studioLoadout.stickers = '4x Titan Holo (Kato 14)';
+        setStudioViewMode('fpv_weapon');
+      } else if (presetId === 'pandora_dragonlore') {
+        studioLoadout.agent = STUDIO_ITEMS.agents[2]; // Ricksaw
+        studioLoadout.gloves = STUDIO_ITEMS.gloves[2]; // Pandora
+        studioLoadout.knife = STUDIO_ITEMS.knives[1]; // Butterfly Fade
+        studioLoadout.weapon = STUDIO_ITEMS.weapons[5]; // Dragon Lore
+        studioLoadout.stickers = '4x iBUYPOWER Holo (Kato 14)';
+        setStudioViewMode('fpv_weapon');
+      } else if (presetId === 'kimono_howl') {
+        studioLoadout.agent = STUDIO_ITEMS.agents[3]; // Ava
+        studioLoadout.gloves = STUDIO_ITEMS.gloves[4]; // Crimson Kimono
+        studioLoadout.knife = STUDIO_ITEMS.knives[1]; // Butterfly Fade
+        studioLoadout.weapon = STUDIO_ITEMS.weapons[7]; // Howl
+        studioLoadout.stickers = '4x iBUYPOWER Holo';
+        setStudioViewMode('fpv_weapon');
+      } else if (presetId === 'snow_printstream') {
+        studioLoadout.agent = STUDIO_ITEMS.agents[1]; // Romanov
+        studioLoadout.gloves = STUDIO_ITEMS.gloves[0]; // Hedge Maze
+        studioLoadout.knife = STUDIO_ITEMS.knives[0]; // Karambit
+        studioLoadout.weapon = STUDIO_ITEMS.weapons[0]; // Nightwish
+        studioLoadout.stickers = '4x Dignitas Holo';
+        setStudioViewMode('fpv_weapon');
+      }
+
+      renderStudioGrid();
+      playSfx('gold');
+      showToast('Đã áp dụng combo thực tế in-game!');
+    }
+
+    function copyLoadoutCode() {
+      const code = `!loadout ${studioLoadout.agent.id}+${studioLoadout.gloves.id}+${studioLoadout.knife.id}+${studioLoadout.weapon.id}`;
+      copyData(code, 'Đã sao chép mã combo vào clipboard!');
     }
 
     function updateFloat(val) {
       const fl = (val * 0.00014).toFixed(5);
       const text = val < 20 ? `${fl} (Factory New)` : (val < 50 ? `${fl} (Minimal Wear)` : `${fl} (Field-Tested)`);
       document.getElementById('studio-float-val').textContent = text;
+      const tag = document.getElementById('stage-item-name-tag');
+      if (tag) tag.textContent = `${studioLoadout.pose === 'knife' ? studioLoadout.knife.name : studioLoadout.weapon.name} (${val < 20 ? 'FN' : (val < 50 ? 'MW' : 'FT')})`;
     }
 
     function updateSeed(val) {
       document.getElementById('studio-seed-val').textContent = `#${val} (Custom Seed)`;
+      const seedTag = document.getElementById('stage-seed-tag');
+      if (seedTag) seedTag.textContent = `Pattern: #${val} (Tier 1)`;
     }
 
     function playMusicKitPreview() {
@@ -1364,22 +1525,19 @@
       showToast('Đang phát bản nhạc MVP Anthem mô phỏng (EZ4ENCE / Scarlxrd)...');
     }
 
-    function applyToGameSim() {
-      playSfx('success');
-      showToast(`Đã áp dụng ${currentItem.name} vào kho đồ CS2 thành công!`);
-    }
-
     /* ============================================================
-       4. CS2 CASE OPENING SIMULATOR LOGIC
+       4. CS2 CASE OPENING SIMULATOR LOGIC (Skin Thực Tế 100%)
        ============================================================ */
     const CS2_SKINS = [
-      { name: '★ Karambit | Doppler Sapphire', type: 'Special Gold Knife', rarity: 'csgold', icon: 'fa-gem', wear: 'Factory New (0.014)' },
-      { name: '★ Butterfly Knife | Fade', type: 'Special Gold Knife', rarity: 'csgold', icon: 'fa-scissors', wear: 'Factory New (0.008)' },
-      { name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'csred', icon: 'fa-dragon', wear: 'Factory New (0.021)' },
-      { name: 'AK-47 | Fire Serpent', type: 'Covert Rifle', rarity: 'csred', icon: 'fa-fire', wear: 'Field-Tested (0.18)' },
-      { name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'csred', icon: 'fa-dog', wear: 'Minimal Wear (0.09)' },
-      { name: 'USP-S | Printstream', type: 'Classified Pistol', rarity: 'cspink', icon: 'fa-cube', wear: 'Factory New (0.03)' },
-      { name: 'VIP Mod Skin Lifetime', type: 'VN-KEEN Special Gift', rarity: 'csgold', icon: 'fa-bolt', wear: 'VIP Edition' }
+      { name: '★ Karambit | Doppler Sapphire', type: 'Special Gold Knife', rarity: 'csgold', image: 'CS2_Assets/knives/%E2%98%85%20Karambit%20_%20Doppler.png', wear: 'Factory New (0.0142)' },
+      { name: '★ Butterfly Knife | Fade', type: 'Special Gold Knife', rarity: 'csgold', image: 'CS2_Assets/knives/%E2%98%85%20Butterfly%20Knife%20_%20Fade.png', wear: 'Factory New (0.0081)' },
+      { name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'csred', image: 'CS2_Assets/weapons/AWP%20_%20Dragon%20Lore.png', wear: 'Factory New (0.0215)' },
+      { name: 'AK-47 | Nightwish', type: 'Covert Rifle', rarity: 'csred', image: 'CS2_Assets/weapons/AK-47%20_%20Nightwish.png', wear: 'Factory New (0.0194)' },
+      { name: '★ Sport Gloves | Hedge Maze', type: 'Extraordinary Gloves', rarity: 'csgold', image: 'CS2_Assets/gloves/%E2%98%85%20Sport%20Gloves%20_%20Hedge%20Maze.png', wear: 'Factory New (0.0621)' },
+      { name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'csgold', image: 'CS2_Assets/gloves/%E2%98%85%20Sport%20Gloves%20_%20Vice.png', wear: 'Factory New (0.0633)' },
+      { name: 'AK-47 | Asiimov', type: 'Covert Rifle', rarity: 'csred', image: 'CS2_Assets/weapons/AK-47%20_%20Asiimov.png', wear: 'Factory New (0.0520)' },
+      { name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'csred', image: 'CS2_Assets/weapons/M4A4%20_%20Howl.png', wear: 'Minimal Wear (0.0891)' },
+      { name: 'Desert Eagle | Printstream', type: 'Classified Pistol', rarity: 'cspink', image: 'CS2_Assets/weapons/Desert%20Eagle%20_%20Printstream.png', wear: 'Factory New (0.0340)' }
     ];
 
     let isSpinning = false;
@@ -1393,11 +1551,11 @@
       for (let i = 0; i < 50; i++) {
         const item = CS2_SKINS[Math.floor(Math.random() * CS2_SKINS.length)];
         const card = document.createElement('div');
-        card.className = `size-36 flex-shrink-0 rounded-2xl bg-slate-900 border-b-4 border-${item.rarity} p-3 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-md`;
+        card.className = `size-36 flex-shrink-0 rounded-2xl bg-slate-900 border-b-4 border-${item.rarity} p-2.5 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-md group hover:border-yellow-400 transition-colors`;
         card.innerHTML = `
           <span class="text-[9px] font-mono text-muted truncate w-full uppercase">${item.type}</span>
-          <div class="size-14 rounded-xl bg-slate-950 flex items-center justify-center text-2xl text-${item.rarity}">
-            <i class="fa-solid ${item.icon}"></i>
+          <div class="h-16 w-full flex items-center justify-center p-1 my-0.5">
+            <img src="${item.image}" alt="${item.name}" class="max-h-full max-w-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] transition-transform group-hover:scale-110">
           </div>
           <p class="font-cyber text-[10px] font-bold text-fg truncate w-full">${item.name}</p>
         `;
@@ -1429,7 +1587,8 @@
 
       setTimeout(() => {
         isSpinning = false;
-        const winner = CS2_SKINS[Math.floor(Math.random() * 3)];
+        const winner = CS2_SKINS[Math.floor(Math.random() * 4)];
+        document.getElementById('winner-img').src = winner.image;
         document.getElementById('winner-name').textContent = winner.name;
         document.getElementById('winner-wear').textContent = `Exterior: ${winner.wear}`;
         document.getElementById('case-winner-modal').classList.remove('hidden');
@@ -1551,14 +1710,9 @@
 
     function createQr() {
       currentContent = 'KEEN' + randCode(6);
-      const params = new URLSearchParams({
-        amount: String(currentAmount),
-        addInfo: currentContent,
-        accountName: BANK.accountName,
-      });
 
       const qrImg = document.getElementById('qr-img');
-      if (qrImg) qrImg.src = `https://img.vietqr.io/image/${BANK.bin}-${BANK.account}-compact2.png?${params.toString()}`;
+      if (qrImg) qrImg.src = 'images/vietqr_payment.png';
       const qrAmt = document.getElementById('qr-amount');
       if (qrAmt) qrAmt.textContent = formatVnd(currentAmount);
       const qrCont = document.getElementById('qr-content');
@@ -1611,8 +1765,8 @@
     window.addEventListener('DOMContentLoaded', () => {
       init3DLandscape();
       buildCaseCarousel();
-      selectStudioCategory('weapons');
-      selectPlan('monthly');
+      setStudioViewMode('fpv_weapon');
+      selectPlan('vip');
     });
   </script>
 </body>

@@ -412,10 +412,10 @@
           Quét mã VietQR bằng app ngân hàng. Thông tin người nhận và số tiền sẽ tự động hiển thị bảo mật trên app của bạn.
         </div>
 
-        <!-- VietQR Dynamic Image -->
+        <!-- VietQR Clean Image (Khớp khung - Bảo mật thông tin cá nhân) -->
         <div class="text-center mb-4">
-          <div class="inline-block p-3 bg-white rounded-2xl shadow-xl border-2 border-csOrange">
-            <img id="vietQrImg" src="https://img.vietqr.io/image/970422-789789999888-compact2.png?amount=999999&addInfo=CS2%20MOD%20VIP&accountName=NGUYEN%20PHU%20QUY" alt="VietQR" class="w-48 h-48 object-contain mx-auto">
+          <div class="inline-block p-2.5 bg-white rounded-2xl shadow-xl border-2 border-csOrange max-w-[220px]">
+            <img id="vietQrImg" src="images/vietqr_payment.png" alt="VietQR" class="w-48 h-48 object-contain mx-auto">
           </div>
         </div>
 
@@ -1006,7 +1006,7 @@
       const modal = document.getElementById('paymentModal');
       const qr = document.getElementById('vietQrImg');
       if (qr) {
-        qr.src = `https://img.vietqr.io/image/970422-789789999888-compact2.png?amount=999999&addInfo=CS2%20MOD%20VIP&accountName=NGUYEN%20PHU%20QUY`;
+        qr.src = 'images/vietqr_payment.png';
       }
       const display = document.getElementById('paymentAmountDisplay');
       if (display) display.textContent = `999.999 VNĐ`;
