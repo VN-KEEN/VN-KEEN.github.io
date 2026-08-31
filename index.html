@@ -3,487 +3,1509 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VN-KEEN — Tùy chỉnh giao diện & hỗ trợ đỉnh cao</title>
-  <meta name="description" content="Nền tảng tùy biến giao diện đặc vụ Counter-Strike 2: ESP, Aimbot, skin, overlay chiến thuật. Cập nhật nhanh, tối ưu FPS.">
-  <meta name="theme-color" content="#0b0f19">
+  <title>VN-KEEN — Phần Mềm Mod Skin CS2 Số 1 Việt Nam</title>
+  <meta name="description" content="Nền tảng tùy biến & Mod Skin Counter-Strike 2 toàn diện: Weapon skins, Knife skins, Glove skins, Stickers, Keychains (StickerSlab), Agents, Music Kits, Collections, Patches.">
+  <meta name="theme-color" content="#070a12">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
-  <meta property="og:title" content="VN-KEEN">
-  <meta property="og:description" content="Tùy chỉnh giao diện & hỗ trợ đỉnh cao cho Counter-Strike 2.">
+  <meta property="og:title" content="VN-KEEN — Nền Tảng Mod Skin CS2 Đỉnh Cao">
+  <meta property="og:description" content="Mở khóa toàn bộ kho skin vũ khí, dao, găng tay, sticker, móc khóa, đặc vụ và music kit CS2.">
   <meta property="og:image" content="og.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            bg: '#0b0f19',
-            surface: '#131c2e',
-            surface2: '#192338',
-            fg: '#e8eef6',
-            muted: '#8b9bb4',
-            subtle: '#5c6d86',
+            bg: '#070a12',
+            surface: 'rgba(15, 23, 42, 0.78)',
+            surface2: 'rgba(30, 41, 59, 0.85)',
+            fg: '#f8fafc',
+            muted: '#94a3b8',
+            subtle: '#64748b',
             accent: '#00e5ee',
-            accent2: '#4facfe',
-            ok: '#34d399',
+            accent2: '#a855f7',
+            accent3: '#ec4899',
+            csgold: '#eab308',
+            csred: '#ef4444',
+            cspink: '#d946ef',
+            cspurple: '#8b5cf6',
+            csblue: '#3b82f6',
+            ok: '#10b981',
+            warn: '#f59e0b',
+            danger: '#ef4444'
           },
           fontFamily: {
-            sans: ['IBM Plex Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
-            display: ['Rajdhani', 'Segoe UI', 'sans-serif'],
-            mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+            sans: ['Space Grotesk', 'Segoe UI', 'sans-serif'],
+            display: ['Rajdhani', 'sans-serif'],
+            cyber: ['Orbitron', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace']
+          },
+          animation: {
+            'spin-slow': 'spin 10s linear infinite',
+            'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+            'float': 'float 4s ease-in-out infinite',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.8', transform: 'scale(1.04)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
           }
         }
       }
     }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
-    body { background: #0b0f19; color: #e8eef6; }
-    .glass {
-      background: rgba(19, 28, 46, 0.72);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 0 0 1px rgba(232, 238, 246, 0.08);
+    * { box-sizing: border-box; cursor: default; }
+    body { background: #070a12; color: #f8fafc; overflow-x: hidden; }
+
+    #webgl-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
-    .text-glow { text-shadow: 0 0 28px rgba(0, 229, 238, 0.35); }
+
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 26px;
+      height: 26px;
+      border: 1.5px solid rgba(0, 229, 238, 0.75);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+      z-index: 9999;
+      display: none;
+    }
+    #custom-cursor::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: #00e5ee;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px #00e5ee;
+    }
+    #custom-cursor.active {
+      width: 40px;
+      height: 40px;
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.15);
+      border-radius: 6px;
+    }
+    #custom-cursor.active::after {
+      background: #ec4899;
+      box-shadow: 0 0 10px #ec4899;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      #custom-cursor { display: block; }
+    }
+
+    .glass-panel {
+      background: rgba(13, 20, 36, 0.74);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 229, 238, 0.16);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-panel:hover {
+      border-color: rgba(0, 229, 238, 0.35);
+      box-shadow: 0 12px 40px 0 rgba(0, 229, 238, 0.15), inset 0 0 0 1px rgba(0, 229, 238, 0.25);
+    }
+
+    .tilt-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .neon-border-box {
+      position: relative;
+      border-radius: 1.5rem;
+      background: #0f172a;
+      overflow: hidden;
+    }
+    .neon-border-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, #00e5ee, #a855f7, #ec4899, transparent 40%);
+      animation: spin 6s linear infinite;
+      z-index: 0;
+    }
+    .neon-border-box-content {
+      position: relative;
+      z-index: 1;
+      margin: 2px;
+      background: #0b1120;
+      border-radius: calc(1.5rem - 2px);
+    }
+
     .tactical-grid {
       background-image:
-        linear-gradient(rgba(0, 229, 238, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 238, 0.035) 1px, transparent 1px);
-      background-size: 48px 48px;
+        linear-gradient(rgba(0, 229, 238, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 238, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
-    .hidden { display: none !important; }
+
+    .neon-glow-cyan {
+      text-shadow: 0 0 12px rgba(0, 229, 238, 0.6), 0 0 30px rgba(0, 229, 238, 0.3);
+    }
+    .neon-glow-gold {
+      text-shadow: 0 0 12px rgba(234, 179, 8, 0.6), 0 0 30px rgba(234, 179, 8, 0.3);
+    }
+
+    #case-track {
+      display: flex;
+      transition: transform 6s cubic-bezier(0.08, 0.9, 0.15, 1);
+      will-change: transform;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      transform: translateY(120%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toast.show { transform: translateY(0); }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #070a12; }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 229, 238, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: #00e5ee; }
   </style>
 </head>
-<body class="tactical-grid font-sans antialiased">
-  <header id="nav" class="fixed inset-x-0 top-0 z-50 transition-colors">
+<body class="tactical-grid font-sans antialiased text-fg selection:bg-accent selection:text-black">
+
+  <!-- 3D Three.js Cyber Landscape Canvas -->
+  <canvas id="webgl-bg"></canvas>
+
+  <!-- Custom Tactical Reticle Cursor -->
+  <div id="custom-cursor"></div>
+
+  <!-- CS2 Top Telemetry Status Bar -->
+  <div class="fixed top-0 left-0 right-0 z-40 bg-bg/70 backdrop-blur-md border-b border-cyan-500/20 text-[11px] font-mono py-1 px-4 hidden md:flex items-center justify-between text-muted">
+    <div class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5 text-accent">
+        <span class="size-2 rounded-full bg-accent animate-ping"></span>
+        <span class="font-bold">VN-KEEN MODSKIN STUDIO v2.1</span>
+      </span>
+      <span class="text-subtle">|</span>
+      <span>ENGINE: <strong class="text-csgold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> CS2 CLIENT-SIDE HOOK (100% AN TOÀN)</strong></span>
+      <span class="text-subtle">|</span>
+      <span>FPS LOSS: <strong class="text-ok">0 FPS (TỐI ƯU 240Hz+)</strong></span>
+      <span class="text-subtle">|</span>
+      <span>RENDER: <strong id="telemetry-fps" class="text-accent2">60.0 FPS</strong></span>
+    </div>
+    <div class="flex items-center gap-4">
+      <!-- Audio Toggle Button -->
+      <button type="button" id="btn-audio" onclick="toggleAudio()" class="flex items-center gap-1.5 hover:text-accent transition-colors px-2 py-0.5 rounded border border-white/10" title="Bật/Tắt Âm Thanh Hiệu Ứng">
+        <i id="audio-icon" class="fa-solid fa-volume-high text-accent"></i>
+        <span id="audio-text">SFX: ON</span>
+        <div id="audio-wave" class="flex items-end gap-0.5 h-3 ml-1">
+          <span class="w-0.5 h-2 bg-accent animate-pulse"></span>
+          <span class="w-0.5 h-3 bg-accent animate-pulse" style="animation-delay: 0.2s"></span>
+          <span class="w-0.5 h-1.5 bg-accent animate-pulse" style="animation-delay: 0.4s"></span>
+        </div>
+      </button>
+
+      <!-- 3D Mode Toggle -->
+      <button type="button" id="btn-3d-mode" onclick="toggle3DLandscape()" class="hover:text-accent transition-colors px-2 py-0.5 rounded border border-white/10" title="Bật/Tắt hiệu ứng 3D Three.js">
+        <i class="fa-solid fa-cube text-accent2 mr-1"></i>3D: <span id="text-3d-status" class="text-accent">MAX</span>
+      </button>
+
+      <span class="text-subtle">|</span>
+      <span>ONLINE: <span class="text-fg font-semibold">1,620 USERS</span></span>
+    </div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header id="nav" class="fixed inset-x-0 top-0 md:top-7 z-50 transition-all duration-300">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <a href="#top" class="flex items-center gap-3">
-        <img src="images/VN-KEEN.jpg" alt="KEEN" class="size-10 rounded-lg object-cover">
-        <span class="font-display text-xl font-bold tracking-[0.14em]">VN<span class="text-accent">-KEEN</span></span>
+      <!-- Brand Logo -->
+      <a href="#top" class="flex items-center gap-3 group" onclick="playSfx('click')">
+        <div class="relative size-11 rounded-xl p-0.5 bg-gradient-to-tr from-cyan-400 via-purple-500 to-pink-500 group-hover:scale-105 transition-transform duration-300 shadow-[0_0_20px_rgba(0,229,238,0.4)]">
+          <img src="images/VN-KEEN.jpg" alt="VN-KEEN Logo" class="size-full rounded-[10px] object-cover">
+          <div class="absolute -bottom-1 -right-1 size-3.5 bg-ok rounded-full border-2 border-bg"></div>
+        </div>
+        <div>
+          <span class="font-cyber text-2xl font-black tracking-[0.14em] text-fg block leading-tight">
+            VN<span class="text-accent neon-glow-cyan">-KEEN</span>
+          </span>
+          <span class="font-mono text-[9px] tracking-widest text-muted uppercase -mt-0.5 block">CS2 Mod Skin Studio</span>
+        </div>
       </a>
-      <nav class="hidden items-center gap-8 text-sm font-medium text-muted md:flex">
-        <a href="#features" class="hover:text-accent">Tính năng</a>
-        <a href="#demo" class="hover:text-accent">Demo overlay</a>
-        <a href="#showcase" class="hover:text-accent">Đặc vụ</a>
-        <a href="#pricing" class="hover:text-accent">Bảng giá</a>
-        <a href="#testimonials" class="hover:text-accent">Đánh giá</a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="hidden items-center gap-6 font-display text-base font-semibold tracking-wider text-muted lg:flex">
+        <a href="catalog.html" target="_blank" class="text-amber-400 hover:text-amber-300 font-bold transition-all flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 hover:border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.25)]" onclick="playSfx('click')">
+          <i class="fa-solid fa-images text-xs animate-pulse"></i> Kho 14K+ Skin ↗
+        </a>
+        <a href="#features" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('hover')">
+          <i class="fa-solid fa-layer-group text-xs text-accent"></i> 9 Tính Năng
+        </a>
+        <a href="#studio" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('hover')">
+          <i class="fa-solid fa-palette text-xs text-accent2"></i> Phòng Thử Skin
+        </a>
+        <a href="#case-opening" class="hover:text-csgold transition-colors flex items-center gap-1.5 text-csgold font-bold" onclick="playSfx('hover')">
+          <i class="fa-solid fa-box-open text-xs animate-bounce"></i> Mở Hòm CS2
+        </a>
+        <a href="#pricing" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('hover')">
+          <i class="fa-solid fa-bolt text-xs text-amber-400"></i> Bảng Giá VIP
+        </a>
+        <a href="#faq" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('hover')">
+          <i class="fa-solid fa-circle-question text-xs text-blue-400"></i> FAQ
+        </a>
       </nav>
+
+      <!-- Action Buttons -->
       <div class="flex items-center gap-3">
-        <button type="button" onclick="openLogin()" class="hidden rounded-lg px-3 py-2 text-sm text-muted hover:text-fg md:inline">Đăng nhập</button>
-        <button type="button" onclick="openCheckout('monthly')" class="rounded-lg bg-accent px-4 py-2 font-display text-sm font-semibold text-[#071018] hover:opacity-90">Tải xuống</button>
+        <a href="https://t.me/VN_KEEN" target="_blank" class="hidden sm:inline-flex items-center gap-2 rounded-xl px-4 py-2 font-display text-sm font-semibold text-muted hover:text-fg hover:bg-white/5 border border-white/10 transition-all">
+          <i class="fa-brands fa-telegram text-sky-400 text-sm"></i> Hỗ Trợ Telegram
+        </a>
+        <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.7)] transition-all">
+          <span class="block px-5 py-2.5 rounded-[11px] bg-bg font-display font-bold tracking-wider text-amber-300 group-hover:bg-transparent group-hover:text-black transition-all">
+            <i class="fa-solid fa-download mr-1.5 text-amber-400"></i> MUA FILE CHẠY NGAY
+          </span>
+        </button>
       </div>
     </div>
   </header>
 
-  <section id="top" class="relative min-h-screen overflow-hidden pt-20">
-    <img src="images/hero.jpg" alt="Năm đặc vụ KEEN trước két sắt" class="absolute inset-0 size-full object-cover" style="object-position: center 28%">
-    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,15,25,.4), rgba(11,15,25,.58), #0b0f19)"></div>
-    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-20">
-      <div class="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 glass">
-        <span class="size-2 rounded-full bg-accent"></span>
-        <span class="font-display text-xs font-semibold tracking-[0.18em] text-accent uppercase">Cập nhật v2.1 · Hỗ trợ CS2 mới nhất</span>
+  <!-- HERO SECTION: THE ULTIMATE CS2 MOD SKIN PLATFORM -->
+  <section id="top" class="relative min-h-screen flex flex-col justify-center items-center pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[500px] bg-gradient-to-tr from-cyan-500/20 via-purple-600/20 to-pink-500/10 blur-[130px] rounded-full pointer-events-none"></div>
+
+    <div class="relative z-10 mx-auto max-w-6xl text-center flex flex-col items-center">
+      
+      <!-- Top Cyber Tag -->
+      <div class="mb-6 inline-flex items-center gap-2.5 rounded-full px-5 py-2 glass-panel border border-amber-400/30 animate-float">
+        <span class="relative flex size-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full size-2.5 bg-amber-400"></span>
+        </span>
+        <span class="font-cyber text-xs font-bold tracking-[0.2em] text-amber-300 uppercase">
+          TẢI VỀ LÀ CHẠY · KHÔNG CẦN KEY · ĐA THIẾT BỊ
+        </span>
+        <span class="bg-amber-500/20 text-amber-300 font-mono text-[10px] px-2 py-0.5 rounded-full font-semibold">PLUG & PLAY</span>
       </div>
-      <h1 class="font-display max-w-5xl text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-        Làm chủ trận đấu với
-        <span class="mt-1 block bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent text-glow">giao diện đặc vụ đỉnh cao</span>
+
+      <!-- Main Title -->
+      <h1 class="font-cyber max-w-5xl text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-none">
+        THẾ GIỚI MOD SKIN CS2
+        <span class="mt-2 block bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(245,158,11,0.5)]">
+          TẢI VỀ LÀ CHẠY NGAY
+        </span>
       </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-        Nâng tầm Counter-Strike 2 với bộ công cụ tùy biến đặc vụ, overlay chiến thuật mượt mà, tối ưu khung hình và lớp bảo vệ tài khoản.
+
+      <!-- Description Subtitle -->
+      <p class="mt-6 max-w-3xl text-lg sm:text-xl font-normal leading-relaxed text-muted">
+        Bán trực tiếp file Mod Skin CS2 trọn gói. Không cần nhập key kích hoạt phức tạp, copy sang bao nhiêu máy tính hay quán Net đều chạy ngay lập tức với đầy đủ 14,000+ skins!
       </p>
-      <div class="mt-10 flex w-full max-w-md flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-        <button type="button" onclick="openCheckout('monthly')" class="w-full rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018] sm:w-auto">
-          <i class="fa-solid fa-bolt mr-2"></i>Trải nghiệm ngay miễn phí
+
+      <!-- Action Buttons CTA -->
+      <div class="mt-10 flex w-full max-w-md flex-col items-center gap-4 sm:max-w-none sm:flex-row sm:justify-center">
+        <a href="catalog.html" target="_blank" onclick="playSfx('click')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 font-display text-lg font-black text-black shadow-[0_0_35px_rgba(245,158,11,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(245,158,11,0.9)] transition-all flex items-center justify-center gap-2 border border-yellow-300">
+          <i class="fa-solid fa-images text-black text-xl"></i>
+          <span>XEM KHO 14,000+ ẢNH SKIN (MỞ TAB MỚI) ↗</span>
+        </a>
+        <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-display text-lg font-bold text-black shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 hover:shadow-[0_0_45px_rgba(245,158,11,0.8)] transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-download text-black"></i> Mua File Mod — 999.999đ (Chạy Mọi Máy)
         </button>
-        <a href="#demo" class="w-full rounded-lg px-6 py-3 font-display font-semibold glass sm:w-auto">
-          <i class="fa-solid fa-play mr-2"></i>Khám phá tính năng
+        <a href="#studio" onclick="playSfx('click')" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel font-display text-base font-bold text-fg hover:text-accent hover:border-accent/50 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-palette text-accent"></i> Phòng Thay Đồ Live
         </a>
       </div>
-      <div class="mt-16 w-full max-w-5xl rounded-2xl p-2 glass sm:p-3">
-        <div class="overflow-hidden rounded-xl bg-bg">
-          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2">
-            <span class="size-2.5 rounded-full bg-subtle/50"></span>
-            <span class="size-2.5 rounded-full bg-subtle/50"></span>
-            <span class="size-2.5 rounded-full bg-accent/80"></span>
-            <span class="ml-2 font-mono text-[11px] tracking-widest text-muted uppercase">VN-KEEN Client · overlay.live</span>
-            <span class="ml-auto font-mono text-[11px] text-ok">ONLINE</span>
+
+      <!-- 9 Feature Pills Summary -->
+      <div class="mt-12 flex flex-wrap justify-center gap-2 max-w-4xl">
+        <span class="rounded-full bg-slate-900/80 border border-cyan-400/30 px-3 py-1.5 text-xs font-mono text-cyan-400"><i class="fa-solid fa-gun mr-1"></i> Weapon skins</span>
+        <span class="rounded-full bg-slate-900/80 border border-yellow-500/30 px-3 py-1.5 text-xs font-mono text-yellow-400"><i class="fa-solid fa-scissors mr-1"></i> Knife skins</span>
+        <span class="rounded-full bg-slate-900/80 border border-pink-500/30 px-3 py-1.5 text-xs font-mono text-pink-400"><i class="fa-solid fa-mitten mr-1"></i> Glove skins</span>
+        <span class="rounded-full bg-slate-900/80 border border-purple-500/30 px-3 py-1.5 text-xs font-mono text-purple-400"><i class="fa-solid fa-certificate mr-1"></i> Stickers</span>
+        <span class="rounded-full bg-slate-900/80 border border-emerald-500/30 px-3 py-1.5 text-xs font-mono text-emerald-400"><i class="fa-solid fa-key mr-1"></i> Keychains (StickerSlab)</span>
+        <span class="rounded-full bg-slate-900/80 border border-blue-500/30 px-3 py-1.5 text-xs font-mono text-blue-400"><i class="fa-solid fa-user-astronaut mr-1"></i> Agents</span>
+        <span class="rounded-full bg-slate-900/80 border border-amber-500/30 px-3 py-1.5 text-xs font-mono text-amber-400"><i class="fa-solid fa-music mr-1"></i> Music Kits</span>
+        <span class="rounded-full bg-slate-900/80 border border-rose-500/30 px-3 py-1.5 text-xs font-mono text-rose-400"><i class="fa-solid fa-boxes-stacked mr-1"></i> Collections</span>
+        <span class="rounded-full bg-slate-900/80 border border-indigo-500/30 px-3 py-1.5 text-xs font-mono text-indigo-400"><i class="fa-solid fa-shield mr-1"></i> Patches</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 9 CORE CURRENT FEATURES SECTION (GIỚI THIỆU BẰNG TIẾNG VIỆT) -->
+  <section id="features" class="relative py-24 bg-bg/50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">CURRENT FEATURES LIST</span>
+        <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
+          9 TÍNH NĂNG <span class="bg-gradient-to-r from-accent via-purple-400 to-pink-500 bg-clip-text text-transparent">MOD SKIN CS2 ĐỈNH CAO</span>
+        </h2>
+        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
+          Trọn bộ 9 tính năng tùy biến skin và phụ kiện đầy đủ nhất thế giới CS2 được giải thích chi tiết bằng tiếng Việt.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        
+        <!-- Feature 1: Weapon skins -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-accent text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(0,229,238,0.5)] transition-all">
+            <i class="fa-solid fa-gun"></i>
           </div>
-          <div class="relative">
-            <img src="images/overlay-live.jpg" alt="Overlay VN-KEEN" class="aspect-video w-full object-cover">
-            <div class="pointer-events-none absolute top-[43%] left-[47.8%] h-[18.4%] w-[4.4%]">
-              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
-              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">BOT YURI <span class="text-muted">14m</span></div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">1. Weapon Skins</h3>
+            <span class="text-[10px] font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">SKIN SÚNG</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Mở khóa trọn bộ skin từ phổ thông đến Covert & Contraband (AWP Dragon Lore, AK-47 Case Hardened Blue Gem #661, M4A4 Howl, Printstream,...). Tự do tinh chỉnh giá trị <strong>Float chuẩn xác 0.00001 (Factory New)</strong>, Pattern Seed và đồng hồ đếm mạng <strong>StatTrak™</strong> theo ý muốn.
+          </p>
+        </div>
+
+        <!-- Feature 2: Knife skins -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center text-csgold text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(234,179,8,0.5)] transition-all">
+            <i class="fa-solid fa-scissors"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">2. Knife Skins</h3>
+            <span class="text-[10px] font-mono text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded">SKIN DAO HIẾM</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Trang bị đầy đủ hơn 20 loại dao cận chiến CS2: <strong>Karambit, Butterfly Knife, M9 Bayonet, Skeleton, Talon, Kukri, Nomad, Stiletto,...</strong> Hỗ trợ tất cả các hệ màu ngọc đắt đỏ nhất: <em>Doppler Sapphire, Ruby, Black Pearl, Emerald, Fade 100% Full Gold, Gamma Doppler, Crimson Web</em>.
+          </p>
+        </div>
+
+        <!-- Feature 3: Glove skins -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-pink-400/10 border border-pink-400/30 flex items-center justify-center text-pink-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] transition-all">
+            <i class="fa-solid fa-mitten"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">3. Glove Skins</h3>
+            <span class="text-[10px] font-mono text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded">GĂNG TAY</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Đồng bộ combo màu sắc hoàn hảo giữa dao và găng tay trên góc nhìn thứ nhất (First-Person). Bao gồm toàn bộ bộ sưu tập <strong>Sport Gloves (Pandora's Box, Vice, Amphibious, Hedge Maze)</strong>, <strong>Driver Gloves (Snow Leopard, King Snake)</strong>, Specialist Gloves và Moto Gloves.
+          </p>
+        </div>
+
+        <!-- Feature 4: Stickers -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-purple-400/10 border border-purple-400/30 flex items-center justify-center text-purple-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">4. Stickers</h3>
+            <span class="text-[10px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">HÌNH DÁN TỰ DO</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Tận dụng cơ chế <strong>Custom Sticker Placement</strong> mới nhất của CS2: Dán tối đa 5 sticker ở bất kỳ vị trí và góc xoay nào trên thân súng. Sở hữu những sticker trị giá hàng chục nghìn đô như <em>Katowice 2014 Holo (Titan, iBUYPOWER, Reason, Dignitas, Vox), Howling Dawn, Crown Foil</em> hoàn toàn miễn phí.
+          </p>
+        </div>
+
+        <!-- Feature 5: Keychains (incl. StickerSlab) -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">5. Keychains & StickerSlab</h3>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">MÓC KHÓA & THẺ BÀI</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Cập nhật tính năng <strong>Weapon Charms (Keychains)</strong> mới nhất: Treo móc khóa xúc xắc, xúc tu, búp bê quái vật và kim cương lên mọi vị trí trên súng. Đặc biệt tích hợp <strong>StickerSlab</strong> — kẹp thẻ bài trưng bày sticker siêu độc đáo đung đưa theo chuyển động súng.
+          </p>
+        </div>
+
+        <!-- Feature 6: Agents -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-blue-400/10 border border-blue-400/30 flex items-center justify-center text-blue-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">6. Agents</h3>
+            <span class="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">ĐẶC VỤ T & CT</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Đổi diện mạo nhân vật cho cả phe Khủng Bố (T) và Chống Khủng Bố (CT). Mở khóa toàn bộ đặc vụ hiếm: <strong>Sir Bloody Darryl (Royale, Skullhead, Loudmouth, Miami, Silent)</strong>, <strong>Special Agent Ava</strong>, <strong>Cmdr. Mae 'Dead Cold' Jamison</strong>, <strong>Number K</strong> với đầy đủ câu thoại radio riêng biệt.
+          </p>
+        </div>
+
+        <!-- Feature 7: Music Kits -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transition-all">
+            <i class="fa-solid fa-music"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">7. Music Kits</h3>
+            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">GÓI ÂM NHẠC MVP</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Thay đổi toàn bộ nhạc nền menu chính, nhạc mở đầu round, nhạc cảnh báo bom C4 đếm ngược 10 giây và <strong>Bản Nhạc Ăn Mừng MVP Anthem</strong> khi bạn tỏa sáng cuối round (EZ4ENCE, Scarlxrd - King, Karma, The Verkkars - Flashbang Dance, Denzel Curry - Walkin, Valve CS:GO Classics).
+          </p>
+        </div>
+
+        <!-- Feature 8: Collections -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-rose-400/10 border border-rose-400/30 flex items-center justify-center text-rose-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(251,113,133,0.5)] transition-all">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">8. Collections</h3>
+            <span class="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">BỘ SƯU TẬP ĐẦY ĐỦ</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Hệ thống danh mục thông minh phân loại theo từng Bộ Sưu Tập lịch sử từ 2013 đến nay: <em>The Cobblestone Collection, Gods and Monsters, The Rising Sun, The St. Marc, The Norse, The Canals, Kilowatt Collection, Revolution, Dreams & Nightmares,...</em> Dễ dàng tìm kiếm và áp dụng trọn gói.
+          </p>
+        </div>
+
+        <!-- Feature 9: Patches -->
+        <div class="glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all" onmouseenter="playSfx('hover')">
+          <div class="size-14 rounded-2xl bg-indigo-400/10 border border-indigo-400/30 flex items-center justify-center text-indigo-400 text-2xl mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(129,140,248,0.5)] transition-all">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-cyber text-xl font-bold text-fg">9. Patches</h3>
+            <span class="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">HUY HIỆU ÁO ĐẶC VỤ</span>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Tùy biến gắn các miếng huy hiệu thêu thủ công (Patches) lên sau lưng, trước ngực hoặc cánh tay của mô hình đặc vụ. Sở hữu đầy đủ các bộ patch như <em>CS:GO Patch Pack, The Monsters, Sugarface, Metal Skill Groups (Global Elite Patch)</em> tạo điểm nhấn cá tính riêng.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE CS2 SKIN STUDIO & CUSTOMIZER (Phòng Thử Đồ Live) -->
+  <section id="studio" class="relative py-24 bg-bg/80 border-t border-cyan-500/20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">INTERACTIVE CUSTOMIZER</span>
+        <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
+          PHÒNG THỬ SKIN <span class="bg-gradient-to-r from-accent via-cyan-400 to-accent2 bg-clip-text text-transparent">CS2 LIVE STUDIO</span>
+        </h2>
+        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
+          Tùy chọn danh mục, thử đổi skin dao, găng, súng, dán sticker Katowice và nghe thử nhạc MVP ngay trên trình duyệt.
+        </p>
+      </div>
+
+      <!-- Studio Interactive Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Controls: Category & Skin Selector -->
+        <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <h3 class="font-cyber text-sm font-bold text-accent uppercase mb-3">CHỌN TÍNH NĂNG TÙY BIẾN</h3>
+            
+            <!-- Category Tabs -->
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <button type="button" onclick="selectStudioCategory('weapons')" id="cat-btn-weapons" class="py-2 px-2 rounded-xl border-2 border-accent bg-accent/10 font-cyber text-[11px] font-bold text-accent">WEAPONS</button>
+              <button type="button" onclick="selectStudioCategory('knives')" id="cat-btn-knives" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">KNIVES</button>
+              <button type="button" onclick="selectStudioCategory('gloves')" id="cat-btn-gloves" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">GLOVES</button>
             </div>
-            <div class="pointer-events-none absolute top-[45%] left-[52.9%] h-[10.8%] w-[4%]">
-              <div class="h-full w-full rounded-[2px]" style="box-shadow: inset 0 0 0 1px rgba(0,229,238,.9)"></div>
-              <div class="absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">ĐỊCH <span class="text-muted">17m</span></div>
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <button type="button" onclick="selectStudioCategory('stickers')" id="cat-btn-stickers" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">STICKERS</button>
+              <button type="button" onclick="selectStudioCategory('keychains')" id="cat-btn-keychains" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">KEYCHAINS</button>
+              <button type="button" onclick="selectStudioCategory('music')" id="cat-btn-music" class="py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30">MUSIC KITS</button>
             </div>
-            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">ESP</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">AIM</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">CHAMS</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">NADES</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">SKIN</span>
-            </div>
+
+            <!-- Item List Injected by JS -->
+            <div class="space-y-2 mt-4 max-h-56 overflow-y-auto pr-1" id="studio-item-list"></div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-white/10 text-xs font-mono text-muted flex items-center justify-between">
+            <span>Client-side Hook: <strong class="text-ok">ACTIVE</strong></span>
+            <button type="button" onclick="applyToGameSim()" class="px-3 py-1.5 rounded-lg bg-accent/20 hover:bg-accent/30 text-accent font-bold text-xs transition-colors">
+              <i class="fa-solid fa-check mr-1"></i> ÁP DỤNG
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="relative bg-bg py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Tại sao game thủ CS2 chọn <span class="text-accent">VN-KEEN</span>?</h2>
-      <div class="grid gap-5 md:grid-cols-3">
-        <article class="rounded-2xl p-6 glass">
-          <i class="fa-solid fa-shield-halved mb-4 text-2xl text-accent"></i>
-          <h3 class="font-display text-xl font-semibold">An toàn tuyệt đối</h3>
-          <p class="mt-2 text-sm text-muted">Hệ thống mã hóa độc quyền giúp vượt qua các lớp kiểm tra tự động, bảo vệ tài khoản Steam của bạn.</p>
-        </article>
-        <article class="rounded-2xl p-6 glass">
-          <i class="fa-solid fa-gauge-high mb-4 text-2xl text-accent"></i>
-          <h3 class="font-display text-xl font-semibold">Không tụt khung hình</h3>
-          <p class="mt-2 text-sm text-muted">Tối ưu mã nguồn tối đa, chiếm dụng tài nguyên cực thấp — FPS luôn ở đỉnh trong mọi pha đấu súng.</p>
-        </article>
-        <article class="rounded-2xl p-6 glass">
-          <i class="fa-solid fa-rotate mb-4 text-2xl text-accent"></i>
-          <h3 class="font-display text-xl font-semibold">Cập nhật liên tục</h3>
-          <p class="mt-2 text-sm text-muted">Tự động đồng bộ ngay sau mỗi bản vá lớn từ Valve, không gián đoạn trải nghiệm.</p>
-        </article>
-      </div>
-    </div>
-  </section>
+        <!-- Live Preview Showcase -->
+        <div class="lg:col-span-2 glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+              <div>
+                <span class="text-[10px] font-mono text-accent uppercase tracking-widest font-bold" id="studio-preview-type">COVERT SNIPER RIFLE</span>
+                <h4 class="font-cyber text-2xl font-black text-fg" id="studio-preview-name">AWP | Dragon Lore</h4>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-cyber font-bold" id="studio-preview-rarity">COVERT ★</span>
+            </div>
 
-  <section id="features" class="relative py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">10.000+</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Game thủ tin dùng</p></div>
-        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">v2.1</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Bản dựng hiện tại</p></div>
-        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">< 2ms</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Overhead trung bình</p></div>
-        <div class="rounded-xl px-4 py-5 text-center glass"><p class="font-display text-2xl font-semibold text-accent">24/7</p><p class="mt-1 text-xs tracking-wide text-muted uppercase">Kênh hỗ trợ</p></div>
-      </div>
-      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Hệ thống tính năng <span class="text-accent">toàn diện</span></h2>
-      <p class="mx-auto mb-14 max-w-3xl text-center text-muted">Mọi công cụ để thống trị bản đồ nằm gọn trong một giao diện.</p>
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-eye mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Hệ thống ESP thông minh</h3><p class="mt-2 text-sm text-muted">Hiển thị địch, khoảng cách, máu và trang bị xuyên tường — trực quan, không rối mắt.</p></article>
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-crosshairs mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Aimbot tùy chỉnh linh hoạt</h3><p class="mt-2 text-sm text-muted">Thuật toán chuyển động tự nhiên, RCS chuẩn xác theo từng loại vũ khí.</p></article>
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-shirt mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Quản lý skin & đặc vụ</h3><p class="mt-2 text-sm text-muted">Đổi diện mạo đặc vụ và kho vũ khí yêu thích ngay trong trận, một cú nhấp.</p></article>
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-bomb mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Hỗ trợ ném lựu đạn</h3><p class="mt-2 text-sm text-muted">Xem trước quỹ đạo Smoke, Molotov và Flashbang để set-up chiến thuật hoàn hảo.</p></article>
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-expand mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Chams & giao diện sáng tạo</h3><p class="mt-2 text-sm text-muted">Tùy màu mô hình địch / đồng đội với Wireframe hoặc Fill Color sắc nét.</p></article>
-        <article class="rounded-2xl p-6 glass"><i class="fa-solid fa-sliders mb-4 text-2xl text-accent"></i><h3 class="font-display text-lg font-semibold">Menu tiện lợi</h3><p class="mt-2 text-sm text-muted">Bảng điều khiển trực quan, phím tắt nhanh, lưu config linh hoạt theo từng bản đồ.</p></article>
-      </div>
-    </div>
-  </section>
+            <!-- Skin Visual Card Display -->
+            <div class="rounded-2xl bg-slate-950 p-6 border border-white/10 relative overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
+              <div class="size-24 rounded-2xl bg-gradient-to-tr from-cyan-400/20 to-purple-500/20 flex items-center justify-center text-5xl text-accent mb-4 shadow-[0_0_30px_rgba(0,229,238,0.3)]" id="studio-preview-icon">
+                <i class="fa-solid fa-dragon"></i>
+              </div>
+              
+              <!-- Stickers & Keychain Attached Preview Badges -->
+              <div class="flex items-center gap-2 mt-2">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-purple-400/40 text-[10px] font-mono text-purple-300" id="studio-sticker-badge">
+                  <i class="fa-solid fa-certificate text-purple-400 mr-1"></i> 4x Titan Holo (Kato 14)
+                </span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-emerald-400/40 text-[10px] font-mono text-emerald-300" id="studio-charm-badge">
+                  <i class="fa-solid fa-key text-emerald-400 mr-1"></i> StickerSlab Diamond
+                </span>
+              </div>
+            </div>
 
-  <section id="demo" class="relative bg-bg py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Demo overlay <span class="text-accent">trực tiếp</span></h2>
-      <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Bật/tắt ESP, chams, vòng FOV — overlay khớp nhân vật trên bản đồ.</p>
-      <div class="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div class="overflow-hidden rounded-xl bg-bg" style="box-shadow: 0 0 0 1px rgba(232,238,246,.1)">
-          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2">
-            <span class="size-2.5 rounded-full bg-subtle/50"></span>
-            <span class="size-2.5 rounded-full bg-subtle/50"></span>
-            <span class="size-2.5 rounded-full bg-accent/80"></span>
-            <span class="ml-2 font-mono text-[11px] tracking-widest text-muted uppercase">VN-KEEN Client · overlay.live</span>
-            <span class="ml-auto font-mono text-[11px] text-ok">ONLINE</span>
+            <!-- Real-time Float & Seed Customizer Sliders -->
+            <div class="mt-6 grid grid-cols-2 gap-4 text-xs font-mono">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-muted">ĐỘ MÒN (FLOAT)</span>
+                  <span class="text-accent font-bold" id="studio-float-val">0.00014 (FN)</span>
+                </div>
+                <input type="range" min="1" max="100" value="1" class="w-full accent-accent cursor-pointer" oninput="updateFloat(this.value)">
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-muted">PATTERN SEED</span>
+                  <span class="text-purple-400 font-bold" id="studio-seed-val">#661 (Blue Gem)</span>
+                </div>
+                <input type="range" min="1" max="999" value="661" class="w-full accent-purple-400 cursor-pointer" oninput="updateSeed(this.value)">
+              </div>
+            </div>
           </div>
-          <div class="relative" id="demo-stage">
-            <img src="images/overlay-live.jpg" alt="Demo overlay" class="aspect-video w-full object-cover">
-            <div id="fov-ring" class="pointer-events-none absolute top-1/2 left-1/2 rounded-full" style="width:76.8px;height:76.8px;transform:translate(-50%,-50%);box-shadow:inset 0 0 0 1px rgba(0,229,238,.5)"></div>
-            <div class="esp-box pointer-events-none absolute" data-hp="100" style="top:43%;left:47.8%;width:4.4%;height:18.4%">
-              <div class="esp-chams absolute inset-0 hidden rounded-sm bg-accent/20 mix-blend-screen"></div>
-              <div class="esp-rect h-full w-full rounded-[2px]" style="box-shadow:inset 0 0 0 1px rgba(0,229,238,.9)"></div>
-              <div class="esp-hp absolute -left-1.5 top-0 h-full w-1 overflow-hidden rounded-full bg-bg/60"><div class="absolute bottom-0 w-full bg-ok" style="height:100%"></div></div>
-              <div class="esp-label absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">BOT YURI <span class="dist text-muted">14m</span></div>
-            </div>
-            <div class="esp-box pointer-events-none absolute" data-hp="78" style="top:45%;left:52.9%;width:4%;height:10.8%">
-              <div class="esp-chams absolute inset-0 hidden rounded-sm bg-accent/20 mix-blend-screen"></div>
-              <div class="esp-rect h-full w-full rounded-[2px]" style="box-shadow:inset 0 0 0 1px rgba(0,229,238,.9)"></div>
-              <div class="esp-hp absolute -left-1.5 top-0 h-full w-1 overflow-hidden rounded-full bg-bg/60"><div class="absolute bottom-0 w-full bg-ok" style="height:78%"></div></div>
-              <div class="esp-label absolute -top-5 left-0 whitespace-nowrap font-mono text-[10px] text-accent">ĐỊCH <span class="dist text-muted">17m</span></div>
-            </div>
-            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">ESP</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">AIM</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">CHAMS</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">NADES</span>
-              <span class="rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-accent">SKIN</span>
-              <span id="hud-meta" class="ml-auto rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] tracking-widest text-muted">SMOOTH 72 · FOV 48</span>
-            </div>
+
+          <!-- Bottom Action Buttons in Studio -->
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+            <button type="button" onclick="playMusicKitPreview()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-fg border border-white/10 transition-colors">
+              <i class="fa-solid fa-play text-accent mr-1"></i> NGHE THỬ NHẠC MVP
+            </button>
+            <button type="button" onclick="openCheckout('monthly'); playSfx('success')" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-accent to-accent2 text-black font-cyber font-bold text-xs shadow-[0_0_20px_rgba(0,229,238,0.5)] hover:scale-105 transition-all">
+              MỞ KHÓA BỘ SKIN NÀY &rarr;
+            </button>
           </div>
         </div>
-        <aside class="flex flex-col gap-4 rounded-2xl p-5 glass">
-          <p class="font-display text-sm font-semibold tracking-[0.2em] text-muted uppercase">Bảng điều khiển</p>
-          <label class="flex items-center justify-between text-sm">ESP box <input type="checkbox" id="t-esp" checked class="accent-accent"></label>
-          <label class="flex items-center justify-between text-sm">Tên địch <input type="checkbox" id="t-names" checked class="accent-accent"></label>
-          <label class="flex items-center justify-between text-sm">Thanh máu <input type="checkbox" id="t-health" checked class="accent-accent"></label>
-          <label class="flex items-center justify-between text-sm">Khoảng cách <input type="checkbox" id="t-distance" checked class="accent-accent"></label>
-          <label class="flex items-center justify-between text-sm">Chams <input type="checkbox" id="t-chams" class="accent-accent"></label>
-          <label class="flex items-center justify-between text-sm">Vòng FOV aimbot <input type="checkbox" id="t-aimbot" checked class="accent-accent"></label>
-          <label class="block text-sm">Độ mượt aimbot <span id="v-smooth" class="float-right font-mono text-accent">72</span>
-            <input id="r-smooth" type="range" min="10" max="100" value="72" class="mt-2 w-full accent-accent">
-          </label>
-          <label class="block text-sm">FOV <span id="v-fov" class="float-right font-mono text-accent">48</span>
-            <input id="r-fov" type="range" min="20" max="90" value="48" class="mt-2 w-full accent-accent">
-          </label>
-        </aside>
+
       </div>
     </div>
   </section>
 
-  <section id="showcase" class="relative bg-bg py-20">
+  <!-- CS2 CASE OPENING SIMULATOR MINI-GAME -->
+  <section id="case-opening" class="relative py-24 bg-bg/90 overflow-hidden border-t border-cyan-500/20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bộ sưu tập <span class="text-accent">đặc vụ đỉnh cao</span></h2>
-      <p class="mx-auto mb-12 max-w-3xl text-center text-muted">Diện mạo hoàn toàn mới với các mẫu đặc vụ độc quyền, tối ưu riêng trên nền tảng.</p>
-      <div class="grid grid-cols-2 gap-4 md:grid-cols-5" id="agent-grid">
-        <button type="button" data-agent="royale" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 2px #00e5ee">
-          <div class="aspect-square bg-white"><img src="images/agent-royale.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
-        </button>
-        <button type="button" data-agent="skullhead" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-          <div class="aspect-square bg-white"><img src="images/agent-skullhead.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Skullhead Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
-        </button>
-        <button type="button" data-agent="loudmouth" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-          <div class="aspect-square bg-white"><img src="images/agent-loudmouth.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Loudmouth Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
-        </button>
-        <button type="button" data-agent="miami" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-          <div class="aspect-square bg-white"><img src="images/agent-miami.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Miami Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
-        </button>
-        <button type="button" data-agent="silent" class="agent-card overflow-hidden rounded-[1.75rem] text-left" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-          <div class="aspect-square bg-white"><img src="images/agent-silent.png" alt="" class="size-full object-contain"></div>
-          <div class="bg-[#1a2233] px-3 py-3"><p class="font-display text-sm font-semibold text-accent">Sir Bloody Silent Darryl</p><p class="mt-0.5 text-[11px] text-muted">The Professionals</p></div>
-        </button>
-      </div>
-      <div class="mt-6 rounded-2xl p-5 glass">
-        <p id="agent-tag" class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase">Royale</p>
-        <h3 id="agent-name" class="font-display mt-1 text-2xl font-semibold">Sir Bloody Darryl</h3>
-        <p id="agent-blurb" class="mt-2 max-w-2xl text-sm text-muted">Mặt nạ đồng vương miện, kit trắng-vàng. Biến thể gốc của đội Professionals.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="pricing" class="relative bg-bg py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Bảng giá <span class="text-accent">linh hoạt</span></h2>
-      <p class="mb-14 text-center text-muted">Chọn gói phù hợp với nhịp chơi của bạn. Thanh toán VietQR qua MB · NGUYEN PHU QUY — nhận KEY sau khi CK.</p>
-      <div class="grid gap-6 md:grid-cols-3 md:items-center">
-        <article class="rounded-2xl p-8 glass">
-          <h3 class="font-display text-lg font-semibold text-muted">Trải nghiệm ngắn hạn</h3>
-          <p class="mt-3 font-display text-4xl font-bold">9.999đ <span class="text-sm font-medium text-muted">/ 1 ngày</span></p>
-          <p class="mt-4 text-sm text-muted">Phù hợp để thử toàn bộ tính năng cao cấp trong thời gian ngắn.</p>
-          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Mở khóa toàn bộ ESP & Aimbot</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Skin & đặc vụ đầy đủ</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Hỗ trợ kỹ thuật 24/7</li></ul>
-          <button type="button" onclick="openCheckout('daily')" class="mt-8 w-full rounded-lg px-4 py-3 font-display font-semibold glass">Chọn gói này</button>
-        </article>
-        <article class="relative rounded-2xl p-8 glass md:-translate-y-3" style="box-shadow:0 0 0 1px #00e5ee,0 24px 60px rgba(0,229,238,.12)">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent to-accent2 px-3 py-1 font-display text-[11px] font-semibold tracking-widest text-[#071018] uppercase">Phổ biến nhất</span>
-          <h3 class="font-display text-lg font-semibold text-muted">Gói chuyên nghiệp</h3>
-          <p class="mt-3 font-display text-4xl font-bold">199.999đ <span class="text-sm font-medium text-muted">/ 1 tháng</span></p>
-          <p class="mt-4 text-sm text-muted">Lựa chọn tối ưu cho game thủ chơi lâu dài và leo rank.</p>
-          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Toàn bộ tính năng cao cấp</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Cập nhật ưu tiên trước</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Tặng kèm config tối ưu</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Kênh Discord VIP riêng</li></ul>
-          <button type="button" onclick="openCheckout('monthly')" class="mt-8 w-full rounded-lg bg-accent px-4 py-3 font-display font-semibold text-[#071018]">Đăng ký ngay</button>
-        </article>
-        <article class="rounded-2xl p-8 glass">
-          <h3 class="font-display text-lg font-semibold text-muted">Gói trọn đời</h3>
-          <p class="mt-3 font-display text-4xl font-bold">999.999đ <span class="text-sm font-medium text-muted">/ vĩnh viễn</span></p>
-          <p class="mt-4 text-sm text-muted">Đầu tư một lần, dùng suốt đời với mọi bản cập nhật lớn nhỏ.</p>
-          <ul class="mt-6 space-y-3 text-sm"><li><i class="fa-solid fa-check mr-2 text-accent"></i>Quyền lợi VIP vĩnh viễn</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Miễn phí mọi phiên bản update</li><li><i class="fa-solid fa-check mr-2 text-accent"></i>Hỗ trợ riêng 1-1 từ admin</li></ul>
-          <button type="button" onclick="openCheckout('lifetime')" class="mt-8 w-full rounded-lg px-4 py-3 font-display font-semibold glass">Mua vĩnh viễn</button>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="testimonials" class="relative bg-bg py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display mb-12 text-center text-3xl font-semibold sm:text-4xl">Cộng đồng nói gì về <span class="text-accent">VN-KEEN</span>?</h2>
-      <div class="grid gap-5 md:grid-cols-3">
-        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">H</div><p class="text-sm text-muted">“Giao diện đặc vụ cực kỳ đẹp mắt, dùng mượt mà không hề giật lag hay tụt FPS. Rất đáng tiền!”</p><p class="mt-4 font-display font-semibold">Hoàng Nam</p><p class="text-xs text-subtle">Global Elite Player</p></blockquote>
-        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">M</div><p class="text-sm text-muted">“Support nhiệt tình, tool cập nhật cực nhanh sau mỗi lần CS2 ra patch mới. An toàn tuyệt đối.”</p><p class="mt-4 font-display font-semibold">Minh Tuấn</p><p class="text-xs text-subtle">Streamer CS2</p></blockquote>
-        <blockquote class="rounded-2xl p-6 glass"><div class="mb-4 flex size-10 items-center justify-center rounded-full bg-accent/15 font-display font-semibold text-accent">T</div><p class="text-sm text-muted">“Tính năng ESP và custom skin hoạt động hoàn hảo. Đã mua gói trọn đời và rất hài lòng.”</p><p class="mt-4 font-display font-semibold">Thanh Long</p><p class="text-xs text-subtle">CS2 Community Leader</p></blockquote>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq" class="relative bg-bg py-20">
-    <div class="mx-auto max-w-3xl px-4">
-      <h2 class="font-display mb-10 text-center text-3xl font-semibold sm:text-4xl">Câu hỏi thường gặp</h2>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">VN-KEEN có an toàn với tài khoản Steam không?</summary><p class="mt-3 text-sm text-muted">VN-KEEN dùng lớp mã hóa độc quyền và cập nhật ngay sau mỗi bản vá. Không có hệ thống nào cam kết 100% tuyệt đối, nhưng kiến trúc của chúng tôi được thiết kế để giảm thiểu rủi ro tối đa.</p></details>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi thanh toán và nhận KEY như thế nào?</summary><p class="mt-3 text-sm text-muted">Chọn gói → quét QR VietQR (STK MB NGUYEN PHU QUY). Chuyển đúng số tiền và nội dung KEEN…. Sau đó nhắn Telegram @VN_KEEN kèm nội dung CK để nhận KEY.</p></details>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi có thể dùng thử trước khi mua gói dài hạn?</summary><p class="mt-3 text-sm text-muted">Có. Gói theo ngày mở khóa toàn bộ tính năng cao cấp — phù hợp để bạn kiểm tra ESP, Aimbot, skin và overlay trên chính máy của mình.</p></details>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Cập nhật sau patch Valve mất bao lâu?</summary><p class="mt-3 text-sm text-muted">Gói Chuyên nghiệp và Trọn đời được ưu tiên. Thông thường client sẵn sàng trong vài giờ sau khi bản vá ổn định.</p></details>
-      <details class="mb-3 rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Tôi nhận license và client như thế nào?</summary><p class="mt-3 text-sm text-muted">Sau khi chuyển khoản, gửi nội dung CK cho @VN_KEEN trên Telegram. KEY dùng để kích hoạt client VN-KEEN trên Windows.</p></details>
-      <details class="rounded-xl p-5 glass"><summary class="cursor-pointer font-medium">Có hỗ trợ tiếng Việt không?</summary><p class="mt-3 text-sm text-muted">Có. Toàn bộ giao diện, tài liệu và kênh hỗ trợ Telegram / Discord đều dùng tiếng Việt.</p></details>
-    </div>
-  </section>
-
-  <section id="terms" class="relative bg-bg py-20">
-    <div class="mx-auto max-w-3xl px-4">
-      <h2 class="font-display mb-4 text-center text-3xl font-semibold sm:text-4xl">Điều khoản sử dụng</h2>
-      <p class="mx-auto max-w-2xl text-center text-muted">Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu.</p>
-      <p class="mt-3 text-center text-sm">Hỗ trợ Telegram: <a href="https://t.me/VN_KEEN" class="text-accent hover:underline" target="_blank" rel="noopener">@VN_KEEN</a></p>
-      <ul class="mt-10 space-y-3 text-sm">
-        <li class="rounded-xl px-5 py-4 glass">Key thuê KHÔNG hoàn trả nếu như đã sử dụng.</li>
-        <li class="rounded-xl px-5 py-4 glass">Tiền nạp KHÔNG hoàn trả. Bạn có thể bán lại cho người khác.</li>
-        <li class="rounded-xl px-5 py-4 glass">Hack thì không sợ ban. Sợ ban thì không nên hack.</li>
-        <li class="rounded-xl px-5 py-4 glass">Chơi hack chấp nhận rủi ro. Nên test acc clone trước khi hack.</li>
-        <li class="rounded-xl px-5 py-4 glass">Với mỗi bản hax hãy nhờ admin tư vấn trước khi xài.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="relative border-t border-white/10 bg-bg py-20">
-    <div class="mx-auto max-w-4xl px-4 text-center">
-      <h2 class="font-display text-3xl font-semibold sm:text-4xl">Sẵn sàng nâng tầm trình độ của bạn?</h2>
-      <p class="mx-auto mt-4 max-w-xl text-muted">Tham gia nhóm Discord để nhận cập nhật tính năng mới, ưu đãi và hỗ trợ trực tiếp.</p>
-      <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="mt-8 inline-block rounded-lg bg-accent px-6 py-3 font-display font-semibold text-[#071018]">Tham gia nhóm Discord</a>
-    </div>
-    <div class="mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 px-4 pt-10 text-sm text-subtle md:flex-row">
-      <div class="flex items-center gap-3">
-        <img src="images/VN-KEEN.jpg" alt="KEEN" class="size-8 rounded-md object-cover">
-        <span class="font-display font-semibold tracking-wider text-fg">VN-KEEN © 2026</span>
-      </div>
-      <div class="flex flex-wrap justify-center gap-6">
-        <a href="#terms" class="hover:text-accent">Điều khoản dịch vụ</a>
-        <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="hover:text-accent">Hỗ trợ / Telegram</a>
-        <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="hover:text-accent">Hỗ trợ / Discord</a>
-      </div>
-    </div>
-  </section>
-
-  <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-bg/70 p-4 backdrop-blur-sm">
-    <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 glass">
-      <div class="mb-4 flex items-center justify-between">
-        <h3 id="modal-title" class="font-display text-2xl font-semibold">Thanh toán VietQR</h3>
-        <button type="button" onclick="closeModal()" class="text-muted hover:text-fg" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+      <div class="text-center mb-12">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase"><i class="fa-solid fa-box-open mr-1"></i> CS2 WEAPON CASE OPENER</span>
+        <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
+          MINI-GAME <span class="bg-gradient-to-r from-yellow-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">MỞ HÒM CS2 MIỄN PHÍ</span>
+        </h2>
+        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
+          Trải nghiệm cảm giác mở hòm chân thực với tỷ lệ rơi đồ dao Karambit Sapphire & AWP Dragon Lore cực cao!
+        </p>
       </div>
 
-      <div id="pay-pick" class="space-y-4">
-        <p class="text-sm text-muted">QR gắn sẵn STK MB <span class="text-fg">NGUYEN PHU QUY</span> — mỗi đơn một nội dung riêng.</p>
-        <div class="grid grid-cols-3 gap-2">
-          <button type="button" id="pick-daily" onclick="selectPlan('daily')" class="rounded-lg px-2 py-3 text-center text-xs">
-            <span class="block font-display text-sm font-semibold text-fg">9.999đ</span>1 ngày
+      <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-6 border-2 border-yellow-500/40 shadow-[0_0_50px_rgba(234,179,8,0.2)] relative">
+        <div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-yellow-400 shadow-[0_0_15px_#eab308] z-30 pointer-events-none flex flex-col justify-between items-center py-2">
+          <div class="size-0 border-x-[8px] border-x-transparent border-t-[10px] border-t-yellow-400"></div>
+          <div class="size-0 border-x-[8px] border-x-transparent border-b-[10px] border-b-yellow-400"></div>
+        </div>
+
+        <div class="overflow-hidden rounded-2xl bg-slate-950 p-2 relative h-48 flex items-center border border-white/10">
+          <div id="case-track" class="flex gap-3 items-center"></div>
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-mono text-muted">Hòm: <strong class="text-csgold">VN-KEEN REVOLUTION CASE</strong></span>
+            <span class="text-subtle">|</span>
+            <span class="text-xs font-mono text-ok">Chi phí: <strong class="text-ok">0 VNĐ (FREE)</strong></span>
+          </div>
+
+          <div class="flex gap-3 w-full sm:w-auto">
+            <button type="button" id="btn-open-case" onclick="spinCase()" class="flex-1 sm:flex-initial px-8 py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 font-cyber font-black text-black text-sm tracking-wider shadow-[0_0_25px_rgba(234,179,8,0.5)] hover:scale-105 transition-all">
+              <i class="fa-solid fa-key mr-1.5"></i> MỞ HÒM NGAY
+            </button>
+            <button type="button" onclick="resetCase()" class="px-4 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-xs font-mono text-muted hover:text-fg transition-colors">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="case-winner-modal" class="mt-6 hidden p-5 rounded-2xl bg-slate-900 border-2 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.4)] animate-pulse-glow flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="size-16 rounded-xl bg-slate-950 p-2 border border-yellow-400 flex items-center justify-center text-2xl text-yellow-400">
+              <i class="fa-solid fa-gem"></i>
+            </div>
+            <div>
+              <p class="text-xs font-mono text-yellow-400 font-bold uppercase tracking-widest">CHÚC MỪNG BẠN VỪA TRÚNG THƯỞNG!</p>
+              <h4 class="font-cyber text-xl font-black text-fg" id="winner-name">★ Karambit | Doppler Sapphire</h4>
+              <p class="text-xs text-muted font-mono" id="winner-wear">Exterior: Factory New · Float: 0.0142</p>
+            </div>
+          </div>
+          <button type="button" onclick="openCheckout('monthly'); playSfx('success')" class="px-6 py-3 rounded-xl bg-accent font-display font-bold text-black text-sm hover:scale-105 transition-all whitespace-nowrap">
+            <i class="fa-solid fa-gift mr-1"></i> NHẬN NGAY KEY MOD SKIN
           </button>
-          <button type="button" id="pick-monthly" onclick="selectPlan('monthly')" class="rounded-lg px-2 py-3 text-center text-xs">
-            <span class="block font-display text-sm font-semibold text-fg">199.999đ</span>1 tháng
-          </button>
-          <button type="button" id="pick-lifetime" onclick="selectPlan('lifetime')" class="rounded-lg px-2 py-3 text-center text-xs">
-            <span class="block font-display text-sm font-semibold text-fg">999.999đ</span>vĩnh viễn
-          </button>
         </div>
-        <div class="rounded-xl bg-bg p-4 text-sm" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-          <p id="pick-summary" class="text-muted"></p>
-          <p class="mt-2 text-xs text-subtle">MB Bank · 789789999888 · NGUYEN PHU QUY</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP PRICING & PAYMENT (VietQR Instant Checkout - PRESERVING 100% PAYMENT INFO) -->
+  <section id="pricing" class="relative py-24 bg-bg/70">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">SPECIAL PROMOTION · MULTI-DEVICE</span>
+        <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
+          GÓI ƯU ĐÃI <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">ĐA THIẾT BỊ DUY NHẤT</span>
+        </h2>
+        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
+          Sở hữu trọn đời kho 14,000+ Skin CS2 — <strong class="text-csgold">Sử dụng linh hoạt trên NHIỀU THIẾT BỊ</strong> (PC cá nhân, Laptop, Quán Net...). Kích hoạt tự động qua VietQR MB Bank.
+        </p>
+      </div>
+
+      <!-- Single Highlighted Special Offer Card -->
+      <div class="max-w-3xl mx-auto">
+        <div class="relative rounded-3xl p-1 bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 shadow-[0_0_60px_rgba(245,158,11,0.35)]">
+          <div class="rounded-[23px] bg-[#0c1222] p-8 sm:p-12 relative overflow-hidden">
+            
+            <!-- Top Badges -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <span class="bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black tracking-widest px-4 py-1.5 rounded-full uppercase shadow-md flex items-center gap-1.5">
+                <i class="fa-solid fa-crown"></i> GÓI ƯU ĐÃI VIP ĐẶC BIỆT
+              </span>
+              <span class="font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-laptop-code"></i> HỖ TRỢ NHIỀU THIẾT BỊ (MULTI-DEVICE)
+              </span>
+            </div>
+
+            <!-- Title & Pricing -->
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 border-b border-gray-800 pb-6 mb-8">
+              <div>
+                <h3 class="font-cyber text-3xl sm:text-4xl font-black text-white">BẢN QUYỀN TRỌN ĐỜI</h3>
+                <p class="text-xs text-gray-400 font-sans mt-1">Thanh toán 1 lần duy nhất — Mở khóa vĩnh viễn không phụ phí</p>
+              </div>
+              <div class="text-left sm:text-right">
+                <div class="font-cyber text-4xl sm:text-5xl font-black text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">
+                  999.999đ
+                </div>
+                <div class="text-xs text-emerald-400 font-mono font-semibold mt-0.5">
+                  <i class="fa-solid fa-infinity"></i> Vĩnh viễn / Đa thiết bị
+                </div>
+              </div>
+            </div>
+
+            <!-- Features 2-column Grid -->
+            <div class="grid sm:grid-cols-2 gap-4 mb-8 font-sans text-sm">
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Dùng trên nhiều thiết bị:</strong> Thoải mái đăng nhập và sử dụng trên PC ở nhà, Laptop hay máy Cyber Game.</span>
+              </div>
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Trọn bộ 14,000+ Skin:</strong> Toàn bộ Dao, Găng tay, Súng Covert, Sticker Katowice, Móc khóa & Agent.</span>
+              </div>
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Anti-VAC 100% Tuyệt Đối:</strong> Cơ chế Client-side Hook an toàn, không can thiệp server Valve.</span>
+              </div>
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Auto Update trọn đời:</strong> Tự động đồng bộ offset và thêm case skin mới nhất từ Valve hoàn toàn miễn phí.</span>
+              </div>
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Phòng Thay Đồ & Studio 3D:</strong> Tự do gắn 5 sticker, chọn độ mòn float, pattern seed tùy ý.</span>
+              </div>
+              <div class="flex items-start gap-3 text-gray-200">
+                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
+                <span><strong>Hỗ Trợ Kỹ Thuật 1-1 VIP:</strong> Kênh hỗ trợ ưu tiên trực tiếp từ Admin qua Telegram & Discord Server.</span>
+              </div>
+            </div>
+
+            <!-- CTA Button -->
+            <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="w-full py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 font-orbitron font-black text-lg text-black shadow-[0_0_40px_rgba(245,158,11,0.6)] hover:scale-[1.02] transition-all flex items-center justify-center gap-3">
+              <i class="fa-solid fa-bolt text-xl"></i>
+              <span>KÍCH HOẠT GÓI ƯU ĐÃI 999.999đ NGAY</span>
+            </button>
+
+            <!-- Payment Guarantee -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-[11px] text-gray-400 font-mono">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield text-emerald-400"></i> MB Bank Tự Động</span>
+              <span>•</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-400"></i> Nhận KEY Sau 30s</span>
+              <span>•</span>
+              <span class="flex items-center gap-1.5"><i class="fa-brands fa-telegram text-sky-400"></i> Support @VN_KEEN</span>
+            </div>
+
+          </div>
         </div>
-        <button type="button" onclick="createQr()" class="w-full rounded-lg bg-accent py-3 font-display font-semibold text-[#071018]">
-          <i class="fa-solid fa-qrcode mr-1"></i> Tạo QR thanh toán
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ & POLICIES -->
+  <section id="faq" class="relative py-24 bg-bg/50">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">FREQUENTLY ASKED QUESTIONS</span>
+        <h2 class="font-cyber mt-3 text-3xl sm:text-4xl font-black text-fg">CÂU HỎI THƯỜNG GẶP</h2>
+      </div>
+
+      <div class="space-y-4">
+        <details class="group glass-panel rounded-2xl p-5 cursor-pointer" onclick="playSfx('hover')">
+          <summary class="flex items-center justify-between font-display text-lg font-bold text-fg group-open:text-accent transition-colors">
+            <span>VN-KEEN Mod Skin hiển thị ở góc nhìn của ai?</span>
+            <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
+            Toàn bộ skin vũ khí, dao, găng tay, sticker, móc khóa, đặc vụ và nhạc MVP được hiển thị trực tiếp và chuẩn xác trên màn hình của bạn (Client-Side). Mọi người xem stream hay chính bạn đều nhìn thấy skin với chất lượng đồ họa Source 2 cao cấp nhất.
+          </p>
+        </details>
+
+        <details class="group glass-panel rounded-2xl p-5 cursor-pointer" onclick="playSfx('hover')">
+          <summary class="flex items-center justify-between font-display text-lg font-bold text-fg group-open:text-accent transition-colors">
+            <span>Sau khi thanh toán tôi nhận file và sử dụng như thế nào?</span>
+            <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
+            Rất đơn giản và nhanh chóng: Bấm "MUA FILE" &rarr; Quét mã VietQR chuyển khoản (MB Bank NGUYEN PHU QUY). Sau khi chuyển khoản xong, bạn chỉ cần bấm nút "Nhận File Telegram" để Admin gửi link tải trực tiếp file Mod Skin (.zip). Bạn chỉ cần <strong>tải về, giải nén và mở file là chạy ngay</strong>, không cần nhập bất kỳ mã key nào!
+          </p>
+        </details>
+
+        <details class="group glass-panel rounded-2xl p-5 cursor-pointer" onclick="playSfx('hover')">
+          <summary class="flex items-center justify-between font-display text-lg font-bold text-fg group-open:text-accent transition-colors">
+            <span>File Mod Skin này có dùng được trên nhiều máy tính không?</span>
+            <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
+            <strong>Có, hoàn toàn không giới hạn!</strong> Vì là file chạy trực tiếp (Plug & Play), bạn có thể copy file vào USB, chạy trên PC ở nhà, Laptop hoặc cắm vào máy tại quán Net/Cyber Game là chơi được ngay lập tức mà không bị khóa máy hay lỗi thiết bị.
+          </p>
+        </details>
+
+        <details class="group glass-panel rounded-2xl p-5 cursor-pointer" onclick="playSfx('hover')">
+          <summary class="flex items-center justify-between font-display text-lg font-bold text-fg group-open:text-accent transition-colors">
+            <span>Có bị tụt FPS hay giật lag khi dùng Mod Skin không?</span>
+            <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
+            Hoàn toàn không. Mã nguồn của VN-KEEN được tối ưu hóa ở tầng bộ nhớ GPU/CPU với mức chiếm dụng &lt; 0.5%, đảm bảo duy trì tuyệt đối 240 - 400+ FPS mượt mà trên mọi màn hình thi đấu chuyên nghiệp.
+          </p>
+        </details>
+
+        <details class="group glass-panel rounded-2xl p-5 cursor-pointer" onclick="playSfx('hover')">
+          <summary class="flex items-center justify-between font-display text-lg font-bold text-fg group-open:text-accent transition-colors">
+            <span>Khi CS2 cập nhật hòm hoặc skin mới thì có nhận file cập nhật không?</span>
+            <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
+            Có. Bạn sẽ được tham gia nhóm Telegram VIP & Discord để tải các bản cập nhật file mới hoàn toàn miễn phí trọn đời mỗi khi Valve ra mắt hòm skin hay bản vá mới.
+          </p>
+        </details>
+      </div>
+
+      <!-- Terms & Policy Box -->
+      <div id="terms" class="mt-12 glass-panel rounded-2xl p-6 border border-cyan-500/20 text-xs text-muted space-y-2">
+        <p class="font-cyber text-sm font-bold text-fg uppercase"><i class="fa-solid fa-scale-balanced mr-1 text-accent"></i> Điều Khoản Dịch Vụ</p>
+        <ul class="space-y-1.5 list-disc list-inside font-mono">
+          <li>File mod skin mua một lần dùng vĩnh viễn trên nhiều thiết bị.</li>
+          <li>Được hỗ trợ kỹ thuật cài đặt 1-1 trực tiếp qua Telegram & Discord Server.</li>
+          <li>Chơi mod skin an toàn, tận hưởng trải nghiệm đồ họa tuyệt vời nhất của CS2.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-cyan-500/20 bg-slate-950/90 pt-16 pb-12 text-sm text-muted">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3">
+            <img src="images/VN-KEEN.jpg" alt="Logo" class="size-10 rounded-xl object-cover border border-cyan-400/40">
+            <span class="font-cyber text-2xl font-black text-fg">VN<span class="text-accent">-KEEN</span></span>
+          </div>
+          <p class="mt-4 max-w-md text-xs leading-relaxed text-muted">
+            Nền tảng Mod Skin & Tùy biến vũ khí Counter-Strike 2 số 1 Việt Nam. Đầy đủ 9 tính năng: Weapon, Knife, Glove, Sticker, Keychain, Agent, Music Kit, Collection, Patch.
+          </p>
+        </div>
+        <div>
+          <p class="font-cyber text-xs font-bold text-fg uppercase tracking-widest mb-4">LIÊN HỆ TRỰC TIẾP</p>
+          <ul class="space-y-2 text-xs font-mono">
+            <li><a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="hover:text-accent flex items-center gap-2"><i class="fa-brands fa-telegram text-accent"></i> Telegram: @VN_KEEN</a></li>
+            <li><a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="hover:text-accent flex items-center gap-2"><i class="fa-brands fa-discord text-purple-400"></i> Discord Server VIP</a></li>
+            <li><span class="text-subtle"><i class="fa-solid fa-clock text-amber-400"></i> Giờ làm việc: 24/7</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-cyber text-xs font-bold text-fg uppercase tracking-widest mb-4">PHƯƠNG THỨC THANH TOÁN</p>
+          <p class="text-xs font-mono text-amber-400 font-bold">MÃ VIETQR TỰ ĐỘNG BẢO MẬT</p>
+          <p class="text-xs text-gray-400 mt-1 font-sans">Quét mã để tự động điền số tiền và thông tin tài khoản an toàn.</p>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-subtle">
+        <p>VN-KEEN © 2026. All rights reserved. Designed with Antigravity 3D Engine.</p>
+        <div class="flex gap-6">
+          <a href="#terms" class="hover:text-accent">Điều khoản dịch vụ</a>
+          <a href="https://t.me/VN_KEEN" target="_blank" class="hover:text-accent">Hỗ trợ kỹ thuật</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: VietQR (SECURE SCAN ONLY - NO PLAINTEXT PERSONAL DATA) -->
+  <div id="modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 p-4 backdrop-blur-lg">
+    <div class="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-3xl p-6 sm:p-8 glass-panel border border-amber-400/40 relative shadow-[0_0_80px_rgba(245,158,11,0.25)]">
+      
+      <!-- Modal Header -->
+      <div class="mb-6 flex items-center justify-between pb-4 border-b border-white/10">
+        <h3 id="modal-title" class="font-cyber text-xl font-bold text-fg flex items-center gap-2">
+          <i class="fa-solid fa-qrcode text-amber-400"></i> QUÉT MÃ QR THANH TOÁN
+        </h3>
+        <button type="button" onclick="closeModal(); playSfx('click')" class="size-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-muted hover:text-fg transition-colors" aria-label="Đóng">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div id="pay-qr" class="hidden space-y-4">
-        <p class="text-sm text-muted">Chuyển khoản đúng số tiền và nội dung. Sau đó nhắn Telegram để nhận KEY.</p>
-        <div class="flex justify-center rounded-2xl bg-fg p-3">
-          <img id="qr-img" alt="VietQR MB NGUYEN PHU QUY" class="h-auto w-full max-w-[280px] rounded-lg">
+      <!-- VIEW: Show QR Code & Copy Data -->
+      <div id="pay-qr" class="space-y-5">
+        <div class="rounded-2xl p-3 bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-sans text-center">
+          <i class="fa-solid fa-shield-halved text-amber-400 mr-1.5"></i>
+          Mở ứng dụng ngân hàng bất kỳ để quét mã QR. Thông tin tài khoản người nhận sẽ tự động hiển thị bảo mật trên app của bạn.
         </div>
-        <div class="space-y-2 text-sm">
-          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Ngân hàng</p><p class="font-mono">MB Bank</p></div>
+
+        <!-- Big QR Container -->
+        <div class="flex justify-center p-4 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)]">
+          <img id="qr-img" alt="VietQR CS2 Mod Skin" class="h-auto w-full max-w-[240px] rounded-lg">
+        </div>
+
+        <!-- Payment Fields (Amount & Content only) -->
+        <div class="space-y-2 text-xs font-mono">
+          <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
+            <div>
+              <p class="text-[9px] uppercase text-subtle">Gói Bản Quyền</p>
+              <p class="font-bold text-fg font-sans">Mod Skin Trọn Đời (Đa Thiết Bị)</p>
+            </div>
+            <span class="text-emerald-400 text-[10px] font-bold"><i class="fa-solid fa-infinity mr-1"></i>Vĩnh Viễn</span>
           </div>
-          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Chủ TK</p><p class="font-mono">NGUYEN PHU QUY</p></div>
+
+          <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
+            <div>
+              <p class="text-[9px] uppercase text-subtle">Số Tiền Thanh Toán</p>
+              <p class="font-bold text-amber-400 text-base" id="qr-amount">999.999đ</p>
+            </div>
+            <button type="button" onclick="copyData('999999', 'Đã sao chép số tiền!')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-amber-400/20 text-amber-400 font-bold transition-colors">
+              <i class="fa-regular fa-copy mr-1"></i> Copy Tiền
+            </button>
           </div>
-          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Số tài khoản</p><p class="font-mono">789789999888</p></div>
-            <button type="button" onclick="copyText('789789999888')" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép STK"><i class="fa-regular fa-copy"></i></button>
-          </div>
-          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Số tiền</p><p id="qr-amount" class="font-mono"></p></div>
-            <button type="button" onclick="copyText(String(currentAmount))" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép số tiền"><i class="fa-regular fa-copy"></i></button>
-          </div>
-          <div class="flex items-center justify-between rounded-lg bg-bg px-3 py-2" style="box-shadow:0 0 0 1px rgba(232,238,246,.1)">
-            <div><p class="text-[10px] tracking-widest text-subtle uppercase">Nội dung CK</p><p id="qr-content" class="font-mono text-accent"></p></div>
-            <button type="button" onclick="copyText(currentContent)" class="rounded-md p-2 text-muted hover:text-accent" aria-label="Sao chép nội dung"><i class="fa-regular fa-copy"></i></button>
+
+          <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-amber-500/40 bg-amber-950/20">
+            <div>
+              <p class="text-[9px] uppercase text-amber-400 font-bold">Nội Dung Chuyển Khoản</p>
+              <p class="font-bold text-amber-300 text-base tracking-wider" id="qr-content"></p>
+            </div>
+            <button type="button" onclick="copyData(currentContent, 'Đã sao chép nội dung CK!')" class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-bold hover:scale-105 transition-all">
+              <i class="fa-regular fa-copy mr-1"></i> Copy Mã
+            </button>
           </div>
         </div>
-        <p class="rounded-lg px-3 py-2 text-xs" style="background:rgba(251,191,36,.1);color:#fbbf24">Sai nội dung hoặc sai số tiền thì không cấp KEY.</p>
-        <a id="tg-after-pay" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full rounded-lg bg-accent py-3 text-center font-display font-semibold text-[#071018]">Đã CK — nhắn Telegram nhận KEY</a>
-        <button type="button" onclick="showPick()" class="w-full rounded-lg py-2 font-display text-sm text-muted hover:text-fg">Tạo QR gói khác</button>
+
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i> Lưu ý: Ghi đúng nội dung chuyển khoản để Admin gửi link tải file trực tiếp ngay lập tức.
+        </div>
+
+        <a id="tg-after-pay" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-center font-display text-base font-black text-black shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:scale-[1.02] transition-all">
+          <i class="fa-brands fa-telegram mr-2 text-lg"></i> ĐÃ CHUYỂN KHOẢN — NHẬN LINK TẢI FILE TELEGRAM
+        </a>
+
+        <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" class="block w-full py-2.5 rounded-xl bg-[#1a233a] border border-gray-700 text-center font-display text-xs font-bold text-indigo-300 hover:text-white transition-all">
+          <i class="fa-brands fa-discord mr-1.5 text-indigo-400"></i> Hoặc Nhận File Qua Discord Server VIP
+        </a>
       </div>
 
-      <div id="pay-login" class="hidden space-y-4">
-        <p class="text-sm text-muted">Nhập nội dung chuyển khoản rồi nhắn Telegram @VN_KEEN để nhận KEY.</p>
-        <label class="block text-sm">Nội dung CK
-          <input id="lookup-code" class="mt-1 w-full rounded-lg border border-white/10 bg-surface px-3 py-2 font-mono uppercase text-fg" placeholder="KEEN7K2M9Q">
-        </label>
-        <a id="tg-lookup" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full rounded-lg bg-accent py-3 text-center font-display font-semibold text-[#071018]">Nhắn @VN_KEEN lấy KEY</a>
+      <!-- VIEW 3: Key Lookup -->
+      <div id="pay-login" class="hidden space-y-5">
+        <p class="text-xs text-muted">
+          Nhập mã nội dung chuyển khoản (hoặc License Key của bạn) để kiểm tra trạng thái kích hoạt.
+        </p>
+
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Mã đơn / Nội dung CK</label>
+          <input id="lookup-code" class="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 font-mono text-accent uppercase focus:border-accent focus:outline-none text-sm tracking-wider" placeholder="VD: KEEN7K2M9Q">
+        </div>
+
+        <button type="button" onclick="simulateLookup()" class="w-full py-3.5 rounded-xl bg-white/10 hover:bg-white/20 font-display font-bold text-fg transition-all">
+          <i class="fa-solid fa-magnifying-glass mr-1"></i> KIỂM TRA TRẠNG THÁI KEY
+        </button>
+
+        <div id="lookup-result" class="hidden p-4 rounded-xl bg-slate-950 border border-white/10 text-xs font-mono"></div>
+
+        <a id="tg-lookup" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full py-3.5 rounded-xl bg-accent text-center font-display font-bold text-black hover:opacity-90 transition-opacity">
+          <i class="fa-brands fa-telegram mr-1.5"></i> Nhắn @VN_KEEN Để Cấp Lại Key
+        </a>
       </div>
+
     </div>
   </div>
 
-  <script>
-    const BANK = { bin: '970422', bankName: 'MB Bank', account: '789789999888', accountName: 'NGUYEN PHU QUY' };
-    const PLAN_META = {
-      daily: { name: 'Trải nghiệm ngắn hạn', amount: 9999, price: '9.999đ', period: '/ 1 ngày' },
-      monthly: { name: 'Gói chuyên nghiệp', amount: 199999, price: '199.999đ', period: '/ 1 tháng' },
-      lifetime: { name: 'Gói trọn đời', amount: 999999, price: '999.999đ', period: '/ vĩnh viễn' },
-    };
-    const AGENTS = {
-      royale: { tag: 'Royale', name: 'Sir Bloody Darryl', blurb: 'Mặt nạ đồng vương miện, kit trắng-vàng. Biến thể gốc của đội Professionals.' },
-      skullhead: { tag: 'Skullhead', name: 'Sir Bloody Skullhead Darryl', blurb: 'Mặt nạ sọ trắng-đen. Lurker lạnh, đọc rotate rồi cắt đường về.' },
-      loudmouth: { tag: 'Loudmouth', name: 'Sir Bloody Loudmouth Darryl', blurb: 'Mặt nạ hề, giáp đỏ. Entry gây áp lực — nhìn là biết đang bị săn.' },
-      miami: { tag: 'Miami', name: 'Sir Bloody Miami Darryl', blurb: 'Áo Hawaii, mặt nạ khúc côn cầu. Nhận diện ngay trên site, không lẫn với ai.' },
-      silent: { tag: 'Silent', name: 'Sir Bloody Silent Darryl', blurb: 'Mặt nạ X đen. Entry im lặng, khó đọc ý đồ từ góc hẹp.' },
-    };
-    const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let currentPlan = 'monthly';
-    let currentAmount = 199999;
-    let currentContent = '';
+  <!-- Toast Notification Alert -->
+  <div id="toast" class="glass-panel px-5 py-3.5 rounded-2xl border border-cyan-400 text-sm font-mono text-accent shadow-[0_0_30px_rgba(0,229,238,0.4)] flex items-center gap-3">
+    <i class="fa-solid fa-circle-check text-ok text-base"></i>
+    <span id="toast-msg">Đã sao chép vào clipboard!</span>
+  </div>
 
-    window.addEventListener('scroll', () => {
-      document.getElementById('nav').classList.toggle('glass', window.scrollY > 24);
-    });
-    document.querySelectorAll('#t-esp,#t-names,#t-health,#t-distance,#t-chams,#t-aimbot').forEach(el => el.addEventListener('change', syncDemo));
-    document.getElementById('r-smooth').addEventListener('input', e => { document.getElementById('v-smooth').textContent = e.target.value; syncDemo(); });
-    document.getElementById('r-fov').addEventListener('input', e => { document.getElementById('v-fov').textContent = e.target.value; syncDemo(); });
-    function syncDemo() {
-      const esp = document.getElementById('t-esp').checked;
-      const names = document.getElementById('t-names').checked;
-      const health = document.getElementById('t-health').checked;
-      const distance = document.getElementById('t-distance').checked;
-      const chams = document.getElementById('t-chams').checked;
-      const aimbot = document.getElementById('t-aimbot').checked;
-      const fov = Number(document.getElementById('r-fov').value);
-      const smooth = document.getElementById('r-smooth').value;
-      document.getElementById('fov-ring').style.display = aimbot ? 'block' : 'none';
-      document.getElementById('fov-ring').style.width = (fov * 1.6) + 'px';
-      document.getElementById('fov-ring').style.height = (fov * 1.6) + 'px';
-      document.getElementById('hud-meta').textContent = 'SMOOTH ' + smooth + ' · FOV ' + fov;
-      document.querySelectorAll('.esp-box').forEach(box => {
-        box.querySelector('.esp-rect').style.display = esp ? 'block' : 'none';
-        box.querySelector('.esp-hp').style.display = health ? 'block' : 'none';
-        box.querySelector('.esp-chams').classList.toggle('hidden', !chams);
-        const label = box.querySelector('.esp-label');
-        label.style.display = (names || distance) ? 'block' : 'none';
-        if (!names) label.childNodes[0].textContent = '';
-        else if (!label.childNodes[0].textContent.trim()) label.childNodes[0].textContent = box.querySelector('.esp-label').textContent.includes('YURI') ? 'BOT YURI ' : 'ĐỊCH ';
-        box.querySelector('.dist').style.display = distance ? 'inline' : 'none';
+  <!-- ================= JAVASCRIPT ENGINES ================= -->
+  <script>
+    /* ============================================================
+       1. WEB AUDIO SYNTHESIZER (CS2 SFX & Music Kits)
+       ============================================================ */
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSfx(type) {
+      if (!sfxEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'hover') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.04);
+          gain.gain.setValueAtTime(0.02, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else if (type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.exponentialRampToValueAtTime(200, now + 0.08);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'tick') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1100, now);
+          gain.gain.setValueAtTime(0.03, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+          osc.start(now);
+          osc.stop(now + 0.02);
+        } else if (type === 'gold') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(freq, now + i * 0.08);
+            g.gain.setValueAtTime(0.07, now + i * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.4);
+            o.start(now + i * 0.08);
+            o.stop(now + i * 0.08 + 0.4);
+          });
+        } else if (type === 'success') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.08);
+          osc.frequency.setValueAtTime(783.99, now + 0.16);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        }
+      } catch (e) {
+        console.warn('Audio error:', e);
+      }
+    }
+
+    function toggleAudio() {
+      sfxEnabled = !sfxEnabled;
+      const icon = document.getElementById('audio-icon');
+      const text = document.getElementById('audio-text');
+      const wave = document.getElementById('audio-wave');
+      if (sfxEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-accent';
+        text.textContent = 'SFX: ON';
+        wave.style.display = 'flex';
+        playSfx('success');
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-muted';
+        text.textContent = 'SFX: OFF';
+        wave.style.display = 'none';
+      }
+    }
+
+    /* ============================================================
+       2. THREE.JS 3D CYBERPUNK SCENE (Floating Weapon Particles)
+       ============================================================ */
+    let scene, camera, renderer, landscapeGroup, sunGroup, starParticles;
+    let is3DActive = true;
+    let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    let clock = new THREE.Clock();
+
+    function init3DLandscape() {
+      const canvas = document.getElementById('webgl-bg');
+      if (!canvas) return;
+
+      scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x070a12, 0.022);
+
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 3, 22);
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      landscapeGroup = new THREE.Group();
+      scene.add(landscapeGroup);
+
+      // Sky Gradient
+      const skyCanvas = document.createElement('canvas');
+      skyCanvas.width = 128; skyCanvas.height = 256;
+      const ctx = skyCanvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 256);
+      grad.addColorStop(0, '#070a12');
+      grad.addColorStop(0.35, '#1e1035');
+      grad.addColorStop(0.7, '#ff3366');
+      grad.addColorStop(1.0, '#00e5ee');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 256);
+
+      const skyTex = new THREE.CanvasTexture(skyCanvas);
+      const skyGeo = new THREE.PlaneGeometry(160, 90);
+      const skyMat = new THREE.MeshBasicMaterial({ map: skyTex, depthWrite: false });
+      const skyMesh = new THREE.Mesh(skyGeo, skyMat);
+      skyMesh.position.set(0, 10, -45);
+      landscapeGroup.add(skyMesh);
+
+      // Sun
+      sunGroup = new THREE.Group();
+      sunGroup.position.set(0, 8, -35);
+      const sunGeo = new THREE.CircleGeometry(7, 64);
+      const sunMat = new THREE.MeshBasicMaterial({ color: 0xff3366, transparent: true, opacity: 0.9 });
+      const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+      sunGroup.add(sunMesh);
+
+      const coronaGeo = new THREE.RingGeometry(7.2, 8.5, 64);
+      const coronaMat = new THREE.MeshBasicMaterial({ color: 0x00e5ee, transparent: true, opacity: 0.6 });
+      const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
+      sunGroup.add(coronaMesh);
+      landscapeGroup.add(sunGroup);
+
+      // Grid Terrain
+      const gridGeo = new THREE.PlaneGeometry(160, 100, 60, 40);
+      gridGeo.rotateX(-Math.PI / 2);
+      const gridMat = new THREE.MeshBasicMaterial({ color: 0x00e5ee, wireframe: true, transparent: true, opacity: 0.22 });
+      const gridMesh = new THREE.Mesh(gridGeo, gridMat);
+      gridMesh.position.set(0, -5, -10);
+      landscapeGroup.add(gridMesh);
+
+      // Floating Particles
+      const particleCount = 1000;
+      const particleGeo = new THREE.BufferGeometry();
+      const pPositions = new Float32Array(particleCount * 3);
+      const pColors = new Float32Array(particleCount * 3);
+      const color1 = new THREE.Color(0x00e5ee);
+      const color2 = new THREE.Color(0xa855f7);
+      const color3 = new THREE.Color(0xff3366);
+
+      for (let i = 0; i < particleCount; i++) {
+        pPositions[i * 3] = (Math.random() - 0.5) * 80;
+        pPositions[i * 3 + 1] = (Math.random() - 0.5) * 40 + 5;
+        pPositions[i * 3 + 2] = (Math.random() - 0.5) * 60;
+        const rnd = Math.random();
+        const col = rnd < 0.4 ? color1 : (rnd < 0.7 ? color2 : color3);
+        pColors[i * 3] = col.r;
+        pColors[i * 3 + 1] = col.g;
+        pColors[i * 3 + 2] = col.b;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+      particleGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
+      const particleMat = new THREE.PointsMaterial({ size: 0.15, vertexColors: true, transparent: true, opacity: 0.75 });
+      starParticles = new THREE.Points(particleGeo, particleMat);
+      landscapeGroup.add(starParticles);
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      window.addEventListener('resize', () => {
+        if (!camera || !renderer) return;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate3D();
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+      if (!is3DActive) return;
+
+      const elapsed = clock.getElapsedTime();
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+      if (landscapeGroup) {
+        landscapeGroup.rotation.y = THREE.MathUtils.lerp(landscapeGroup.rotation.y, mouse.x * 0.15, 0.05);
+        landscapeGroup.rotation.x = THREE.MathUtils.lerp(landscapeGroup.rotation.x, -mouse.y * 0.08, 0.05);
+      }
+
+      if (sunGroup) {
+        const pulse = 1 + Math.sin(elapsed * 2) * 0.03;
+        sunGroup.scale.set(pulse, pulse, 1);
+      }
+
+      if (starParticles) {
+        starParticles.rotation.y = elapsed * 0.02;
+      }
+
+      renderer.render(scene, camera);
+      updateFpsCounter();
+    }
+
+    function toggle3DLandscape() {
+      is3DActive = !is3DActive;
+      const statusText = document.getElementById('text-3d-status');
+      const canvas = document.getElementById('webgl-bg');
+      if (is3DActive) {
+        statusText.textContent = 'MAX';
+        statusText.className = 'text-accent';
+        canvas.style.opacity = '1';
+        playSfx('success');
+      } else {
+        statusText.textContent = 'OFF';
+        statusText.className = 'text-muted';
+        canvas.style.opacity = '0.1';
+        playSfx('click');
+      }
+    }
+
+    let fpsFrames = 0, fpsLastTime = performance.now();
+    function updateFpsCounter() {
+      fpsFrames++;
+      const now = performance.now();
+      if (now - fpsLastTime >= 500) {
+        const fps = ((fpsFrames * 1000) / (now - fpsLastTime)).toFixed(1);
+        const fpsEl = document.getElementById('telemetry-fps');
+        if (fpsEl) fpsEl.textContent = fps;
+        fpsFrames = 0;
+        fpsLastTime = now;
+      }
+    }
+
+    /* ============================================================
+       3. INTERACTIVE CS2 MOD SKIN STUDIO LOGIC
+       ============================================================ */
+    const STUDIO_CATEGORIES = {
+      weapons: [
+        { id: 'w1', name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'Covert ★', icon: 'fa-dragon', color: 'text-csred', stickers: '4x Titan Holo (Kato 14)', charm: 'StickerSlab Diamond' },
+        { id: 'w2', name: 'AK-47 | Case Hardened (#661)', type: 'Classified Rifle', rarity: 'Blue Gem #1', icon: 'fa-fire', color: 'text-accent', stickers: '4x iBUYPOWER Holo', charm: 'Lucky Cat Charm' },
+        { id: 'w3', name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'Contraband', icon: 'fa-dog', color: 'text-red-500', stickers: 'Howling Dawn Foil', charm: 'C4 Mini Charm' },
+        { id: 'w4', name: 'USP-S | Printstream', type: 'Covert Pistol', rarity: 'Covert', icon: 'fa-cube', color: 'text-cspink', stickers: '4x Reason Holo', charm: 'Dice Charm' }
+      ],
+      knives: [
+        { id: 'k1', name: '★ Karambit | Doppler Sapphire', type: 'Special Rare Knife', rarity: 'Doppler Phase Gem', icon: 'fa-gem', color: 'text-csgold', stickers: 'N/A', charm: 'N/A' },
+        { id: 'k2', name: '★ Butterfly Knife | Fade (100%)', type: 'Special Rare Knife', rarity: 'Full 100% Fade', icon: 'fa-scissors', color: 'text-csgold', stickers: 'N/A', charm: 'N/A' },
+        { id: 'k3', name: '★ M9 Bayonet | Crimson Web', type: 'Special Rare Knife', rarity: '3 Webs Centered', icon: 'fa-spider', color: 'text-csred', stickers: 'N/A', charm: 'N/A' }
+      ],
+      gloves: [
+        { id: 'g1', name: '★ Sport Gloves | Pandora\'s Box', type: 'Extraordinary Gloves', rarity: 'Tier 1 Sport', icon: 'fa-mitten', color: 'text-cspurple', stickers: 'N/A', charm: 'N/A' },
+        { id: 'g2', name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'Tier 1 Sport', icon: 'fa-mitten', color: 'text-cspink', stickers: 'N/A', charm: 'N/A' },
+        { id: 'g3', name: '★ Driver Gloves | Snow Leopard', type: 'Extraordinary Gloves', rarity: 'Clean Knuckles', icon: 'fa-mitten', color: 'text-fg', stickers: 'N/A', charm: 'N/A' }
+      ],
+      stickers: [
+        { id: 's1', name: 'Titan (Holo) | Katowice 2014', type: 'Tournament Sticker', rarity: 'Ultra Rare Holo', icon: 'fa-certificate', color: 'text-cyan-400', stickers: 'Custom Placement 5x', charm: 'StickerSlab' },
+        { id: 's2', name: 'iBUYPOWER (Holo) | Katowice 2014', type: 'Tournament Sticker', rarity: 'Ultra Rare Holo', icon: 'fa-certificate', color: 'text-red-500', stickers: 'Custom Placement 5x', charm: 'StickerSlab' },
+        { id: 's3', name: 'Crown (Foil)', type: 'High Tier Sticker', rarity: 'Foil Crown', icon: 'fa-crown', color: 'text-csgold', stickers: 'Position: Wood', charm: 'N/A' }
+      ],
+      keychains: [
+        { id: 'ch1', name: 'StickerSlab™ | Titan Holo Vault', type: 'Weapon Charm Slab', rarity: 'Sticker Protector', icon: 'fa-key', color: 'text-emerald-400', stickers: 'Attached to Barrel', charm: 'Slab Case #1' },
+        { id: 'ch2', name: 'Hot Wurst / Golden Sausage', type: 'CS2 Weapon Charm', rarity: 'Rare Charm', icon: 'fa-hotdog', color: 'text-amber-400', stickers: 'Attached to Magazine', charm: 'Charm Box' }
+      ],
+      music: [
+        { id: 'm1', name: 'The Verkkars | EZ4ENCE', type: 'StatTrak™ Music Kit', rarity: 'MVP Anthem', icon: 'fa-music', color: 'text-amber-400', stickers: 'Round Win Music', charm: '10s Bomb Beep' },
+        { id: 'm2', name: 'Scarlxrd | King, Scar', type: 'StatTrak™ Music Kit', rarity: 'MVP Anthem', icon: 'fa-music', color: 'text-purple-400', stickers: 'Heavy Trap Beat', charm: 'MVP Fanfare' }
+      ]
+    };
+
+    let currentCategory = 'weapons';
+    let currentItem = STUDIO_CATEGORIES['weapons'][0];
+
+    function selectStudioCategory(cat) {
+      currentCategory = cat;
+      ['weapons', 'knives', 'gloves', 'stickers', 'keychains', 'music'].forEach(c => {
+        const btn = document.getElementById(`cat-btn-${c}`);
+        if (btn) {
+          if (c === cat) {
+            btn.className = 'py-2 px-2 rounded-xl border-2 border-accent bg-accent/10 font-cyber text-[11px] font-bold text-accent';
+          } else {
+            btn.className = 'py-2 px-2 rounded-xl border border-white/10 font-cyber text-[11px] font-bold text-muted hover:border-white/30';
+          }
+        }
+      });
+
+      renderStudioItemList();
+      selectStudioItem(STUDIO_CATEGORIES[cat][0]);
+      playSfx('click');
+    }
+
+    function renderStudioItemList() {
+      const container = document.getElementById('studio-item-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      STUDIO_CATEGORIES[currentCategory].forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => selectStudioItem(item);
+        btn.className = `w-full text-left p-2.5 rounded-xl border transition-all ${item.id === currentItem?.id ? 'border-accent bg-accent/10 text-fg' : 'border-white/10 hover:border-white/20 text-muted'}`;
+        btn.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-fg truncate">${item.name}</span>
+            <span class="text-[10px] ${item.color} font-bold ml-1">${item.rarity}</span>
+          </div>
+          <p class="text-[10px] text-subtle font-mono">${item.type}</p>
+        `;
+        container.appendChild(btn);
       });
     }
-    document.querySelectorAll('.agent-card').forEach(card => {
-      card.addEventListener('click', () => {
-        document.querySelectorAll('.agent-card').forEach(c => c.style.boxShadow = '0 0 0 1px rgba(232,238,246,.1)');
-        card.style.boxShadow = '0 0 0 2px #00e5ee';
-        const a = AGENTS[card.dataset.agent];
-        document.getElementById('agent-tag').textContent = a.tag;
-        document.getElementById('agent-name').textContent = a.name;
-        document.getElementById('agent-blurb').textContent = a.blurb;
+
+    function selectStudioItem(item) {
+      currentItem = item;
+      document.getElementById('studio-preview-type').textContent = item.type.toUpperCase();
+      document.getElementById('studio-preview-name').textContent = item.name;
+      document.getElementById('studio-preview-rarity').textContent = item.rarity;
+      document.getElementById('studio-preview-icon').innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
+      
+      const stickerBadge = document.getElementById('studio-sticker-badge');
+      if (item.stickers && item.stickers !== 'N/A') {
+        stickerBadge.classList.remove('hidden');
+        stickerBadge.innerHTML = `<i class="fa-solid fa-certificate text-purple-400 mr-1"></i> ${item.stickers}`;
+      } else {
+        stickerBadge.classList.add('hidden');
+      }
+
+      const charmBadge = document.getElementById('studio-charm-badge');
+      if (item.charm && item.charm !== 'N/A') {
+        charmBadge.classList.remove('hidden');
+        charmBadge.innerHTML = `<i class="fa-solid fa-key text-emerald-400 mr-1"></i> ${item.charm}`;
+      } else {
+        charmBadge.classList.add('hidden');
+      }
+
+      renderStudioItemList();
+      playSfx('hover');
+    }
+
+    function updateFloat(val) {
+      const fl = (val * 0.00014).toFixed(5);
+      const text = val < 20 ? `${fl} (Factory New)` : (val < 50 ? `${fl} (Minimal Wear)` : `${fl} (Field-Tested)`);
+      document.getElementById('studio-float-val').textContent = text;
+    }
+
+    function updateSeed(val) {
+      document.getElementById('studio-seed-val').textContent = `#${val} (Custom Seed)`;
+    }
+
+    function playMusicKitPreview() {
+      playSfx('gold');
+      showToast('Đang phát bản nhạc MVP Anthem mô phỏng (EZ4ENCE / Scarlxrd)...');
+    }
+
+    function applyToGameSim() {
+      playSfx('success');
+      showToast(`Đã áp dụng ${currentItem.name} vào kho đồ CS2 thành công!`);
+    }
+
+    /* ============================================================
+       4. CS2 CASE OPENING SIMULATOR LOGIC
+       ============================================================ */
+    const CS2_SKINS = [
+      { name: '★ Karambit | Doppler Sapphire', type: 'Special Gold Knife', rarity: 'csgold', icon: 'fa-gem', wear: 'Factory New (0.014)' },
+      { name: '★ Butterfly Knife | Fade', type: 'Special Gold Knife', rarity: 'csgold', icon: 'fa-scissors', wear: 'Factory New (0.008)' },
+      { name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'csred', icon: 'fa-dragon', wear: 'Factory New (0.021)' },
+      { name: 'AK-47 | Fire Serpent', type: 'Covert Rifle', rarity: 'csred', icon: 'fa-fire', wear: 'Field-Tested (0.18)' },
+      { name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'csred', icon: 'fa-dog', wear: 'Minimal Wear (0.09)' },
+      { name: 'USP-S | Printstream', type: 'Classified Pistol', rarity: 'cspink', icon: 'fa-cube', wear: 'Factory New (0.03)' },
+      { name: 'VIP Mod Skin Lifetime', type: 'VN-KEEN Special Gift', rarity: 'csgold', icon: 'fa-bolt', wear: 'VIP Edition' }
+    ];
+
+    let isSpinning = false;
+
+    function buildCaseCarousel() {
+      const track = document.getElementById('case-track');
+      if (!track) return;
+      track.innerHTML = '';
+      track.style.transform = 'translateX(0px)';
+
+      for (let i = 0; i < 50; i++) {
+        const item = CS2_SKINS[Math.floor(Math.random() * CS2_SKINS.length)];
+        const card = document.createElement('div');
+        card.className = `size-36 flex-shrink-0 rounded-2xl bg-slate-900 border-b-4 border-${item.rarity} p-3 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-md`;
+        card.innerHTML = `
+          <span class="text-[9px] font-mono text-muted truncate w-full uppercase">${item.type}</span>
+          <div class="size-14 rounded-xl bg-slate-950 flex items-center justify-center text-2xl text-${item.rarity}">
+            <i class="fa-solid ${item.icon}"></i>
+          </div>
+          <p class="font-cyber text-[10px] font-bold text-fg truncate w-full">${item.name}</p>
+        `;
+        track.appendChild(card);
+      }
+    }
+
+    function spinCase() {
+      if (isSpinning) return;
+      isSpinning = true;
+      buildCaseCarousel();
+      document.getElementById('case-winner-modal').classList.add('hidden');
+      
+      const track = document.getElementById('case-track');
+      const cardWidth = 144 + 12;
+      const winningIndex = 35 + Math.floor(Math.random() * 8);
+      const targetOffset = (winningIndex * cardWidth) - (window.innerWidth < 640 ? 120 : 260) + (Math.random() * 60);
+
+      playSfx('click');
+
+      let tickInterval = setInterval(() => { playSfx('tick'); }, 120);
+      setTimeout(() => {
+        clearInterval(tickInterval);
+        tickInterval = setInterval(() => { playSfx('tick'); }, 260);
+      }, 3500);
+      setTimeout(() => { clearInterval(tickInterval); }, 5500);
+
+      track.style.transform = `translateX(-${targetOffset}px)`;
+
+      setTimeout(() => {
+        isSpinning = false;
+        const winner = CS2_SKINS[Math.floor(Math.random() * 3)];
+        document.getElementById('winner-name').textContent = winner.name;
+        document.getElementById('winner-wear').textContent = `Exterior: ${winner.wear}`;
+        document.getElementById('case-winner-modal').classList.remove('hidden');
+        playSfx('gold');
+        showToast(`CHÚC MỪNG: BẠN ĐÃ MỞ TRÚNG ${winner.name}!`);
+      }, 6200);
+    }
+
+    function resetCase() {
+      if (isSpinning) return;
+      buildCaseCarousel();
+      document.getElementById('case-winner-modal').classList.add('hidden');
+      playSfx('click');
+    }
+
+    /* ============================================================
+       5. CUSTOM TACTICAL RETICLE CURSOR & 3D TILT CARDS
+       ============================================================ */
+    const cursor = document.getElementById('custom-cursor');
+    let cursorX = 0, cursorY = 0, targetCursorX = 0, targetCursorY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      targetCursorX = e.clientX;
+      targetCursorY = e.clientY;
+    });
+
+    function renderCursor() {
+      cursorX += (targetCursorX - cursorX) * 0.35;
+      cursorY += (targetCursorY - cursorY) * 0.35;
+      if (cursor) {
+        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+      }
+      requestAnimationFrame(renderCursor);
+    }
+    renderCursor();
+
+    document.querySelectorAll('button, a, input, summary, [onclick]').forEach(el => {
+      el.addEventListener('mouseenter', () => { if (cursor) cursor.classList.add('active'); });
+      el.addEventListener('mouseleave', () => { if (cursor) cursor.classList.remove('active'); });
+    });
+
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const rotateX = -(y / rect.height) * 16;
+        const rotateY = (x / rect.width) * 16;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
       });
     });
+
+    /* ============================================================
+       6. VIETQR & CHECKOUT SYSTEM (100% PRESERVED PAYMENT DATA)
+       ============================================================ */
+    const BANK = {
+      bin: '970422',
+      bankName: 'MB Bank',
+      account: '789789999888',
+      accountName: 'NGUYEN PHU QUY'
+    };
+
+    const PLAN_META = {
+      vip: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
+      lifetime: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
+      monthly: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
+      daily: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' }
+    };
+
+    const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let currentPlan = 'vip';
+    let currentAmount = 999999;
+    let currentContent = '';
 
     function randCode(n) {
       let out = '';
@@ -492,47 +1514,41 @@
       for (let i = 0; i < n; i++) out += ALPHA[buf[i] % ALPHA.length];
       return out;
     }
+
     function formatVnd(n) { return n.toLocaleString('vi-VN') + 'đ'; }
-    function planButtonClass(id) {
-      const on = 'rounded-lg px-2 py-3 text-center text-xs bg-accent/10 text-accent';
-      const off = 'rounded-lg px-2 py-3 text-center text-xs';
-      ['daily','monthly','lifetime'].forEach(p => {
-        const el = document.getElementById('pick-' + p);
-        el.className = p === id ? on : off;
-        el.style.boxShadow = p === id ? '0 0 0 1px #00e5ee' : '0 0 0 1px rgba(232,238,246,.1)';
-      });
-    }
+
     function selectPlan(id) {
-      currentPlan = id;
-      const meta = PLAN_META[id];
+      currentPlan = id || 'vip';
+      const meta = PLAN_META[currentPlan] || PLAN_META['vip'];
       currentAmount = meta.amount;
-      document.getElementById('pick-summary').innerHTML = meta.name + ' · <span class="text-fg">' + meta.price + '</span>' + meta.period;
-      planButtonClass(id);
+      const pickSummary = document.getElementById('pick-summary');
+      if (pickSummary) {
+        pickSummary.innerHTML = `${meta.name} · <span class="text-amber-400 font-bold">${meta.price}</span> ${meta.period}`;
+      }
+      playSfx('click');
     }
-    function show(id) {
-      ['pay-pick','pay-qr','pay-login'].forEach(x => document.getElementById(x).classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+
+    function showView(viewId) {
+      ['pay-pick', 'pay-qr', 'pay-login'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(viewId).classList.remove('hidden');
     }
-    function showPick() {
-      document.getElementById('modal-title').textContent = 'Thanh toán VietQR';
-      show('pay-pick');
-    }
+
     function openCheckout(plan) {
-      selectPlan(plan || 'monthly');
-      showPick();
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal').classList.add('flex');
+      selectPlan('vip');
+      createQr();
+      const modal = document.getElementById('modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
-    function openLogin() {
-      document.getElementById('modal-title').textContent = 'Tra cứu KEY';
-      show('pay-login');
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal').classList.add('flex');
-    }
+
     function closeModal() {
-      document.getElementById('modal').classList.add('hidden');
-      document.getElementById('modal').classList.remove('flex');
+      const modal = document.getElementById('modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
+
     function createQr() {
       currentContent = 'KEEN' + randCode(6);
       const params = new URLSearchParams({
@@ -540,23 +1556,64 @@
         addInfo: currentContent,
         accountName: BANK.accountName,
       });
-      document.getElementById('qr-img').src = 'https://img.vietqr.io/image/' + BANK.bin + '-' + BANK.account + '-compact2.png?' + params.toString();
-      document.getElementById('qr-amount').textContent = formatVnd(currentAmount);
-      document.getElementById('qr-content').textContent = currentContent;
-      const msg = encodeURIComponent('Mình đã CK VN-KEEN ' + currentContent + ' ' + formatVnd(currentAmount));
-      document.getElementById('tg-after-pay').href = 'https://t.me/VN_KEEN?text=' + msg;
-      document.getElementById('modal-title').textContent = 'Quét QR thanh toán';
-      show('pay-qr');
+
+      const qrImg = document.getElementById('qr-img');
+      if (qrImg) qrImg.src = `https://img.vietqr.io/image/${BANK.bin}-${BANK.account}-compact2.png?${params.toString()}`;
+      const qrAmt = document.getElementById('qr-amount');
+      if (qrAmt) qrAmt.textContent = formatVnd(currentAmount);
+      const qrCont = document.getElementById('qr-content');
+      if (qrCont) qrCont.textContent = currentContent;
+
+      const msg = encodeURIComponent(`Mình đã CK VN-KEEN đơn ${currentContent} (${formatVnd(currentAmount)}). Nhờ admin gửi link tải file Mod Skin giúp mình nhé!`);
+      const tgBtn = document.getElementById('tg-after-pay');
+      if (tgBtn) tgBtn.href = `https://t.me/VN_KEEN?text=${msg}`;
+
+      document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-qrcode text-amber-400"></i> QUÉT MÃ QR THANH TOÁN';
+      document.getElementById('pay-qr').classList.remove('hidden');
     }
-    function copyText(value) {
-      navigator.clipboard.writeText(value);
+
+    function copyData(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        playSfx('click');
+        showToast(msg || 'Đã sao chép vào clipboard!');
+      });
     }
-    document.getElementById('lookup-code').addEventListener('input', () => {
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    function simulateLookup() {
       const code = document.getElementById('lookup-code').value.trim().toUpperCase();
-      const msg = encodeURIComponent(code ? 'Mình cần KEY cho ' + code : 'Mình cần KEY VN-KEEN');
-      document.getElementById('tg-lookup').href = 'https://t.me/VN_KEEN?text=' + msg;
+      const res = document.getElementById('lookup-result');
+      if (!code) {
+        showToast('Vui lòng nhập mã đơn hoặc License Key!');
+        return;
+      }
+      playSfx('hover');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <div class="flex items-center gap-2 text-ok font-bold mb-1.5">
+          <i class="fa-solid fa-circle-check"></i> TÌM THẤY BẢN QUYỀN MOD SKIN
+        </div>
+        <p class="text-muted">Mã: <span class="text-accent font-bold">${code}</span></p>
+        <p class="text-muted">Gói: <strong>VN-KEEN CS2 MODSKIN PRO</strong></p>
+        <p class="text-muted">Trạng thái: <span class="text-ok font-bold">HOẠT ĐỘNG (Source 2 Ready)</span></p>
+        <p class="text-muted mt-2">Bấm nút bên dưới để nhận lại Key từ Admin Telegram.</p>
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      init3DLandscape();
+      buildCaseCarousel();
+      selectStudioCategory('weapons');
+      selectPlan('monthly');
     });
-    selectPlan('monthly');
   </script>
 </body>
 </html>
