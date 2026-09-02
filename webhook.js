@@ -1,10 +1,10 @@
-﻿// Global memory cache for serverless execution context
+﻿// Global memory caches
+const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = new Map());
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
 // Helper function to call KeyAuth Seller API
 async function generateKeyAuthLicense(sellerKey, days = 9999, mask = 'KEEN-****-****-****') {
   if (!sellerKey || sellerKey === 'YOUR_KEYAUTH_SELLER_KEY') {
-    // Demo / fallback generated key if seller key not yet set in Cloudflare Env
     const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
     return KEEN---;
   }
@@ -21,7 +21,6 @@ async function generateKeyAuthLicense(sellerKey, days = 9999, mask = 'KEEN-****-
     console.error('KeyAuth Fetch Error:', err);
   }
 
-  // Fallback if API fails
   const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
   return KEEN---;
 }
@@ -31,10 +30,6 @@ export async function onRequestPost(context) {
   
   try {
     const body = await request.json();
-    
-    // Support SePay / Casso / VietQR / Custom Webhook payload
-    // SePay payload: { content: "KEEN8X4K", transferAmount: 999999, ... }
-    // Casso payload: { data: [{ description: "KEEN8X4K", amount: 999999 }] }
     
     let content = '';
     let amount = 0;
@@ -47,13 +42,65 @@ export async function onRequestPost(context) {
       amount = body.data[0].amount || 0;
     } else if (body.orderId) {
       content = body.orderId;
-      amount = body.amount || 999999;
+      amount = body.amount || 199999;
     }
 
-    // Extract Order Code matching KEEN[A-Z0-9]{4,10}
-    const match = content.toUpperCase().match(/KEEN[A-Z0-9]{4,10}/);
+    const upperContent = content.toUpperCase().trim();
+
+    // CASE 1: TOP-UP WALLET DEPOSIT (Content: NAP[USERNAME] or NAP [USERNAME])
+    const topupMatch = upperContent.match(/^NAP\s*([A-Z0-9_-]+)/i);
+    if (topupMatch) {
+      const targetUser = topupMatch[1].toLowerCase();
+      let user = globalUsers.get(targetUser);
+      if (!user) {
+        // Auto register on deposit if first time
+        user = {
+          username: targetUser,
+          displayName: topupMatch[1],
+          password: 'pass_' + targetUser,
+          balance: 0,
+          keys: [],
+          transactions: [],
+          createdAt: new Date().toISOString()
+        };
+        globalUsers.set(targetUser, user);
+      }
+
+      user.balance += amount;
+      const trans = {
+        type: 'TOPUP',
+        description: Nạp tiền VietQR MB Bank (+đ),
+        amount: amount,
+        createdAt: new Date().toISOString()
+      };
+      user.transactions.unshift(trans);
+
+      const topupOrder = {
+        orderId: upperContent,
+        type: 'TOPUP',
+        username: user.displayName,
+        amount: amount,
+        newBalance: user.balance,
+        status: 'PAID',
+        paidAt: new Date().toISOString()
+      };
+      globalOrders.set(upperContent, topupOrder);
+
+      return new Response(JSON.stringify({
+        success: true,
+        type: 'TOPUP',
+        message: Nạp thành công +đ vào tài khoản . Số dư mới: đ,
+        user: { username: user.displayName, balance: user.balance }
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
+
+    // CASE 2: DIRECT PLAN PURCHASE (Content: KEEN[A-Z0-9]{4,10})
+    const match = upperContent.match(/KEEN[A-Z0-9]{4,10}/);
     if (!match) {
-      return new Response(JSON.stringify({ success: false, message: 'No valid KEEN order code found in transfer content' }), {
+      return new Response(JSON.stringify({ success: false, message: 'No valid KEEN or NAP order code found in transfer content' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
       });
@@ -62,24 +109,31 @@ export async function onRequestPost(context) {
     const orderId = match[0];
     const sellerKey = env?.KEYAUTH_SELLER_KEY || 'YOUR_KEYAUTH_SELLER_KEY';
 
+    let days = 9999;
+    let planTitle = 'Vĩnh Viễn (Lifetime)';
+    if (amount < 50000) {
+      days = 1;
+      planTitle = '1 Ngày (24H)';
+    } else if (amount < 500000) {
+      days = 30;
+      planTitle = '30 Ngày (1 Tháng)';
+    }
+
     // Generate Key via KeyAuth
-    const generatedKey = await generateKeyAuthLicense(sellerKey, 9999, 'KEEN-****-****-****');
+    const generatedKey = await generateKeyAuthLicense(sellerKey, days, 'KEEN-****-****-****');
 
     const orderData = {
       orderId: orderId,
       status: 'PAID',
       amount: amount,
+      days: days,
+      planTitle: planTitle,
       key: generatedKey,
       paidAt: new Date().toISOString()
     };
 
     // Store in global memory map
     globalOrders.set(orderId, orderData);
-
-    // If Cloudflare KV namespace is bound (e.g. env.ORDERS_KV)
-    if (env?.ORDERS_KV) {
-      await env.ORDERS_KV.put(orderId, JSON.stringify(orderData), { expirationTtl: 86400 * 30 });
-    }
 
     return new Response(JSON.stringify({
       success: true,
