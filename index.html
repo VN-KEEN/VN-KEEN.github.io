@@ -2674,6 +2674,43 @@
       currentUser = user;
       localStorage.setItem('vnkeen_current_user', JSON.stringify(user));
       updateUserHeaderUI();
+      syncBankDepositBackground();
+    }
+
+    async function syncBankDepositBackground() {
+      if (!currentUser || !currentUser.username) return;
+      const username = (currentUser.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!username) return;
+
+      try {
+        const txs = await checkSepayTransactions();
+        if (!txs || txs.length === 0) return;
+
+        const processed = getProcessedTxs();
+        for (const tx of txs) {
+          const txId = String(tx.id);
+          if (processed.includes(txId)) continue;
+
+          const amtIn = parseFloat(tx.amount_in || 0);
+          const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+          if (amtIn > 0 && (content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen'))) {
+            markTxProcessed(txId);
+            currentUser.balance = (currentUser.balance || 0) + amtIn;
+            if (!currentUser.transactions) currentUser.transactions = [];
+            currentUser.transactions.unshift({
+              id: txId,
+              type: 'TOPUP',
+              description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
+              amount: amtIn,
+              createdAt: tx.transaction_date || new Date().toISOString()
+            });
+            saveUserSession(currentUser);
+            showToast(`🎉 Nhận tiền thành công! +${formatVnd(amtIn)} đã được cộng vào ví.`);
+            playSfx('gold');
+          }
+        }
+      } catch (e) {}
     }
 
     // 1. Auth Modals
@@ -3132,6 +3169,7 @@
       setStudioViewMode('fpv_weapon');
       selectPlan('monthly');
       updateUserHeaderUI();
+      setInterval(syncBankDepositBackground, 3000);
     });
   </script>
 </body>
