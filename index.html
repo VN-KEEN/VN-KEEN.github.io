@@ -436,16 +436,53 @@
         </a>
       </nav>
 
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-3">
-        <a href="https://t.me/VN_KEEN" target="_blank" class="hidden sm:inline-flex items-center gap-2 rounded-xl px-4 py-2 font-display text-sm font-semibold text-muted hover:text-fg hover:bg-white/5 border border-white/10 transition-all">
-          <i class="fa-brands fa-telegram text-sky-400 text-sm"></i> Hỗ Trợ Telegram
-        </a>
-        <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.7)] transition-all">
-          <span class="block px-5 py-2.5 rounded-[11px] bg-bg font-display font-bold tracking-wider text-amber-300 group-hover:bg-transparent group-hover:text-black transition-all">
-            <i class="fa-solid fa-download mr-1.5 text-amber-400"></i> MUA FILE CHẠY NGAY
+      <!-- User Account & Wallet Bar / Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Guest View (Not Logged In) -->
+        <div id="nav-guest-zone" class="flex items-center gap-2">
+          <button type="button" onclick="openAuthModal('login'); playSfx('click')" class="px-3 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 text-xs font-bold font-cyber transition-all flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-user text-amber-400"></i>
+            <span>Đăng Nhập</span>
+          </button>
+          <button type="button" onclick="openAuthModal('register'); playSfx('click')" class="hidden sm:inline-flex px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold font-cyber transition-all items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-user-plus text-amber-400"></i>
+            <span>Đăng Ký</span>
+          </button>
+        </div>
+
+        <!-- Logged In Member View -->
+        <div id="nav-user-zone" class="hidden items-center gap-2">
+          <!-- Balance Pill -->
+          <div class="flex items-center gap-1.5 bg-slate-900/90 border border-amber-500/50 rounded-xl px-2.5 sm:px-3 py-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+            <span class="text-[10px] uppercase font-mono text-muted">Ví:</span>
+            <span id="nav-user-balance" class="font-cyber font-black text-xs text-amber-400">0đ</span>
+            <button type="button" onclick="openTopupModal(); playSfx('click')" class="ml-1 px-2 py-0.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black text-[10px] font-bold font-cyber transition shadow flex items-center gap-0.5" title="Nạp Tiền Vào Ví">
+              <i class="fa-solid fa-plus text-[9px]"></i> Nạp
+            </button>
+          </div>
+
+          <!-- My Keys Button -->
+          <button type="button" onclick="openMyKeysModal(); playSfx('click')" class="relative px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 text-xs font-bold font-cyber transition flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-purple-400"></i>
+            <span class="hidden md:inline">Kho Key</span>
+            <span id="nav-key-badge" class="size-4 rounded-full bg-purple-500 text-black text-[9px] font-mono font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <!-- User Profile & Logout -->
+          <div class="flex items-center gap-1 bg-white/5 border border-white/10 rounded-xl p-1">
+            <span id="nav-user-name" class="px-2 text-xs font-cyber font-bold text-white max-w-[80px] sm:max-w-[110px] truncate">Member</span>
+            <button type="button" onclick="logoutUser(); playSfx('tick')" class="size-7 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-400 flex items-center justify-center text-xs transition" title="Đăng Xuất">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+
+        <a href="#pricing" onclick="playSfx('click')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all">
+          <span class="block px-3.5 sm:px-4 py-2 rounded-[11px] bg-bg font-cyber text-xs font-bold tracking-wider text-amber-300 group-hover:bg-transparent group-hover:text-black transition-all">
+            <i class="fa-solid fa-bolt mr-1 text-amber-400"></i> BẢNG GIÁ
           </span>
-        </button>
+        </a>
       </div>
     </div>
   </header>
@@ -463,33 +500,33 @@
           <span class="relative inline-flex rounded-full size-2.5 bg-amber-400"></span>
         </span>
         <span class="font-cyber text-xs font-bold tracking-[0.2em] text-amber-300 uppercase">
-          TẢI VỀ LÀ CHẠY · KHÔNG CẦN KEY · ĐA THIẾT BỊ
+          BẢN QUYỀN KEYAUTH · CẤP KEY TỰ ĐỘNG 24/7
         </span>
-        <span class="bg-amber-500/20 text-amber-300 font-mono text-[10px] px-2 py-0.5 rounded-full font-semibold">PLUG & PLAY</span>
+        <span class="bg-amber-500/20 text-amber-300 font-mono text-[10px] px-2 py-0.5 rounded-full font-semibold">AUTO KEY</span>
       </div>
 
       <!-- Main Title -->
       <h1 class="font-cyber max-w-5xl text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-none">
         THẾ GIỚI MOD SKIN CS2
         <span class="mt-2 block bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(245,158,11,0.5)]">
-          TẢI VỀ LÀ CHẠY NGAY
+          KÍCH HOẠT NHANH TỨC THÌ
         </span>
       </h1>
 
       <!-- Description Subtitle -->
       <p class="mt-6 max-w-3xl text-lg sm:text-xl font-normal leading-relaxed text-muted">
-        Bán trực tiếp file Mod Skin CS2 trọn gói. Không cần nhập key kích hoạt phức tạp, copy sang bao nhiêu máy tính hay quán Net đều chạy ngay lập tức với đầy đủ 14,000+ skins!
+        Hệ thống Mod Skin CS2 chuyên nghiệp số 1 Việt Nam. Tích hợp bản quyền KeyAuth bảo mật cao, tự động cấp License Key ngay khi thanh toán với đầy đủ 14,000+ skins!
       </p>
 
       <!-- Action Buttons CTA -->
       <div class="mt-10 flex w-full max-w-md flex-col items-center gap-4 sm:max-w-none sm:flex-row sm:justify-center">
         <a href="catalog.html" target="_blank" onclick="playSfx('click')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 font-display text-lg font-black text-black shadow-[0_0_35px_rgba(245,158,11,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(245,158,11,0.9)] transition-all flex items-center justify-center gap-2 border border-yellow-300">
-          <i class="fa-solid fa-images text-black text-xl"></i>
-          <span>XEM KHO 14,000+ ẢNH SKIN (MỞ TAB MỚI) ↗</span>
+          <i class="fa-solid fa-eye text-black text-xl"></i>
+          <span>XEM TRƯỚC SKIN ↗</span>
         </a>
-        <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-display text-lg font-bold text-black shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 hover:shadow-[0_0_45px_rgba(245,158,11,0.8)] transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-download text-black"></i> Mua File Mod — 999.999đ (Chạy Mọi Máy)
-        </button>
+        <a href="#pricing" onclick="playSfx('click')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-display text-lg font-bold text-black shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 hover:shadow-[0_0_45px_rgba(245,158,11,0.8)] transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-key text-black"></i> Mua Key Bản Quyền (Từ 19.999đ)
+        </a>
         <a href="#studio" onclick="playSfx('click')" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel font-display text-base font-bold text-fg hover:text-accent hover:border-accent/50 transition-all flex items-center justify-center gap-2">
           <i class="fa-solid fa-palette text-accent"></i> Phòng Thay Đồ Live
         </a>
@@ -772,7 +809,7 @@
 
         <div id="case-winner-modal" class="mt-6 hidden p-5 rounded-2xl bg-slate-900 border-2 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.4)] animate-pulse-glow flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4">
-            <div class="size-20 rounded-xl bg-slate-950 p-2 border border-yellow-400 flex items-center justify-center">
+            <div class="size-20 rounded-xl bg-white p-2 border-2 border-yellow-400 flex items-center justify-center shadow-md">
               <img id="winner-img" src="https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1iDwP5muOh7Sha-lA8lvziMgIr9HifOOV5kFMRxFuEM5hi_xNXhMbmx5VCMjd9MyCv6jigc6n064ucLAvZ3_6bViV3fcepqpLtspE0" alt="Winner" class="max-h-full max-w-full object-contain">
             </div>
             <div>
@@ -790,95 +827,124 @@
     </div>
   </section>
 
-  <!-- VIP PRICING & PAYMENT (VietQR Instant Checkout - PRESERVING 100% PAYMENT INFO) -->
+  <!-- VIP PRICING & PAYMENT (3 TIERS: 1 NGÀY, 30 NGÀY, VĨNH VIỄN) -->
   <section id="pricing" class="relative py-24 bg-bg/70">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">SPECIAL PROMOTION · MULTI-DEVICE</span>
+      <div class="text-center mb-16">
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">KEYAUTH LICENSING · AUTO DELIVERY 24/7</span>
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
-          GÓI ƯU ĐÃI <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">ĐA THIẾT BỊ DUY NHẤT</span>
+          BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
         <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Sở hữu trọn đời kho 14,000+ Skin CS2 — <strong class="text-csgold">Sử dụng linh hoạt trên NHIỀU THIẾT BỊ</strong> (PC cá nhân, Laptop, Quán Net...). Kích hoạt tự động qua VietQR MB Bank.
+          Hệ thống cấp License Key KeyAuth tự động trong 3 giây sau khi thanh toán VietQR. Kích hoạt chuẩn 1 PC (HWID Lock bảo mật), trải nghiệm trọn vẹn 14,000+ skins CS2!
         </p>
       </div>
 
-      <!-- Single Highlighted Special Offer Card -->
-      <div class="max-w-3xl mx-auto">
-        <div class="relative rounded-3xl p-1 bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 shadow-[0_0_60px_rgba(245,158,11,0.35)]">
-          <div class="rounded-[23px] bg-[#0c1222] p-8 sm:p-12 relative overflow-hidden">
+      <!-- 3 Pricing Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+        
+        <!-- PLAN 1: 1 NGÀY (19.999đ) -->
+        <div class="glass-panel rounded-3xl p-7 border border-white/10 hover:border-cyan-400/50 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-slate-800 text-cyan-300 font-mono text-xs font-bold border border-cyan-500/30">
+                THỬ NGHIỆM 24H
+              </span>
+              <i class="fa-solid fa-clock text-cyan-400 text-lg"></i>
+            </div>
+            <h3 class="font-cyber text-2xl font-black text-white">GÓI 1 NGÀY</h3>
+            <p class="text-xs text-muted font-sans mt-1">Phù hợp chơi trải nghiệm cuối tuần / net</p>
             
-            <!-- Top Badges -->
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-              <span class="bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-xs font-black tracking-widest px-4 py-1.5 rounded-full uppercase shadow-md flex items-center gap-1.5">
-                <i class="fa-solid fa-crown"></i> GÓI ƯU ĐÃI VIP ĐẶC BIỆT
-              </span>
-              <span class="font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-laptop-code"></i> HỖ TRỢ NHIỀU THIẾT BỊ (MULTI-DEVICE)
-              </span>
+            <div class="my-6 pb-6 border-b border-white/10">
+              <span class="font-cyber text-4xl font-black text-white">19.999đ</span>
+              <span class="text-xs font-mono text-muted">/ 24 Giờ</span>
             </div>
 
-            <!-- Title & Pricing -->
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 border-b border-gray-800 pb-6 mb-8">
-              <div>
-                <h3 class="font-cyber text-3xl sm:text-4xl font-black text-white">BẢN QUYỀN TRỌN ĐỜI</h3>
-                <p class="text-xs text-gray-400 font-sans mt-1">Thanh toán 1 lần duy nhất — Mở khóa vĩnh viễn không phụ phí</p>
-              </div>
-              <div class="text-left sm:text-right">
-                <div class="font-cyber text-4xl sm:text-5xl font-black text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">
-                  999.999đ
-                </div>
-                <div class="text-xs text-emerald-400 font-mono font-semibold mt-0.5">
-                  <i class="fa-solid fa-infinity"></i> Vĩnh viễn / Đa thiết bị
-                </div>
-              </div>
-            </div>
+            <ul class="space-y-3 text-xs font-sans text-gray-300">
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Cấp 1 License Key (Thời hạn 24h)</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Mở khóa toàn bộ 14,000+ Skin CS2</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Tự do gắn Sticker, Móc khóa, Dao & Găng</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Hỗ trợ cài đặt 24/7</li>
+            </ul>
+          </div>
 
-            <!-- Features 2-column Grid -->
-            <div class="grid sm:grid-cols-2 gap-4 mb-8 font-sans text-sm">
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Dùng trên nhiều thiết bị:</strong> Thoải mái đăng nhập và sử dụng trên PC ở nhà, Laptop hay máy Cyber Game.</span>
-              </div>
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Trọn bộ 14,000+ Skin:</strong> Toàn bộ Dao, Găng tay, Súng Covert, Sticker Katowice, Móc khóa & Agent.</span>
-              </div>
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Anti-VAC 100% Tuyệt Đối:</strong> Cơ chế Client-side Hook an toàn, không can thiệp server Valve.</span>
-              </div>
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Auto Update trọn đời:</strong> Tự động đồng bộ offset và thêm case skin mới nhất từ Valve hoàn toàn miễn phí.</span>
-              </div>
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Phòng Thay Đồ & Studio 3D:</strong> Tự do gắn 5 sticker, chọn độ mòn float, pattern seed tùy ý.</span>
-              </div>
-              <div class="flex items-start gap-3 text-gray-200">
-                <i class="fa-solid fa-circle-check text-amber-400 mt-1 text-base shrink-0"></i>
-                <span><strong>Hỗ Trợ Kỹ Thuật 1-1 VIP:</strong> Kênh hỗ trợ ưu tiên trực tiếp từ Admin qua Telegram & Discord Server.</span>
-              </div>
-            </div>
-
-            <!-- CTA Button -->
-            <button type="button" onclick="openCheckout('vip'); playSfx('success')" class="w-full py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 font-orbitron font-black text-lg text-black shadow-[0_0_40px_rgba(245,158,11,0.6)] hover:scale-[1.02] transition-all flex items-center justify-center gap-3">
-              <i class="fa-solid fa-bolt text-xl"></i>
-              <span>KÍCH HOẠT GÓI ƯU ĐÃI 999.999đ NGAY</span>
+          <div class="mt-8 pt-4">
+            <button type="button" onclick="openCheckoutSmart('daily'); playSfx('click')" class="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-black font-cyber text-xs font-black text-white border border-white/10 hover:border-cyan-400 transition-all shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-key"></i> THUÊ 1 NGÀY (19.999đ)
             </button>
-
-            <!-- Payment Guarantee -->
-            <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-[11px] text-gray-400 font-mono">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield text-emerald-400"></i> MB Bank Tự Động</span>
-              <span>•</span>
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-400"></i> Nhận KEY Sau 30s</span>
-              <span>•</span>
-              <span class="flex items-center gap-1.5"><i class="fa-brands fa-telegram text-sky-400"></i> Support @VN_KEEN</span>
-            </div>
-
           </div>
         </div>
+
+        <!-- PLAN 2: 30 NGÀY (199.999đ) -->
+        <div class="glass-panel rounded-3xl p-7 border-2 border-amber-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative bg-slate-900/90">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-[10px] font-black uppercase tracking-wider shadow-md">
+            🔥 ĐƯỢC CHỌN NHIỀU NHẤT
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4 mt-2">
+              <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono text-xs font-bold border border-amber-500/40">
+                PHỔ BIẾN 1 THÁNG
+              </span>
+              <i class="fa-solid fa-fire text-amber-400 text-lg"></i>
+            </div>
+            <h3 class="font-cyber text-2xl font-black text-white">GÓI 30 NGÀY</h3>
+            <p class="text-xs text-muted font-sans mt-1">Sử dụng liên tục trong 1 tháng cày rank</p>
+            
+            <div class="my-6 pb-6 border-b border-white/10">
+              <span class="font-cyber text-4xl font-black text-amber-400">199.999đ</span>
+              <span class="text-xs font-mono text-muted">/ 30 Ngày</span>
+            </div>
+
+            <ul class="space-y-3 text-xs font-sans text-gray-200">
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-amber-400"></i> Cấp 1 License Key (Thời hạn 30 ngày)</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-amber-400"></i> Trọn bộ 14,000+ Skin + Tùy chọn StatTrak™</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-amber-400"></i> Tự động cập nhật bản vá CS2 mới nhất</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-amber-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock an toàn)</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-amber-400"></i> Tham gia kênh hỗ trợ Telegram VIP</li>
+            </ul>
+          </div>
+
+          <div class="mt-8 pt-4">
+            <button type="button" onclick="openCheckoutSmart('monthly'); playSfx('success')" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 font-cyber text-sm font-black text-black shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:scale-105 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-bolt"></i> THUÊ 30 NGÀY (199.999đ)
+            </button>
+          </div>
+        </div>
+
+        <!-- PLAN 3: VĨNH VIỄN (999.999đ) -->
+        <div class="glass-panel rounded-3xl p-7 border border-purple-500/40 hover:border-purple-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs font-bold border border-purple-500/40">
+                👑 VIP LIFETIME
+              </span>
+              <i class="fa-solid fa-crown text-purple-400 text-lg"></i>
+            </div>
+            <h3 class="font-cyber text-2xl font-black text-white">GÓI TRỌN ĐỜI</h3>
+            <p class="text-xs text-muted font-sans mt-1">Mua 1 lần dùng vĩnh viễn không phụ phí</p>
+            
+            <div class="my-6 pb-6 border-b border-white/10">
+              <span class="font-cyber text-4xl font-black text-purple-400">999.999đ</span>
+              <span class="text-xs font-mono text-muted">/ Vĩnh Viễn</span>
+            </div>
+
+            <ul class="space-y-3 text-xs font-sans text-gray-300">
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Cấp 1 License Key (Thời hạn Vĩnh Viễn)</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Mở khóa trọn bộ 14,000+ Skin trọn đời</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Tự động đồng bộ vũ khí & case mới từ Valve</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Hỗ trợ reset đổi HWID khi nâng cấp máy tính</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Hỗ trợ kỹ thuật 1-1 ưu tiên cao nhất</li>
+            </ul>
+          </div>
+
+          <div class="mt-8 pt-4">
+            <button type="button" onclick="openCheckoutSmart('lifetime'); playSfx('gold')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 font-cyber text-xs font-black text-white transition-all shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-infinity"></i> MUA VĨNH VIỄN (999.999đ)
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -1040,17 +1106,17 @@
           <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
             <div>
               <p class="text-[9px] uppercase text-subtle">Gói Bản Quyền</p>
-              <p class="font-bold text-fg font-sans">Mod Skin Trọn Đời (Đa Thiết Bị)</p>
+              <p class="font-bold text-fg font-sans" id="modal-plan-name">Gói 30 Ngày (1 Tháng)</p>
             </div>
-            <span class="text-emerald-400 text-[10px] font-bold"><i class="fa-solid fa-infinity mr-1"></i>Vĩnh Viễn</span>
+            <span class="text-emerald-400 text-[10px] font-bold" id="modal-plan-period"><i class="fa-solid fa-bolt mr-1"></i>30 Ngày</span>
           </div>
 
           <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
             <div>
               <p class="text-[9px] uppercase text-subtle">Số Tiền Thanh Toán</p>
-              <p class="font-bold text-amber-400 text-base" id="qr-amount">999.999đ</p>
+              <p class="font-bold text-amber-400 text-base" id="qr-amount">199.999đ</p>
             </div>
-            <button type="button" onclick="copyData('999999', 'Đã sao chép số tiền!')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-amber-400/20 text-amber-400 font-bold transition-colors">
+            <button type="button" onclick="copyData(String(currentAmount), 'Đã sao chép số tiền!')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-amber-400/20 text-amber-400 font-bold transition-colors">
               <i class="fa-regular fa-copy mr-1"></i> Copy Tiền
             </button>
           </div>
@@ -1141,6 +1207,271 @@
         <a id="tg-lookup" href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="block w-full py-3.5 rounded-xl bg-accent text-center font-display font-bold text-black hover:opacity-90 transition-opacity">
           <i class="fa-brands fa-telegram mr-1.5"></i> Nhắn @VN_KEEN Để Cấp Lại Key
         </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 1. AUTH MODAL (ĐĂNG NHẬP / ĐĂNG KÝ) -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div class="relative w-full max-w-md bg-[#0e1628] border-2 border-amber-500/50 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] overflow-hidden">
+      
+      <!-- Close Button -->
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white size-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Title & Icon -->
+      <div class="text-center mb-6">
+        <div class="inline-flex size-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-400 items-center justify-center text-black text-2xl font-black mb-3 shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 id="authModalTitle" class="font-cyber text-2xl font-black text-white">TÀI KHOẢN VN-KEEN</h3>
+        <p class="text-xs text-muted font-sans mt-1">Đăng nhập để nạp tiền vào ví và quản lý License Key</p>
+      </div>
+
+      <!-- Auth Mode Tabs -->
+      <div class="flex rounded-xl bg-slate-950 p-1 mb-6 border border-white/10">
+        <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all bg-gradient-to-r from-amber-400 to-yellow-500 text-black shadow-md">
+          ĐĂNG NHẬP
+        </button>
+        <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all text-muted hover:text-white">
+          ĐĂNG KÝ MỚI
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Tên Đăng Nhập</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
+            <input type="text" id="login-username" required placeholder="Nhập tên tài khoản..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Mật Khẩu</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
+            <input type="password" id="login-password" required placeholder="Nhập mật khẩu..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <button type="submit" id="btn-login-submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 font-cyber font-black text-sm text-black shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" onsubmit="handleRegister(event)" class="hidden space-y-4">
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Tên Đăng Nhập Mới</label>
+          <div class="relative">
+            <i class="fa-solid fa-user-plus absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
+            <input type="text" id="reg-username" required placeholder="Từ 3-20 ký tự (viết liền)..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Mật Khẩu</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
+            <input type="password" id="reg-password" required placeholder="Tối thiểu 4 ký tự..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Telegram / Zalo (Tùy chọn để bảo hành)</label>
+          <div class="relative">
+            <i class="fa-brands fa-telegram absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-400 text-xs"></i>
+            <input type="text" id="reg-contact" placeholder="@username_telegram hoặc SĐT Zalo" class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+          </div>
+        </div>
+
+        <button type="submit" id="btn-reg-submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 font-cyber font-black text-sm text-black shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-circle-check"></i> TẠO TÀI KHOẢN MỚI
+        </button>
+      </form>
+
+      <!-- Feedback Alert -->
+      <div id="auth-alert" class="hidden mt-4 p-3 rounded-xl text-xs font-mono text-center"></div>
+
+    </div>
+  </div>
+
+  <!-- 2. TOP-UP WALLET MODAL (NẠP TIỀN VÀO VÍ TỰ ĐỘNG VIETQR) -->
+  <div id="topupModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div class="relative w-full max-w-lg bg-[#0e1628] border-2 border-amber-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(245,158,11,0.35)] overflow-hidden max-h-[90vh] overflow-y-auto">
+      
+      <!-- Close Button -->
+      <button onclick="closeTopupModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white size-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="text-center mb-5">
+        <div class="inline-flex size-12 rounded-2xl bg-amber-500/20 text-amber-400 items-center justify-center text-xl font-black mb-2 border border-amber-500/40">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+        <h3 class="font-cyber text-2xl font-black text-white">NẠP TIỀN VÀO VÍ TỰ ĐỘNG</h3>
+        <p class="text-xs text-muted font-sans mt-1">
+          Nạp tiền trước để mua Key bất cứ lúc nào trong 1 giây (MB Bank 24/7)
+        </p>
+      </div>
+
+      <!-- Quick Preset Amounts -->
+      <div class="mb-4">
+        <label class="block text-[11px] font-mono text-muted uppercase mb-2">Chọn Số Tiền Muốn Nạp:</label>
+        <div class="grid grid-cols-3 gap-2 text-xs font-cyber font-bold">
+          <button type="button" onclick="setTopupAmount(50000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">50.000đ</button>
+          <button type="button" onclick="setTopupAmount(100000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">100.000đ</button>
+          <button type="button" onclick="setTopupAmount(200000)" class="topup-preset-btn active py-2.5 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition">200.000đ</button>
+          <button type="button" onclick="setTopupAmount(500000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">500.000đ</button>
+          <button type="button" onclick="setTopupAmount(1000000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">1.000.000đ</button>
+          <button type="button" onclick="setTopupAmount(10000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">10.000đ</button>
+        </div>
+      </div>
+
+      <!-- QR Container -->
+      <div class="flex justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[220px] mx-auto border border-blue-900/30 mb-4">
+        <img id="topup-qr-img" src="images/vietqr_payment.png" alt="VietQR Nạp Tiền" class="h-auto w-full max-w-[200px] aspect-square object-contain">
+      </div>
+
+      <!-- Payment Transfer Info -->
+      <div class="space-y-2 text-xs font-mono mb-4">
+        <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
+          <div>
+            <p class="text-[9px] uppercase text-subtle">Số Tiền Nạp</p>
+            <p class="font-bold text-amber-400 text-base" id="topup-amount-display">200.000đ</p>
+          </div>
+          <button type="button" onclick="copyData(String(topupCurrentAmount), 'Đã sao chép số tiền nạp!')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-amber-400/20 text-amber-400 font-bold transition">
+            <i class="fa-regular fa-copy mr-1"></i> Copy Tiền
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-amber-500/40 bg-amber-950/20">
+          <div>
+            <p class="text-[9px] uppercase text-amber-400 font-bold">Nội Dung Chuyển Khoản (Bắt Buộc)</p>
+            <p class="font-bold text-amber-300 text-base tracking-wider" id="topup-content-display">NAP USER123</p>
+          </div>
+          <button type="button" onclick="copyData(topupCurrentContent, 'Đã sao chép nội dung nạp!')" class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-bold hover:scale-105 transition">
+            <i class="fa-regular fa-copy mr-1"></i> Copy Mã
+          </button>
+        </div>
+      </div>
+
+      <!-- Auto Balance Listener Radar -->
+      <div class="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-[11px] font-mono text-cyan-300 mb-3">
+        <span class="size-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span id="topup-listen-status">Hệ thống đang tự động lắng nghe nạp tiền 24/7...</span>
+      </div>
+
+
+
+      <div class="text-center">
+        <button type="button" onclick="closeTopupModal()" class="px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono text-muted hover:text-white transition">
+          Đóng Cửa Sổ
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. MY KEYS MODAL (KHO LICENSE KEY CỦA TÔI) -->
+  <div id="myKeysModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div class="relative w-full max-w-2xl bg-[#0e1628] border-2 border-purple-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(168,85,247,0.3)] overflow-hidden max-h-[90vh] flex flex-col">
+      
+      <!-- Close Button -->
+      <button onclick="closeMyKeysModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white size-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
+        <div class="size-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-black border border-purple-500/40 shrink-0">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <div>
+          <h3 class="font-cyber text-2xl font-black text-white">KHO LICENSE KEY CỦA BẠN</h3>
+          <p class="text-xs text-muted font-sans mt-0.5">Tất cả mã Key bản quyền bạn đã mua được lưu trữ vĩnh viễn tại đây</p>
+        </div>
+      </div>
+
+      <!-- Keys List Container -->
+      <div id="my-keys-list" class="space-y-3 overflow-y-auto flex-1 pr-1 max-h-[400px]">
+        <!-- Keys injected via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="my-keys-empty" class="hidden text-center py-12">
+        <i class="fa-solid fa-box-open text-gray-600 text-4xl mb-3 block"></i>
+        <p class="text-sm font-cyber text-gray-400">Bạn chưa mua License Key nào</p>
+        <p class="text-xs text-muted font-sans mt-1">Hãy nạp tiền vào ví hoặc mua gói bản quyền để nhận Key nhé!</p>
+        <button onclick="closeMyKeysModal(); location.hash='#pricing';" class="mt-4 px-6 py-2.5 rounded-xl bg-amber-500 text-black font-cyber font-bold text-xs hover:bg-amber-400 transition">
+          XEM BẢNG GIÁ KEY
+        </button>
+      </div>
+
+      <!-- Download Launcher CTA -->
+      <div class="mt-6 pt-4 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <a href="https://t.me/VN_KEEN" target="_blank" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-cyber font-bold text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
+          <i class="fa-solid fa-download"></i> TẢI LAUNCHER MOD CS2
+        </a>
+        <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 font-sans text-xs flex items-center justify-center gap-1.5 transition">
+          <i class="fa-brands fa-discord text-indigo-400"></i> Hướng Dẫn Kích Hoạt
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. BUY CONFIRM MODAL (XÁC NHẬN MUA BẰNG SỐ DƯ VÍ) -->
+  <div id="buyConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div class="relative w-full max-w-md bg-[#0e1628] border-2 border-emerald-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(16,185,129,0.3)] overflow-hidden">
+      
+      <!-- Close Button -->
+      <button onclick="closeBuyConfirmModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white size-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Title -->
+      <div class="text-center mb-6">
+        <div class="inline-flex size-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 items-center justify-center text-black text-2xl font-black mb-3 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h3 class="font-cyber text-2xl font-black text-white">XÁC NHẬN MUA KEY</h3>
+        <p class="text-xs text-muted font-sans mt-1">Trừ tiền trực tiếp vào số dư ví tài khoản của bạn</p>
+      </div>
+
+      <!-- Transaction Preview Details -->
+      <div class="bg-slate-950 p-4 rounded-2xl border border-white/10 space-y-3 font-mono text-xs mb-6">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <span class="text-muted uppercase">Gói Bản Quyền:</span>
+          <span id="buy-confirm-plan" class="font-bold text-white font-cyber text-sm">Gói 30 Ngày</span>
+        </div>
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <span class="text-muted uppercase">Giá Gói:</span>
+          <span id="buy-confirm-price" class="font-bold text-amber-400 text-sm">199.999đ</span>
+        </div>
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <span class="text-muted uppercase">Số Dư Hiện Tại:</span>
+          <span id="buy-confirm-balance" class="font-bold text-emerald-400">250.000đ</span>
+        </div>
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-muted uppercase">Số Dư Còn Lại:</span>
+          <span id="buy-confirm-remaining" class="font-bold text-cyan-300">50.001đ</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-3">
+        <button type="button" id="btn-execute-buy" onclick="executeBuyWithBalance()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-400 font-cyber font-black text-sm text-black shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA (CẤP KEY NGAY)
+        </button>
+        <button type="button" onclick="closeBuyConfirmModal()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-muted hover:text-white transition">
+          Hủy Bỏ
+        </button>
       </div>
 
     </div>
@@ -1830,7 +2161,7 @@
         card.innerHTML = `
           <span class="text-[9px] font-mono text-muted truncate w-full uppercase">${item.type}</span>
           <div class="h-16 w-full flex items-center justify-center p-1 my-0.5">
-            <img src="${item.image}" alt="${item.name}" class="max-h-full max-w-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] transition-transform group-hover:scale-110">
+            <img src="${item.image}" alt="${item.name}" class="max-h-full max-w-full object-contain transition-transform group-hover:scale-110">
           </div>
           <p class="font-cyber text-[10px] font-bold text-fg truncate w-full">${item.name}</p>
         `;
@@ -2049,15 +2380,15 @@
     };
 
     const PLAN_META = {
-      vip: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
-      lifetime: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
-      monthly: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' },
-      daily: { name: 'Gói Ưu Đãi Đa Thiết Bị', amount: 999999, price: '999.999đ', period: '/ Trọn Đời (Đa Thiết Bị)' }
+      daily: { id: 'daily', name: 'Gói Thuê 1 Ngày (24H)', amount: 19999, price: '19.999đ', period: '/ 1 Ngày', days: 1 },
+      monthly: { id: 'monthly', name: 'Gói Thuê 30 Ngày (1 Tháng)', amount: 199999, price: '199.999đ', period: '/ 30 Ngày', days: 30 },
+      lifetime: { id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 999999, price: '999.999đ', period: '/ Vĩnh Viễn', days: 9999 },
+      vip: { id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 999999, price: '999.999đ', period: '/ Vĩnh Viễn', days: 9999 }
     };
 
     const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let currentPlan = 'vip';
-    let currentAmount = 999999;
+    let currentPlan = 'monthly';
+    let currentAmount = 199999;
     let currentContent = '';
 
     function randCode(n) {
@@ -2071,13 +2402,17 @@
     function formatVnd(n) { return n.toLocaleString('vi-VN') + 'đ'; }
 
     function selectPlan(id) {
-      currentPlan = id || 'vip';
-      const meta = PLAN_META[currentPlan] || PLAN_META['vip'];
+      currentPlan = id || 'monthly';
+      const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
       currentAmount = meta.amount;
-      const pickSummary = document.getElementById('pick-summary');
-      if (pickSummary) {
-        pickSummary.innerHTML = `${meta.name} · <span class="text-amber-400 font-bold">${meta.price}</span> ${meta.period}`;
-      }
+      
+      const planNameEl = document.getElementById('modal-plan-name');
+      if (planNameEl) planNameEl.textContent = meta.name;
+      const planPeriodEl = document.getElementById('modal-plan-period');
+      if (planPeriodEl) planPeriodEl.textContent = meta.period.replace('/ ', '');
+      const qrAmt = document.getElementById('qr-amount');
+      if (qrAmt) qrAmt.textContent = formatVnd(currentAmount);
+
       playSfx('click');
     }
 
@@ -2094,7 +2429,7 @@
     }
 
     function openCheckout(plan) {
-      selectPlan('vip');
+      selectPlan(plan || 'monthly');
       createQr();
       const modal = document.getElementById('modal');
       modal.classList.remove('hidden');
@@ -2115,19 +2450,25 @@
       if (pollingInterval) clearInterval(pollingInterval);
       currentContent = 'KEEN' + randCode(6);
 
+      const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
       const qrImg = document.getElementById('qr-img');
       if (qrImg) {
-        // High-res dynamic VietQR link with custom content
+        // High-res dynamic VietQR link with custom amount & content
         qrImg.src = `https://img.vietqr.io/image/MB-789789999888-compact2.png?amount=${currentAmount}&addInfo=${currentContent}&accountName=NGUYEN%20PHU%20QUY`;
         qrImg.onerror = () => { qrImg.src = 'images/vietqr_payment.png'; };
       }
+
+      const planNameEl = document.getElementById('modal-plan-name');
+      if (planNameEl) planNameEl.textContent = meta.name;
+      const planPeriodEl = document.getElementById('modal-plan-period');
+      if (planPeriodEl) planPeriodEl.textContent = meta.period.replace('/ ', '');
 
       const qrAmt = document.getElementById('qr-amount');
       if (qrAmt) qrAmt.textContent = formatVnd(currentAmount);
       const qrCont = document.getElementById('qr-content');
       if (qrCont) qrCont.textContent = currentContent;
 
-      const msg = encodeURIComponent(`Mình đã CK VN-KEEN đơn ${currentContent} (${formatVnd(currentAmount)}). Nhờ admin kiểm tra kích hoạt giúp mình nhé!`);
+      const msg = encodeURIComponent(`Mình đã CK VN-KEEN đơn ${currentContent} (${formatVnd(currentAmount)} - ${meta.name}). Nhờ admin kích hoạt License Key giúp mình nhé!`);
       const tgBtn = document.getElementById('tg-after-pay');
       if (tgBtn) tgBtn.href = `https://t.me/VN_KEEN?text=${msg}`;
 
@@ -2215,12 +2556,469 @@
       `;
     }
 
+    /* ============================================================
+       6. USER AUTH, WALLET BALANCE & INSTANT KEY INVENTORY
+       ============================================================ */
+    let currentUser = null;
+    try {
+      const savedUser = localStorage.getItem('vnkeen_current_user');
+      if (savedUser) currentUser = JSON.parse(savedUser);
+    } catch (e) {
+      currentUser = null;
+    }
+
+    let topupCurrentAmount = 200000;
+    let topupCurrentContent = '';
+    let topupPollingInterval = null;
+    let pendingBuyPlan = 'monthly';
+
+    function updateUserHeaderUI() {
+      const guestZone = document.getElementById('nav-guest-zone');
+      const userZone = document.getElementById('nav-user-zone');
+      const userNameEl = document.getElementById('nav-user-name');
+      const userBalEl = document.getElementById('nav-user-balance');
+      const keyBadgeEl = document.getElementById('nav-key-badge');
+
+      if (currentUser && currentUser.username) {
+        if (guestZone) guestZone.classList.add('hidden');
+        if (userZone) {
+          userZone.classList.remove('hidden');
+          userZone.classList.add('flex');
+        }
+        if (userNameEl) userNameEl.textContent = currentUser.username;
+        if (userBalEl) userBalEl.textContent = formatVnd(currentUser.balance || 0);
+        if (keyBadgeEl) keyBadgeEl.textContent = String((currentUser.keys || []).length);
+      } else {
+        if (guestZone) guestZone.classList.remove('hidden');
+        if (userZone) {
+          userZone.classList.add('hidden');
+          userZone.classList.remove('flex');
+        }
+      }
+    }
+
+    function saveUserSession(user) {
+      currentUser = user;
+      localStorage.setItem('vnkeen_current_user', JSON.stringify(user));
+      updateUserHeaderUI();
+    }
+
+    // 1. Auth Modals
+    function openAuthModal(tab = 'login') {
+      switchAuthTab(tab);
+      const m = document.getElementById('authModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+    }
+
+    function closeAuthModal() {
+      const m = document.getElementById('authModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabReg = document.getElementById('tab-register');
+      const formLogin = document.getElementById('form-login');
+      const formReg = document.getElementById('form-register');
+      const alertBox = document.getElementById('auth-alert');
+      if (alertBox) alertBox.classList.add('hidden');
+
+      if (tab === 'login') {
+        if (tabLogin) tabLogin.className = 'flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all bg-gradient-to-r from-amber-400 to-yellow-500 text-black shadow-md';
+        if (tabReg) tabReg.className = 'flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all text-muted hover:text-white';
+        if (formLogin) formLogin.classList.remove('hidden');
+        if (formReg) formReg.classList.add('hidden');
+      } else {
+        if (tabReg) tabReg.className = 'flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all bg-gradient-to-r from-emerald-400 to-teal-500 text-black shadow-md';
+        if (tabLogin) tabLogin.className = 'flex-1 py-2.5 rounded-lg text-xs font-cyber font-bold transition-all text-muted hover:text-white';
+        if (formLogin) formLogin.classList.add('hidden');
+        if (formReg) formReg.classList.remove('hidden');
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('login-username').value.trim();
+      const p = document.getElementById('login-password').value.trim();
+      const alertBox = document.getElementById('auth-alert');
+      const btn = document.getElementById('btn-login-submit');
+
+      if (!u || !p) return;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG ĐĂNG NHẬP...';
+
+      try {
+        const res = await fetch('/api/user?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+
+        if (data.success && data.user) {
+          saveUserSession(data.user);
+          closeAuthModal();
+          showToast(`Chào mừng ${data.user.username} quay trở lại!`);
+          playSfx('success');
+        } else {
+          // Client fallback local login
+          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+          if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
+            saveUserSession(localUsers[u.toLowerCase()]);
+            closeAuthModal();
+            showToast(`Chào mừng ${u} quay trở lại!`);
+            playSfx('success');
+          } else {
+            alertBox.className = 'mt-4 p-3 rounded-xl text-xs font-mono text-center bg-red-500/20 border border-red-500/40 text-red-400';
+            alertBox.textContent = data.message || 'Sai tên đăng nhập hoặc mật khẩu!';
+            alertBox.classList.remove('hidden');
+            playSfx('error');
+          }
+        }
+      } catch (err) {
+        // Fallback local auth
+        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+        if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
+          saveUserSession(localUsers[u.toLowerCase()]);
+          closeAuthModal();
+          showToast(`Chào mừng ${u} quay trở lại!`);
+          playSfx('success');
+        } else {
+          const newUser = { username: u, password: p, balance: 250000, keys: [], transactions: [] };
+          localUsers[u.toLowerCase()] = newUser;
+          localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
+          saveUserSession(newUser);
+          closeAuthModal();
+          showToast(`Đăng nhập thành công tài khoản ${u}! Tặng sẵn 250.000đ trải nghiệm!`);
+          playSfx('success');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY';
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const u = document.getElementById('reg-username').value.trim();
+      const p = document.getElementById('reg-password').value.trim();
+      const c = document.getElementById('reg-contact').value.trim();
+      const alertBox = document.getElementById('auth-alert');
+      const btn = document.getElementById('btn-reg-submit');
+
+      if (!u || !p || u.length < 3) return;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG TẠO TÀI KHOẢN...';
+
+      try {
+        const res = await fetch('/api/user?action=register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p, contact: c })
+        });
+        const data = await res.json();
+
+        if (data.success && data.user) {
+          saveUserSession(data.user);
+          closeAuthModal();
+          showToast(`Chúc mừng ${data.user.username} đã tạo tài khoản thành công!`);
+          playSfx('gold');
+        } else {
+          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+          if (localUsers[u.toLowerCase()]) {
+            alertBox.className = 'mt-4 p-3 rounded-xl text-xs font-mono text-center bg-red-500/20 border border-red-500/40 text-red-400';
+            alertBox.textContent = 'Tên tài khoản này đã được sử dụng!';
+            alertBox.classList.remove('hidden');
+            playSfx('error');
+          } else {
+            const newUser = { username: u, password: p, contact: c, balance: 0, keys: [], transactions: [] };
+            localUsers[u.toLowerCase()] = newUser;
+            localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
+            saveUserSession(newUser);
+            closeAuthModal();
+            showToast(`Tạo tài khoản ${u} thành công!`);
+            playSfx('gold');
+          }
+        }
+      } catch (err) {
+        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+        const newUser = { username: u, password: p, contact: c, balance: 0, keys: [], transactions: [] };
+        localUsers[u.toLowerCase()] = newUser;
+        localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
+        saveUserSession(newUser);
+        closeAuthModal();
+        showToast(`Tạo tài khoản ${u} thành công!`);
+        playSfx('gold');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> TẠO TÀI KHOẢN MỚI';
+      }
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem('vnkeen_current_user');
+      updateUserHeaderUI();
+      showToast('Đã đăng xuất tài khoản an toàn.');
+      playSfx('click');
+    }
+
+    // 2. Wallet Topup Modals & Radar
+    function openTopupModal() {
+      if (!currentUser) {
+        openAuthModal('login');
+        showToast('Vui lòng đăng nhập trước khi nạp tiền vào ví!');
+        return;
+      }
+      setTopupAmount(200000);
+      const m = document.getElementById('topupModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+      startTopupPolling();
+    }
+
+    function closeTopupModal() {
+      if (topupPollingInterval) {
+        clearInterval(topupPollingInterval);
+        topupPollingInterval = null;
+      }
+      const m = document.getElementById('topupModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function setTopupAmount(amt) {
+      topupCurrentAmount = amt;
+      const display = document.getElementById('topup-amount-display');
+      if (display) display.textContent = formatVnd(amt);
+
+      const usernameCode = (currentUser?.username || 'KEEN').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      topupCurrentContent = `NAP ${usernameCode}`;
+      const contDisplay = document.getElementById('topup-content-display');
+      if (contDisplay) contDisplay.textContent = topupCurrentContent;
+
+      const qr = document.getElementById('topup-qr-img');
+      if (qr) {
+        qr.src = `https://img.vietqr.io/image/MB-789789999888-compact2.png?amount=${amt}&addInfo=${encodeURIComponent(topupCurrentContent)}&accountName=NGUYEN%20PHU%20QUY`;
+      }
+
+      document.querySelectorAll('.topup-preset-btn').forEach(btn => {
+        if (btn.textContent.includes(amt.toLocaleString('vi-VN'))) {
+          btn.className = 'topup-preset-btn active py-2.5 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition';
+        } else {
+          btn.className = 'topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition';
+        }
+      });
+      playSfx('click');
+    }
+
+    function startTopupPolling() {
+      if (topupPollingInterval) clearInterval(topupPollingInterval);
+      const username = (currentUser?.username || '').toLowerCase();
+      if (!username) return;
+
+      topupPollingInterval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/topup-check?code=${encodeURIComponent(topupCurrentContent)}&username=${username}`);
+          const data = await res.json();
+          if (data.paid || (data.user && data.user.balance > (currentUser?.balance || 0))) {
+            clearInterval(topupPollingInterval);
+            const newBal = data.order ? (currentUser.balance + data.order.amount) : data.user.balance;
+            currentUser.balance = newBal;
+            saveUserSession(currentUser);
+            closeTopupModal();
+            showToast(`🎉 Nạp tiền thành công! Số dư mới: ${formatVnd(currentUser.balance)}`);
+            playSfx('gold');
+          }
+        } catch (e) {}
+      }, 3000);
+    }
+
+
+
+    // 3. Buy With Balance confirmation
+    function openCheckoutSmart(planId) {
+      pendingBuyPlan = planId || 'monthly';
+      const meta = PLAN_META[pendingBuyPlan] || PLAN_META['monthly'];
+
+      if (currentUser) {
+        if (currentUser.balance >= meta.amount) {
+          document.getElementById('buy-confirm-plan').textContent = meta.name;
+          document.getElementById('buy-confirm-price').textContent = meta.price;
+          document.getElementById('buy-confirm-balance').textContent = formatVnd(currentUser.balance);
+          document.getElementById('buy-confirm-remaining').textContent = formatVnd(currentUser.balance - meta.amount);
+          
+          const m = document.getElementById('buyConfirmModal');
+          if (m) {
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+          }
+          playSfx('click');
+        } else {
+          if (confirm(`Số dư trong ví (${formatVnd(currentUser.balance)}) chưa đủ để mua ${meta.name} (${meta.price}).\n\nBạn có muốn Nạp thêm tiền vào ví ngay không?`)) {
+            openTopupModal();
+          } else {
+            openCheckout(pendingBuyPlan);
+          }
+        }
+      } else {
+        openCheckout(pendingBuyPlan);
+      }
+    }
+
+    function closeBuyConfirmModal() {
+      const m = document.getElementById('buyConfirmModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    async function executeBuyWithBalance() {
+      if (!currentUser) return;
+      const meta = PLAN_META[pendingBuyPlan] || PLAN_META['monthly'];
+      const btn = document.getElementById('btn-execute-buy');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG TẠO KEY...';
+
+      try {
+        const res = await fetch('/api/user?action=buy_with_balance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: currentUser.username, plan: pendingBuyPlan })
+        });
+        const data = await res.json();
+
+        if (data.success && data.key) {
+          currentUser.balance = data.newBalance;
+          if (!currentUser.keys) currentUser.keys = [];
+          currentUser.keys.unshift(data.keyRecord || {
+            plan: meta.name,
+            key: data.key,
+            purchasedAt: new Date().toISOString()
+          });
+          saveUserSession(currentUser);
+          closeBuyConfirmModal();
+          openMyKeysModal();
+          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. Key đã sẵn sàng trong Kho!`);
+          playSfx('gold');
+        } else {
+          if (currentUser.balance >= meta.amount) {
+            currentUser.balance -= meta.amount;
+            const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+            const fallbackKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+            if (!currentUser.keys) currentUser.keys = [];
+            currentUser.keys.unshift({
+              plan: meta.name,
+              key: fallbackKey,
+              purchasedAt: new Date().toISOString()
+            });
+            saveUserSession(currentUser);
+            closeBuyConfirmModal();
+            openMyKeysModal();
+            showToast(`🎉 Mua ${meta.name} thành công! Key: ${fallbackKey}`);
+            playSfx('gold');
+          } else {
+            alert(data.message || 'Số dư không đủ!');
+          }
+        }
+      } catch (err) {
+        if (currentUser.balance >= meta.amount) {
+          currentUser.balance -= meta.amount;
+          const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+          const fallbackKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+          if (!currentUser.keys) currentUser.keys = [];
+          currentUser.keys.unshift({
+            plan: meta.name,
+            key: fallbackKey,
+            purchasedAt: new Date().toISOString()
+          });
+          saveUserSession(currentUser);
+          closeBuyConfirmModal();
+          openMyKeysModal();
+          showToast(`🎉 Mua ${meta.name} thành công! Key: ${fallbackKey}`);
+          playSfx('gold');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA (CẤP KEY NGAY)';
+      }
+    }
+
+    // 4. My Keys Inventory Modal
+    function openMyKeysModal() {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      renderMyKeysList();
+      const m = document.getElementById('myKeysModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+    }
+
+    function closeMyKeysModal() {
+      const m = document.getElementById('myKeysModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function renderMyKeysList() {
+      const list = document.getElementById('my-keys-list');
+      const empty = document.getElementById('my-keys-empty');
+      if (!list || !empty) return;
+
+      const keys = currentUser?.keys || [];
+      if (keys.length === 0) {
+        list.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      list.classList.remove('hidden');
+      empty.classList.add('hidden');
+
+      list.innerHTML = keys.map((k, idx) => `
+        <div class="p-4 rounded-2xl bg-slate-950 border border-purple-500/40 hover:border-purple-400 transition shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono text-[10px] font-bold border border-purple-500/30">
+                ${k.plan || 'License Key'}
+              </span>
+              <span class="text-[10px] text-muted font-mono">${new Date(k.purchasedAt || Date.now()).toLocaleString('vi-VN')}</span>
+            </div>
+            <div class="font-mono text-base font-black text-amber-400 tracking-wider select-all">
+              ${k.key}
+            </div>
+          </div>
+          <button type="button" onclick="copyData('${k.key}', 'Đã sao chép License Key!')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-cyber font-bold text-xs transition shadow flex items-center gap-1.5 shrink-0">
+            <i class="fa-regular fa-copy"></i> Copy Key
+          </button>
+        </div>
+      `).join('');
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       init3DLandscape();
       initPlexusNetwork();
       buildCaseCarousel();
       setStudioViewMode('fpv_weapon');
-      selectPlan('vip');
+      selectPlan('monthly');
+      updateUserHeaderUI();
     });
   </script>
 </body>

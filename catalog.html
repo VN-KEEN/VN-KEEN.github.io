@@ -81,12 +81,10 @@
     .card-border-restricted { border-top: 3px solid #8847ff; }
     .card-border-milspec { border-top: 3px solid #4b69ff; }
 
-    /* Rarity Glow on images */
-    .img-glow-gold { filter: drop-shadow(0 0 12px rgba(255,215,0,0.45)); }
-    .img-glow-covert { filter: drop-shadow(0 0 12px rgba(235,75,75,0.45)); }
-    .img-glow-classified { filter: drop-shadow(0 0 12px rgba(211,44,230,0.45)); }
-    .img-glow-restricted { filter: drop-shadow(0 0 12px rgba(136,71,255,0.45)); }
-    .img-glow-milspec { filter: drop-shadow(0 0 12px rgba(75,105,255,0.45)); }
+    /* Clean, natural item images - Zero glow effect */
+    .img-glow-gold, .img-glow-covert, .img-glow-classified, .img-glow-restricted, .img-glow-milspec { 
+      filter: none !important; 
+    }
 
     .tab-btn.active {
       background: linear-gradient(135deg, #de9b35 0%, #b45309 100%);
@@ -320,6 +318,10 @@
         <div class="flex items-center gap-2.5">
           <span id="modalRarityBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono badge-covert">Covert</span>
           <span id="modalCategoryBadge" class="text-[11px] bg-gray-800 text-gray-300 px-2 py-0.5 rounded font-mono">Súng</span>
+          <button type="button" id="modalStatTrakToggle" onclick="toggleStatTrak()" class="text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono border transition-all flex items-center gap-1.5 border-orange-500/40 text-orange-400 bg-orange-500/10 hover:bg-orange-500/20">
+            <span class="size-2 rounded-full bg-orange-500" id="stattrak-dot"></span>
+            <span id="stattrak-toggle-text">StatTrak™: TẮT</span>
+          </button>
         </div>
         <button onclick="closeSkinModal()" class="text-gray-400 hover:text-white text-lg w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark"></i>
@@ -328,20 +330,40 @@
 
       <!-- Modal Body -->
       <div class="p-6">
-        <!-- Big Preview Image Container -->
-        <div class="relative bg-gradient-to-b from-[#18233c] to-[#0d1322] border border-gray-800 rounded-xl p-8 flex items-center justify-center min-h-[260px] overflow-hidden group">
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(222,155,53,0.15),transparent_70%)] pointer-events-none"></div>
-          <img id="modalImage" src="" alt="Skin Preview" class="max-h-[240px] max-w-full object-contain relative z-10 drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)] transition-transform duration-300 group-hover:scale-110">
+        <!-- Big Preview Image Container (Nền Trắng Nguyên Bản Như Ảnh Gốc Steam) -->
+        <div class="relative bg-white border border-gray-300 rounded-2xl p-8 flex items-center justify-center min-h-[260px] overflow-hidden group shadow-md">
+          <!-- StatTrak Top Right Badge Overlay -->
+          <div id="modalStatTrakBadge" class="hidden absolute top-3 right-3 px-3 py-1 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 text-white font-mono font-black text-[11px] tracking-wider shadow-lg flex items-center gap-1.5 animate-pulse">
+            <i class="fa-solid fa-fire"></i> StatTrak™
+          </div>
+          <img id="modalImage" src="" alt="Skin Preview" class="max-h-[240px] max-w-full object-contain relative z-10 transition-transform duration-300 group-hover:scale-105">
+        </div>
+
+        <!-- StatTrak Orange LED Kill Counter Widget -->
+        <div id="modalStatTrakWidget" class="hidden mt-4 p-3 rounded-xl bg-slate-950 border-2 border-orange-500/60 shadow-[0_0_20px_rgba(234,88,12,0.25)] flex flex-wrap items-center justify-between gap-2 animate-fadeIn">
+          <div class="flex items-center gap-2.5">
+            <span class="text-[11px] font-mono uppercase text-orange-400 font-bold tracking-wider flex items-center gap-1">
+              <i class="fa-solid fa-calculator text-orange-500"></i> BỘ ĐẾM STATTRAK™ KILLS:
+            </span>
+            <span id="modalStatTrakCount" class="font-mono text-lg font-black text-orange-400 tracking-[0.25em] bg-black px-3 py-0.5 rounded-lg border border-orange-500/80 shadow-[inset_0_0_10px_rgba(234,88,12,0.5)]">001337</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="adjustStatTrak(-100)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-mono text-orange-300 rounded transition">-100</button>
+            <button type="button" onclick="adjustStatTrak(100)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-mono text-orange-300 rounded transition">+100</button>
+            <button type="button" onclick="randomizeStatTrak()" class="px-2.5 py-1 bg-orange-500 hover:bg-orange-400 text-xs font-mono text-black font-bold rounded transition flex items-center gap-1 shadow-md">
+              <i class="fa-solid fa-dice"></i> Ngẫu nhiên
+            </button>
+          </div>
         </div>
 
         <!-- Skin Info -->
-        <div class="mt-5 text-center">
+        <div class="mt-4 text-center">
           <h2 id="modalSkinName" class="text-2xl font-orbitron font-black text-white tracking-wide">AK-47 | Asiimov</h2>
           <p id="modalSubInfo" class="text-xs text-gray-400 font-sans mt-1">Đã hỗ trợ đầy đủ 100% trong bản Mod CS2 VN-KEEN</p>
         </div>
 
         <!-- Features list in modal -->
-        <div class="grid grid-cols-3 gap-2 mt-5 text-center text-xs">
+        <div class="grid grid-cols-3 gap-2 mt-4 text-center text-xs">
           <div class="bg-[#18233c]/60 border border-gray-800 rounded-lg p-2.5">
             <i class="fa-solid fa-shield-halved text-emerald-400 mb-1 block"></i>
             <span class="text-gray-300 text-[11px]">Anti-VAC An Toàn</span>
@@ -981,12 +1003,21 @@
       grid.innerHTML = html;
     }
 
+    // StatTrak™ State & Controls
+    let isStatTrakActive = false;
+    let statTrakKills = 1337;
+    let currentModalItem = null;
+
     // Modal Details Logic
     function openSkinModal(safeItemStr) {
       try {
         const item = JSON.parse(decodeURIComponent(safeItemStr));
+        currentModalItem = item;
         const modal = document.getElementById('skinModal');
         const rc = getRarityClass(item.rarity);
+
+        isStatTrakActive = false; // Reset to normal
+        updateStatTrakUI();
 
         document.getElementById('modalImage').src = item.image;
         document.getElementById('modalSkinName').textContent = item.name;
@@ -999,6 +1030,56 @@
       } catch (err) {
         console.error('Failed to open modal', err);
       }
+    }
+
+    function toggleStatTrak() {
+      isStatTrakActive = !isStatTrakActive;
+      updateStatTrakUI();
+    }
+
+    function updateStatTrakUI() {
+      const toggleBtn = document.getElementById('modalStatTrakToggle');
+      const toggleText = document.getElementById('stattrak-toggle-text');
+      const dot = document.getElementById('stattrak-dot');
+      const widget = document.getElementById('modalStatTrakWidget');
+      const badge = document.getElementById('modalStatTrakBadge');
+      const nameEl = document.getElementById('modalSkinName');
+      const countEl = document.getElementById('modalStatTrakCount');
+
+      if (countEl) countEl.textContent = String(statTrakKills).padStart(6, '0');
+
+      if (isStatTrakActive) {
+        if (toggleBtn) toggleBtn.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono border transition-all flex items-center gap-1.5 border-orange-500 bg-orange-500 text-black shadow-[0_0_15px_rgba(234,88,12,0.4)]';
+        if (toggleText) toggleText.textContent = 'StatTrak™: BẬT';
+        if (dot) dot.className = 'size-2 rounded-full bg-black animate-ping';
+        if (widget) widget.classList.remove('hidden');
+        if (badge) badge.classList.remove('hidden');
+        if (nameEl && currentModalItem) {
+          nameEl.innerHTML = `<span class="text-orange-500 font-black">StatTrak™</span> ${currentModalItem.name}`;
+        }
+      } else {
+        if (toggleBtn) toggleBtn.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono border transition-all flex items-center gap-1.5 border-orange-500/40 text-orange-400 bg-orange-500/10 hover:bg-orange-500/20';
+        if (toggleText) toggleText.textContent = 'StatTrak™: TẮT';
+        if (dot) dot.className = 'size-2 rounded-full bg-orange-500';
+        if (widget) widget.classList.add('hidden');
+        if (badge) badge.classList.add('hidden');
+        if (nameEl && currentModalItem) {
+          nameEl.textContent = currentModalItem.name;
+        }
+      }
+    }
+
+    function adjustStatTrak(amount) {
+      statTrakKills = Math.max(0, statTrakKills + amount);
+      const countEl = document.getElementById('modalStatTrakCount');
+      if (countEl) countEl.textContent = String(statTrakKills).padStart(6, '0');
+    }
+
+    function randomizeStatTrak() {
+      const presets = [1337, 4200, 6969, 12500, 24890, 66100, 88888, 99999];
+      statTrakKills = presets[Math.floor(Math.random() * presets.length)];
+      const countEl = document.getElementById('modalStatTrakCount');
+      if (countEl) countEl.textContent = String(statTrakKills).padStart(6, '0');
     }
 
     function closeSkinModal() {
