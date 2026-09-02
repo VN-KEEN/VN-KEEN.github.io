@@ -2501,6 +2501,16 @@
     }
 
     async function checkSepayTransactions() {
+      // 1. Try Cloudflare Pages /api/sepay endpoint
+      try {
+        const res = await fetch('/api/sepay');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.transactions) return data.transactions;
+        }
+      } catch (e) {}
+
+      // 2. Try Direct SePay User API
       try {
         const res = await fetch(`https://my.sepay.vn/userapi/transactions/list?account_number=${SEPAY_CONFIG.accountNumber}&limit=20`, {
           headers: {
@@ -2508,12 +2518,13 @@
             'Content-Type': 'application/json'
           }
         });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.transactions || [];
-      } catch (e) {
-        return null;
-      }
+        if (res.ok) {
+          const data = await res.json();
+          return data.transactions || [];
+        }
+      } catch (e) {}
+
+      return null;
     }
 
     function startOrderPolling(orderId) {
