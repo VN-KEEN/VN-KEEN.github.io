@@ -2479,12 +2479,87 @@
       startOrderPolling(currentContent);
     }
 
+    const SEPAY_CONFIG = {
+      apiToken: 'KF2Q9YENXSPW5HW4LA93XVSIMJWDBCBWIBI0NXPNEAYTUQ6VRGVGYG0YZGSVCJHM',
+      accountNumber: '789789999888'
+    };
+
+    function getProcessedTxs() {
+      try {
+        return JSON.parse(localStorage.getItem('vnkeen_processed_txs') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function markTxProcessed(txId) {
+      const list = getProcessedTxs();
+      if (!list.includes(String(txId))) {
+        list.push(String(txId));
+        localStorage.setItem('vnkeen_processed_txs', JSON.stringify(list));
+      }
+    }
+
+    async function checkSepayTransactions() {
+      try {
+        const res = await fetch(`https://my.sepay.vn/userapi/transactions/list?account_number=${SEPAY_CONFIG.accountNumber}&limit=20`, {
+          headers: {
+            'Authorization': `Bearer ${SEPAY_CONFIG.apiToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.transactions || [];
+      } catch (e) {
+        return null;
+      }
+    }
+
     function startOrderPolling(orderId) {
       const statusEl = document.getElementById('auto-listen-status');
       if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${orderId}...`;
 
+      if (pollingInterval) clearInterval(pollingInterval);
+      const cleanOrderId = (orderId || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
       pollingInterval = setInterval(async () => {
         try {
+          // 1. Direct SePay Real-time API
+          const txs = await checkSepayTransactions();
+          if (txs && txs.length > 0) {
+            const processed = getProcessedTxs();
+            for (const tx of txs) {
+              const txId = String(tx.id);
+              if (processed.includes(txId)) continue;
+
+              const amtIn = parseFloat(tx.amount_in || 0);
+              const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+              if (amtIn > 0 && cleanOrderId && content.includes(cleanOrderId)) {
+                markTxProcessed(txId);
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+
+                const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+                const newKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+                if (currentUser) {
+                  if (!currentUser.keys) currentUser.keys = [];
+                  const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
+                  currentUser.keys.unshift({
+                    plan: meta.name,
+                    key: newKey,
+                    purchasedAt: new Date().toISOString()
+                  });
+                  saveUserSession(currentUser);
+                }
+                onPaymentSuccess(newKey);
+                return;
+              }
+            }
+          }
+
+          // 2. Fallback backend
           const res = await fetch(`/api/check-order?orderId=${orderId}`);
           if (res.ok) {
             const data = await res.json();
@@ -2494,10 +2569,8 @@
               onPaymentSuccess(data.key || `KEEN-${randCode(4)}-${randCode(4)}-${randCode(4)}`);
             }
           }
-        } catch (err) {
-          // Silent catch for network/polling
-        }
-      }, 2500);
+        } catch (err) {}
+      }, 2000);
     }
 
     function onPaymentSuccess(key) {
@@ -2824,24 +2897,64 @@
 
     function startTopupPolling() {
       if (topupPollingInterval) clearInterval(topupPollingInterval);
-      const username = (currentUser?.username || '').toLowerCase();
+      const username = (currentUser?.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
       if (!username) return;
 
       topupPollingInterval = setInterval(async () => {
         try {
+          // 1. Direct SePay Real-time Bank Transaction API
+          const txs = await checkSepayTransactions();
+          if (txs && txs.length > 0) {
+            const processed = getProcessedTxs();
+            for (const tx of txs) {
+              const txId = String(tx.id);
+              if (processed.includes(txId)) continue;
+
+              const amtIn = parseFloat(tx.amount_in || 0);
+              const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+              // Match if amount_in > 0 and transaction content contains username or NAP
+              if (amtIn > 0 && (content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen'))) {
+                markTxProcessed(txId);
+                clearInterval(topupPollingInterval);
+                topupPollingInterval = null;
+
+                currentUser.balance = (currentUser.balance || 0) + amtIn;
+                if (!currentUser.transactions) currentUser.transactions = [];
+                currentUser.transactions.unshift({
+                  id: txId,
+                  type: 'TOPUP',
+                  description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
+                  amount: amtIn,
+                  createdAt: tx.transaction_date || new Date().toISOString()
+                });
+
+                saveUserSession(currentUser);
+                closeTopupModal();
+                showToast(`🎉 Nạp tiền thành công! Đã nhận +${formatVnd(amtIn)} vào ví.`);
+                playSfx('gold');
+                return;
+              }
+            }
+          }
+
+          // 2. Fallback backend check
           const res = await fetch(`/api/topup-check?code=${encodeURIComponent(topupCurrentContent)}&username=${username}`);
-          const data = await res.json();
-          if (data.paid || (data.user && data.user.balance > (currentUser?.balance || 0))) {
-            clearInterval(topupPollingInterval);
-            const newBal = data.order ? (currentUser.balance + data.order.amount) : data.user.balance;
-            currentUser.balance = newBal;
-            saveUserSession(currentUser);
-            closeTopupModal();
-            showToast(`🎉 Nạp tiền thành công! Số dư mới: ${formatVnd(currentUser.balance)}`);
-            playSfx('gold');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.paid || (data.user && data.user.balance > (currentUser?.balance || 0))) {
+              clearInterval(topupPollingInterval);
+              topupPollingInterval = null;
+              const newBal = data.order ? (currentUser.balance + data.order.amount) : data.user.balance;
+              currentUser.balance = newBal;
+              saveUserSession(currentUser);
+              closeTopupModal();
+              showToast(`🎉 Nạp tiền thành công! Số dư mới: ${formatVnd(currentUser.balance)}`);
+              playSfx('gold');
+            }
           }
         } catch (e) {}
-      }, 3000);
+      }, 2000);
     }
 
 
