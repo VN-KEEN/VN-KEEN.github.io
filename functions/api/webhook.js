@@ -127,7 +127,7 @@ export async function onRequest(context) {
       return new Response(JSON.stringify({
         success: true,
         type: 'TOPUP',
-        message: Nạp thành công +đ vào tài khoản . Số dư mới: đ,
+        message: `Nạp thành công +${amount}đ vào tài khoản ${user.displayName}. Số dư mới: ${user.balance}đ`,
         user: { username: user.displayName, balance: user.balance }
       }), {
         status: 200,

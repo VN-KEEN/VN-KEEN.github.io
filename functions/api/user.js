@@ -205,7 +205,7 @@ export async function onRequest(context) {
       user.keys.unshift(keyRecord);
       user.transactions.unshift({
         type: 'BUY_KEY',
-        description: Mua ,
+        description: `Mua ${selectedPlan.name}`,
         amount: -selectedPlan.price,
         createdAt: new Date().toISOString()
       });
