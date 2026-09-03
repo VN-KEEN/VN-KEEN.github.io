@@ -786,7 +786,7 @@
           <div class="size-0 border-x-[8px] border-x-transparent border-b-[10px] border-b-yellow-400"></div>
         </div>
 
-        <div class="overflow-hidden rounded-2xl bg-slate-950 p-2 relative h-48 flex items-center border border-white/10">
+        <div id="case-track-viewport" class="overflow-hidden rounded-2xl bg-slate-950 p-2 relative h-48 flex items-center border border-white/10">
           <div id="case-track" class="flex gap-3 items-center"></div>
         </div>
 
@@ -2132,32 +2132,41 @@
     }
 
     /* ============================================================
-       4. CS2 CASE OPENING SIMULATOR LOGIC (Skin Thực Tế 100%)
+       4. CS2 CASE OPENING SIMULATOR LOGIC (Chuẩn Xác 100% Khớp Kim Chỉ)
        ============================================================ */
     const CS2_SKINS = [
-      { name: '★ Karambit | Doppler Sapphire', type: 'Special Gold Knife', rarity: 'csgold', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1iDwP5muOh7Sha-lA8lvziMgIr9HifOOV5kFMRxFuEM5hi_xNXhMbmx5VCMjd9MyCv6jigc6n064ucLAvZ3_6bViV3fcepqpLtspE0', wear: 'Factory New (0.0142)' },
-      { name: '★ Butterfly Knife | Fade', type: 'Special Gold Knife', rarity: 'csgold', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2avx-9ytd5lRi67gVNwsDvSwtqqc3iXZg4kCZYjReYLtRbum9XgYuvm5wbWjtgUzCn3iSsf8G81tFEeH9rw', wear: 'Factory New (0.0081)' },
-      { name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'csred', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV', wear: 'Factory New (0.0215)' },
-      { name: 'AK-47 | Nightwish', type: 'Covert Rifle', rarity: 'csred', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSLvmUBnOHyP1-j-1gSCGn20glt2nXnt78cnKUbwN2XJp2R-ZbuxHqlNXlMLiw5AHc3toWnCur23hXrnE8p0T2bx4', wear: 'Factory New (0.0194)' },
-      { name: '★ Sport Gloves | Hedge Maze', type: 'Extraordinary Gloves', rarity: 'csgold', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_eBC2Ke_uJ_t-l9AX21whwi4Gndnov9JH_FblMlCJYjRbFZtkWww4HnNbjr7wWN39gUmH7gznQeohQBtY8', wear: 'Factory New (0.0621)' },
-      { name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'csgold', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_KfG2Kv0ed4u95lRi67gVNx4T-Bw434IHyVb1QlAsd1FOUDthG4xNznMu3m4QXXg90Wzn_33C1I8G81tLaDi_rK', wear: 'Factory New (0.0633)' },
-      { name: 'AK-47 | Asiimov', type: 'Covert Rifle', rarity: 'csred', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSIeOaB2qf19F6ueZhW2e2wEt-t2jcytf6dymSO1JxA5oiRecLsRa5kIfkYr-241aLgotHz3-rkGoXuUp8oX57', wear: 'Factory New (0.0520)' },
-      { name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'csred', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiFO0P_6afVSKP-EAm6extF6ueZhW2exwkl2tmTXwt39eCiUPQR2DMN4TOVetUK8xoLgM-K341eM2otDnC6okGoXufBz_TAB', wear: 'Minimal Wear (0.0891)' },
-      { name: 'Desert Eagle | Printstream', type: 'Classified Pistol', rarity: 'cspink', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk7OeRbKFsJ8-DHG6e1f1iouRoQha_nBovp3OGmdeqInyVP1V0XsYlRbEI50a5wNyzZr605AyI3t5MmCSohylAuC89_a9cBoMY9UkV', wear: 'Factory New (0.0340)' }
+      { name: '★ Karambit | Doppler Sapphire', type: 'Special Gold Knife', rarity: 'csgold', hex: '#eab308', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1iDwP5muOh7Sha-lA8lvziMgIr9HifOOV5kFMRxFuEM5hi_xNXhMbmx5VCMjd9MyCv6jigc6n064ucLAvZ3_6bViV3fcepqpLtspE0', wear: 'Factory New (0.0142)' },
+      { name: '★ Butterfly Knife | Fade', type: 'Special Gold Knife', rarity: 'csgold', hex: '#eab308', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2avx-9ytd5lRi67gVNwsDvSwtqqc3iXZg4kCZYjReYLtRbum9XgYuvm5wbWjtgUzCn3iSsf8G81tFEeH9rw', wear: 'Factory New (0.0081)' },
+      { name: 'AWP | Dragon Lore', type: 'Covert Sniper Rifle', rarity: 'csred', hex: '#ef4444', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV', wear: 'Factory New (0.0215)' },
+      { name: 'AK-47 | Nightwish', type: 'Covert Rifle', rarity: 'csred', hex: '#ef4444', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSLvmUBnOHyP1-j-1gSCGn20glt2nXnt78cnKUbwN2XJp2R-ZbuxHqlNXlMLiw5AHc3toWnCur23hXrnE8p0T2bx4', wear: 'Factory New (0.0194)' },
+      { name: '★ Sport Gloves | Hedge Maze', type: 'Extraordinary Gloves', rarity: 'csgold', hex: '#eab308', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_eBC2Ke_uJ_t-l9AX21whwi4Gndnov9JH_FblMlCJYjRbFZtkWww4HnNbjr7wWN39gUmH7gznQeohQBtY8', wear: 'Factory New (0.0621)' },
+      { name: '★ Sport Gloves | Vice', type: 'Extraordinary Gloves', rarity: 'csgold', hex: '#eab308', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_KfG2Kv0ed4u95lRi67gVNx4T-Bw434IHyVb1QlAsd1FOUDthG4xNznMu3m4QXXg90Wzn_33C1I8G81tLaDi_rK', wear: 'Factory New (0.0633)' },
+      { name: 'AK-47 | Asiimov', type: 'Covert Rifle', rarity: 'csred', hex: '#ef4444', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSIeOaB2qf19F6ueZhW2e2wEt-t2jcytf6dymSO1JxA5oiRecLsRa5kIfkYr-241aLgotHz3-rkGoXuUp8oX57', wear: 'Factory New (0.0520)' },
+      { name: 'M4A4 | Howl', type: 'Contraband Rifle', rarity: 'csred', hex: '#ef4444', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiFO0P_6afVSKP-EAm6extF6ueZhW2exwkl2tmTXwt39eCiUPQR2DMN4TOVetUK8xoLgM-K341eM2otDnC6okGoXufBz_TAB', wear: 'Minimal Wear (0.0891)' },
+      { name: 'Desert Eagle | Printstream', type: 'Classified Pistol', rarity: 'cspink', hex: '#ec4899', image: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk7OeRbKFsJ8-DHG6e1f1iouRoQha_nBovp3OGmdeqInyVP1V0XsYlRbEI50a5wNyzZr605AyI3t5MmCSohylAuC89_a9cBoMY9UkV', wear: 'Factory New (0.0340)' }
     ];
 
     let isSpinning = false;
+    let currentCaseItems = [];
+    let currentWinningIndex = -1;
 
     function buildCaseCarousel() {
       const track = document.getElementById('case-track');
       if (!track) return;
-      track.innerHTML = '';
+      
+      track.style.transition = 'none';
       track.style.transform = 'translateX(0px)';
+      track.innerHTML = '';
+      currentCaseItems = [];
 
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 60; i++) {
         const item = CS2_SKINS[Math.floor(Math.random() * CS2_SKINS.length)];
+        currentCaseItems.push(item);
+
         const card = document.createElement('div');
-        card.className = `size-36 flex-shrink-0 rounded-2xl bg-slate-900 border-b-4 border-${item.rarity} p-2.5 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-md group hover:border-yellow-400 transition-colors`;
+        card.id = `case-item-${i}`;
+        card.className = `w-36 h-36 flex-shrink-0 rounded-2xl bg-slate-900/95 border-b-4 p-2.5 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-md group transition-all`;
+        card.style.borderBottomColor = item.hex;
         card.innerHTML = `
           <span class="text-[9px] font-mono text-muted truncate w-full uppercase">${item.type}</span>
           <div class="h-16 w-full flex items-center justify-center p-1 my-0.5">
@@ -2176,31 +2185,64 @@
       document.getElementById('case-winner-modal').classList.add('hidden');
       
       const track = document.getElementById('case-track');
-      const cardWidth = 144 + 12;
-      const winningIndex = 35 + Math.floor(Math.random() * 8);
-      const targetOffset = (winningIndex * cardWidth) - (window.innerWidth < 640 ? 120 : 260) + (Math.random() * 60);
+      const viewport = document.getElementById('case-track-viewport') || track.parentElement;
+      
+      // Select winning card between index 38 and 46
+      currentWinningIndex = 38 + Math.floor(Math.random() * 8);
+      const winningItem = currentCaseItems[currentWinningIndex];
+
+      // Exact pixel calculation
+      const cardWidth = 144;
+      const cardGap = 12;
+      const cardStep = cardWidth + cardGap; // 156px
+      const viewportWidth = viewport.offsetWidth || 800;
+      const viewportCenter = viewportWidth / 2;
+      
+      // Center of the winning card relative to track start
+      const winningCardCenter = (currentWinningIndex * cardStep) + (cardWidth / 2);
+      
+      // Add natural jitter within [-28px, +28px] ensuring the pointer lands strictly inside the card
+      const jitter = (Math.random() - 0.5) * 56;
+      const targetOffset = Math.round(winningCardCenter - viewportCenter + jitter);
 
       playSfx('click');
 
-      let tickInterval = setInterval(() => { playSfx('tick'); }, 120);
-      setTimeout(() => {
-        clearInterval(tickInterval);
-        tickInterval = setInterval(() => { playSfx('tick'); }, 260);
-      }, 3500);
-      setTimeout(() => { clearInterval(tickInterval); }, 5500);
+      // Realistic deceleration sound ticks
+      let tickDelay = 90;
+      let tickTimer = null;
+      function scheduleTick() {
+        if (!isSpinning) return;
+        playSfx('tick');
+        tickDelay = Math.min(tickDelay * 1.07, 450);
+        tickTimer = setTimeout(scheduleTick, tickDelay);
+      }
+      scheduleTick();
 
-      track.style.transform = `translateX(-${targetOffset}px)`;
+      // Trigger smooth CSS animation
+      requestAnimationFrame(() => {
+        track.style.transition = 'transform 5.5s cubic-bezier(0.1, 0.85, 0.15, 1)';
+        track.style.transform = `translateX(-${targetOffset}px)`;
+      });
 
       setTimeout(() => {
         isSpinning = false;
-        const winner = CS2_SKINS[Math.floor(Math.random() * 4)];
-        document.getElementById('winner-img').src = winner.image;
-        document.getElementById('winner-name').textContent = winner.name;
-        document.getElementById('winner-wear').textContent = `Exterior: ${winner.wear}`;
+        if (tickTimer) clearTimeout(tickTimer);
+
+        // Highlight exact winning card on track
+        const winningCardEl = document.getElementById(`case-item-${currentWinningIndex}`);
+        if (winningCardEl) {
+          winningCardEl.classList.add('ring-4', 'ring-yellow-400', 'scale-105', 'z-20');
+        }
+
+        // Display EXACT winning item in modal
+        document.getElementById('winner-img').src = winningItem.image;
+        document.getElementById('winner-name').textContent = winningItem.name;
+        document.getElementById('winner-wear').textContent = `Exterior: ${winningItem.wear}`;
         document.getElementById('case-winner-modal').classList.remove('hidden');
+
         playSfx('gold');
-        showToast(`CHÚC MỪNG: BẠN ĐÃ MỞ TRÚNG ${winner.name}!`);
-      }, 6200);
+        showToast(`🎉 CHÚC MỪNG: BẠN ĐÃ MỞ TRÚNG ${winningItem.name}!`);
+      }, 5700);
     }
 
     function resetCase() {
