@@ -1361,13 +1361,18 @@
         </div>
       </div>
 
-      <!-- Auto Balance Listener Radar -->
+      <!-- Auto Balance Listener Radar & Manual Confirm Action -->
       <div class="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-[11px] font-mono text-cyan-300 mb-3">
         <span class="size-2 rounded-full bg-cyan-400 animate-ping"></span>
         <span id="topup-listen-status">Hệ thống đang tự động lắng nghe nạp tiền 24/7...</span>
       </div>
 
-
+      <!-- Instant Confirm Button -->
+      <div class="mb-3">
+        <button type="button" onclick="confirmTopupSuccessManual()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-cyber font-black text-xs hover:opacity-95 hover:scale-[1.02] transition shadow-lg flex items-center justify-center gap-2">
+          <i class="fa-solid fa-circle-check text-sm"></i> TÔI ĐÃ CHUYỂN KHOẢN (CẬP NHẬT SỐ DƯ NGAY)
+        </button>
+      </div>
 
       <div class="text-center">
         <button type="button" onclick="closeTopupModal()" class="px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono text-muted hover:text-white transition">
@@ -2557,7 +2562,16 @@
     }
 
     async function checkSepayTransactions() {
-      // 1. Try Cloudflare Pages /api/sepay endpoint
+      // 1. Try Cloudflare Worker API (Bypass CORS & real-time sync)
+      try {
+        const res = await fetch('https://long-morning-6139.babyboy06112024.workers.dev/');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.transactions) return data.transactions;
+        }
+      } catch (e) {}
+
+      // 2. Try Cloudflare Pages /api/sepay endpoint
       try {
         const res = await fetch('/api/sepay');
         if (res.ok) {
@@ -2566,7 +2580,7 @@
         }
       } catch (e) {}
 
-      // 2. Try Direct SePay User API
+      // 3. Try Direct SePay User API
       try {
         const res = await fetch(`https://my.sepay.vn/userapi/transactions/list?account_number=${SEPAY_CONFIG.accountNumber}&limit=20`, {
           headers: {
@@ -3009,6 +3023,24 @@
         m.classList.add('hidden');
         m.classList.remove('flex');
       }
+    }
+
+    function confirmTopupSuccessManual() {
+      if (!currentUser) return;
+      const amt = topupCurrentAmount || 10000;
+      currentUser.balance = (currentUser.balance || 0) + amt;
+      if (!currentUser.transactions) currentUser.transactions = [];
+      currentUser.transactions.unshift({
+        id: 'MB_' + Date.now(),
+        type: 'TOPUP',
+        description: `Nạp tiền MB Bank (+${formatVnd(amt)})`,
+        amount: amt,
+        createdAt: new Date().toISOString()
+      });
+      saveUserSession(currentUser);
+      closeTopupModal();
+      showToast(`🎉 Xác nhận thành công! Đã cộng +${formatVnd(amt)} vào ví tài khoản của bạn.`);
+      playSfx('gold');
     }
 
     function setTopupAmount(amt) {
