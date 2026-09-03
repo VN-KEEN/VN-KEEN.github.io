@@ -182,7 +182,7 @@ export async function onRequest(context) {
       if (user.balance < selectedPlan.price) {
         return new Response(JSON.stringify({
           success: false,
-          message: Số dư trong ví (đ) không đủ để thanh toán  (đ). Vui lòng nạp thêm tiền vào ví!
+          message: 'Số dư trong ví không đủ để thanh toán gói này. Vui lòng nạp thêm tiền vào ví!'
         }), { status: 400, headers: corsHeaders });
       }
 
