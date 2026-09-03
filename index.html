@@ -3052,10 +3052,8 @@
           const amtIn = parseFloat(tx.amount_in || 0);
           const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-          // Strict match: bank transaction MUST be real and contain user's transfer code/username or vnkeen
-          const isUserMatch = content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen');
-          
-          if (amtIn > 0 && isUserMatch && (!processed.includes(txId) || currentUser.balance === 0)) {
+          // STRICT BANK SECURITY: A transaction can ONLY be credited once
+          if (amtIn > 0 && isUserMatch && !processed.includes(txId)) {
             matchedTx = tx;
             markTxProcessed(txId);
             currentUser.balance = (currentUser.balance || 0) + amtIn;
