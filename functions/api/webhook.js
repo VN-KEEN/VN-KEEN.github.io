@@ -107,7 +107,7 @@ export async function onRequest(context) {
       user.balance += amount;
       const trans = {
         type: 'TOPUP',
-        description: Nạp tiền VietQR MB Bank (+đ),
+        description: `Nạp tiền VietQR MB Bank (+${amount}đ)`,
         amount: amount,
         createdAt: new Date().toISOString()
       };
