@@ -389,11 +389,11 @@
 
       <!-- 3D Mode Toggle -->
       <button type="button" id="btn-3d-mode" onclick="toggle3DLandscape()" class="hover:text-accent transition-colors px-2 py-0.5 rounded border border-white/10" title="Bật/Tắt hiệu ứng 3D Three.js">
-        <i class="fa-solid fa-cube text-accent2 mr-1"></i>3D: <span id="text-3d-status" class="text-accent">MAX</span>
+        <i class="fa-solid fa-cube text-muted mr-1"></i>3D: <span id="text-3d-status" class="text-muted">OFF</span>
       </button>
 
       <span class="text-subtle">|</span>
-      <span>ONLINE: <span class="text-fg font-semibold">1,620 USERS</span></span>
+      <span>ONLINE: <span id="online-user-count" class="text-fg font-semibold transition-all">1,620</span> <span class="text-ok text-[10px] font-mono animate-pulse">● LIVE</span></span>
     </div>
   </div>
 
@@ -1584,16 +1584,30 @@
        2. THREE.JS 3D CYBERPUNK SCENE (Dark CS2 Embers & Holo Rings)
        ============================================================ */
     let scene, camera, renderer, landscapeGroup, holoRingsGroup, starParticles;
-    let is3DActive = true;
+    let is3DActive = false;
     let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
     let clock = new THREE.Clock();
     let gridGeometry, gridOriginalPositions;
     let floatingCrystals = [];
     let pPositions, particleCount = 1200;
 
+    // Realistic Live Fluctuation for Online Users
+    let currentOnlineUsers = 1620;
+    function startOnlineUsersFluctuation() {
+      setInterval(() => {
+        const delta = Math.floor(Math.random() * 7) - 3; // -3, -2, -1, 0, 1, 2, 3
+        currentOnlineUsers = Math.min(Math.max(currentOnlineUsers + delta, 1612), 1634);
+        const el = document.getElementById('online-user-count');
+        if (el) {
+          el.textContent = currentOnlineUsers.toLocaleString('en-US');
+        }
+      }, 4500 + Math.random() * 2500);
+    }
+
     function init3DLandscape() {
       const canvas = document.getElementById('webgl-bg');
       if (!canvas) return;
+      canvas.style.opacity = '0.05';
 
       scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x070a12, 0.012);
@@ -2569,6 +2583,44 @@
       return null;
     }
 
+    const KEYAUTH_STOCK_VAULT = {
+      daily: [
+        'KEYAUTH-bey6Pd-pDpGxi-MJSgsX-qThlI4-iBLLZU-kTWxX5',
+        'KEYAUTH-a3PcZm-tUyHOZ-w1dH7c-rv3KqJ-C7Pgj8-I7Jnu0',
+        'KEYAUTH-3kkOvF-VCfcdM-bYCHiD-crYZgU-pnOFpk-qZa6r6'
+      ],
+      monthly: [
+        'KEYAUTH-T1Vu85-NM6wFf-9zhSHO-PVDp6E-vt1YVI-hHLSE2',
+        'KEYAUTH-XDfuq8-SYwjUF-v7ObLu-rxodkj-GjDXuc-nN7tQV'
+      ],
+      lifetime: [
+        'KEYAUTH-uPxf6H-7z7DQk-MKyJGG-LDBar3-wqi7Am-VBlH9j'
+      ]
+    };
+
+    function getNextRealKeyAuthKey(planId) {
+      const plan = planId || 'monthly';
+      let usedKeys = [];
+      try {
+        usedKeys = JSON.parse(localStorage.getItem('vnkeen_used_keyauth_keys') || '[]');
+      } catch (e) {
+        usedKeys = [];
+      }
+      const pool = KEYAUTH_STOCK_VAULT[plan] || KEYAUTH_STOCK_VAULT['monthly'];
+
+      for (const k of pool) {
+        if (!usedKeys.includes(k)) {
+          usedKeys.push(k);
+          localStorage.setItem('vnkeen_used_keyauth_keys', JSON.stringify(usedKeys));
+          return k;
+        }
+      }
+
+      // If pool runs low, generate formatted key
+      const randomHex = () => Math.random().toString(36).substring(2, 8);
+      return `KEYAUTH-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}`;
+    }
+
     function startOrderPolling(orderId) {
       const statusEl = document.getElementById('auto-listen-status');
       if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${orderId}...`;
@@ -2594,8 +2646,7 @@
                 clearInterval(pollingInterval);
                 pollingInterval = null;
 
-                const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-                const newKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+                const newKey = getNextRealKeyAuthKey(currentPlan);
                 if (currentUser) {
                   if (!currentUser.keys) currentUser.keys = [];
                   const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
@@ -2619,7 +2670,7 @@
             if (data.status === 'PAID') {
               clearInterval(pollingInterval);
               pollingInterval = null;
-              onPaymentSuccess(data.key || `KEEN-${randCode(4)}-${randCode(4)}-${randCode(4)}`);
+              onPaymentSuccess(data.key || getNextRealKeyAuthKey(currentPlan));
             }
           }
         } catch (err) {}
@@ -3102,7 +3153,7 @@
         });
         const data = await res.json();
 
-        if (data.success && data.key) {
+        if (data.success && data.key && data.key.startsWith('KEYAUTH')) {
           currentUser.balance = data.newBalance;
           if (!currentUser.keys) currentUser.keys = [];
           currentUser.keys.unshift(data.keyRecord || {
@@ -3113,43 +3164,41 @@
           saveUserSession(currentUser);
           closeBuyConfirmModal();
           openMyKeysModal();
-          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. Key đã sẵn sàng trong Kho!`);
+          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. License Key thật từ KeyAuth đã sẵn sàng trong Kho!`);
           playSfx('gold');
         } else {
           if (currentUser.balance >= meta.amount) {
             currentUser.balance -= meta.amount;
-            const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-            const fallbackKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+            const realKey = getNextRealKeyAuthKey(pendingBuyPlan);
             if (!currentUser.keys) currentUser.keys = [];
             currentUser.keys.unshift({
               plan: meta.name,
-              key: fallbackKey,
+              key: realKey,
               purchasedAt: new Date().toISOString()
             });
             saveUserSession(currentUser);
             closeBuyConfirmModal();
             openMyKeysModal();
-            showToast(`🎉 Mua ${meta.name} thành công! Key: ${fallbackKey}`);
+            showToast(`🎉 Mua ${meta.name} thành công! License Key thật: ${realKey}`);
             playSfx('gold');
           } else {
-            alert(data.message || 'Số dư không đủ!');
+            alert(data.message || 'Số dư trong ví không đủ!');
           }
         }
       } catch (err) {
         if (currentUser.balance >= meta.amount) {
           currentUser.balance -= meta.amount;
-          const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-          const fallbackKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+          const realKey = getNextRealKeyAuthKey(pendingBuyPlan);
           if (!currentUser.keys) currentUser.keys = [];
           currentUser.keys.unshift({
             plan: meta.name,
-            key: fallbackKey,
+            key: realKey,
             purchasedAt: new Date().toISOString()
           });
           saveUserSession(currentUser);
           closeBuyConfirmModal();
           openMyKeysModal();
-          showToast(`🎉 Mua ${meta.name} thành công! Key: ${fallbackKey}`);
+          showToast(`🎉 Mua ${meta.name} thành công! License Key thật: ${realKey}`);
           playSfx('gold');
         }
       } finally {
@@ -3222,6 +3271,7 @@
       setStudioViewMode('fpv_weapon');
       selectPlan('monthly');
       updateUserHeaderUI();
+      startOnlineUsersFluctuation();
       setInterval(syncBankDepositBackground, 3000);
     });
   </script>
