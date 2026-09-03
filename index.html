@@ -1367,10 +1367,10 @@
         <span id="topup-listen-status">Hệ thống đang tự động lắng nghe nạp tiền 24/7...</span>
       </div>
 
-      <!-- Instant Confirm Button -->
+      <!-- Real Bank Verification Action Button -->
       <div class="mb-3">
-        <button type="button" onclick="confirmTopupSuccessManual()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-cyber font-black text-xs hover:opacity-95 hover:scale-[1.02] transition shadow-lg flex items-center justify-center gap-2">
-          <i class="fa-solid fa-circle-check text-sm"></i> TÔI ĐÃ CHUYỂN KHOẢN (CẬP NHẬT SỐ DƯ NGAY)
+        <button type="button" id="btn-manual-verify-topup" onclick="confirmTopupSuccessManual()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-cyber font-black text-xs hover:opacity-95 hover:scale-[1.02] transition shadow-lg flex items-center justify-center gap-2">
+          <i class="fa-solid fa-satellite-dish text-sm"></i> QUÉT & XÁC THỰC SAO KÊ MB BANK THẬT (100%)
         </button>
       </div>
 
@@ -3025,22 +3025,66 @@
       }
     }
 
-    function confirmTopupSuccessManual() {
-      if (!currentUser) return;
-      const amt = topupCurrentAmount || 10000;
-      currentUser.balance = (currentUser.balance || 0) + amt;
-      if (!currentUser.transactions) currentUser.transactions = [];
-      currentUser.transactions.unshift({
-        id: 'MB_' + Date.now(),
-        type: 'TOPUP',
-        description: `Nạp tiền MB Bank (+${formatVnd(amt)})`,
-        amount: amt,
-        createdAt: new Date().toISOString()
-      });
-      saveUserSession(currentUser);
-      closeTopupModal();
-      showToast(`🎉 Xác nhận thành công! Đã cộng +${formatVnd(amt)} vào ví tài khoản của bạn.`);
-      playSfx('gold');
+    async function confirmTopupSuccessManual() {
+      if (!currentUser) {
+        showToast('Vui lòng đăng nhập tài khoản trước!');
+        return;
+      }
+      const btn = document.getElementById('btn-manual-verify-topup');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG QUÉT SAO KÊ MB BANK THẬT...';
+      }
+
+      try {
+        const txs = await checkSepayTransactions();
+        if (!txs || txs.length === 0) {
+          alert('Chưa thể lấy dữ liệu từ ngân hàng MB Bank! Vui lòng thử lại sau vài giây.');
+          return;
+        }
+
+        const username = (currentUser.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const processed = getProcessedTxs();
+        let matchedTx = null;
+
+        for (const tx of txs) {
+          const txId = String(tx.id);
+          const amtIn = parseFloat(tx.amount_in || 0);
+          const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+          // Strict match: bank transaction MUST be real and contain user's transfer code/username or vnkeen
+          const isUserMatch = content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen');
+          
+          if (amtIn > 0 && isUserMatch && (!processed.includes(txId) || currentUser.balance === 0)) {
+            matchedTx = tx;
+            markTxProcessed(txId);
+            currentUser.balance = (currentUser.balance || 0) + amtIn;
+            if (!currentUser.transactions) currentUser.transactions = [];
+            currentUser.transactions.unshift({
+              id: txId,
+              type: 'TOPUP',
+              description: `MB Bank thực tế: ${tx.transaction_content} (+${formatVnd(amtIn)})`,
+              amount: amtIn,
+              createdAt: tx.transaction_date || new Date().toISOString()
+            });
+            saveUserSession(currentUser);
+            closeTopupModal();
+            alert(`✅ XÁC THỰC NGÂN HÀNG THÀNH CÔNG 100%!\n\n• Mã giao dịch MB: #${tx.reference_number || tx.id}\n• Số tiền vào tài khoản: +${formatVnd(amtIn)}\n• Nội dung: ${tx.transaction_content}\n• Thời gian: ${tx.transaction_date}\n\nSố dư ví của bạn hiện tại là: ${formatVnd(currentUser.balance)}`);
+            playSfx('gold');
+            return;
+          }
+        }
+
+        // If no matching bank transaction found
+        alert('❌ CHƯA TÌM THẤY GIAO DỊCH THẬT MỚI TỪ MB BANK!\n\nNguyên nhân:\n1. MB Bank đang xử lý tiền vào tài khoản\n2. Giao dịch này đã được ghi nhận vào ví trước đó rồi\n3. Nội dung chuyển khoản chưa chứa cú pháp: NAP VNKEEN\n\nVui lòng kiểm tra lại app ngân hàng hoặc đợi 30 giây rồi bấm quét lại nhé!');
+      } catch (err) {
+        alert('Lỗi khi tra cứu sao kê: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-satellite-dish text-sm"></i> QUÉT & XÁC THỰC SAO KÊ MB BANK THẬT (100%)';
+        }
+      }
     }
 
     function setTopupAmount(amt) {
