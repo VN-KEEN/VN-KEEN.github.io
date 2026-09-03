@@ -1,4 +1,4 @@
-﻿const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
+const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -8,7 +8,7 @@ export async function onRequestPost(context) {
     
     // Generate test or KeyAuth license
     const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-    const generatedKey = KEEN---;
+    const generatedKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
 
     const orderData = {
       orderId: orderId,
