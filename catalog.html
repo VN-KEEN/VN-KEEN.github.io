@@ -201,7 +201,7 @@
   </section>
 
   <!-- MAIN CATALOG CONTENT -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-5">
+  <main id="catalogContent" class="max-w-7xl mx-auto px-4 sm:px-6 py-5">
     
     <!-- 1. CATEGORY TABS (LEVEL 1) -->
     <div class="mb-3">
@@ -560,6 +560,43 @@
         return;
       }
 
+      // Check URL search parameters or hash to select requested category
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramCat = urlParams.get('category') || urlParams.get('cat') || window.location.hash.replace('#', '');
+        if (paramCat && CATEGORIES.some(c => c.id === paramCat)) {
+          currentCategory = paramCat;
+        }
+        const paramClass = urlParams.get('class');
+        if (paramClass && WEAPON_CLASSES.some(w => w.id.toLowerCase() === paramClass.toLowerCase())) {
+          currentWeaponClass = paramClass;
+        }
+        const paramModel = urlParams.get('model');
+        if (paramModel) {
+          currentSpecificModel = paramModel;
+        }
+        const paramSearch = urlParams.get('q') || urlParams.get('search');
+        if (paramSearch) {
+          searchQuery = paramSearch;
+          const searchEl = document.getElementById('searchInput');
+          if (searchEl) searchEl.value = paramSearch;
+          const mobileSearchEl = document.getElementById('mobileSearchInput');
+          if (mobileSearchEl) mobileSearchEl.value = paramSearch;
+        }
+
+        // If category or filter was passed, scroll smoothly to the catalog
+        if (paramCat || paramClass || paramModel || paramSearch) {
+          setTimeout(() => {
+            const mainEl = document.getElementById('catalogContent');
+            if (mainEl) {
+              mainEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 200);
+        }
+      } catch (e) {
+        console.warn('URL parsing error:', e);
+      }
+
       computeModelCounts();
       renderCategoryTabs();
       renderWeaponClassTabs();
@@ -720,6 +757,12 @@
       currentWeaponClass = 'all';
       currentSpecificModel = 'all';
       page = 1;
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('category', catId);
+        url.searchParams.delete('model');
+        window.history.replaceState({}, '', url);
+      } catch (e) {}
       renderCategoryTabs();
       renderWeaponClassTabs();
       renderSubModelChips();
