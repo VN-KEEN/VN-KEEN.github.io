@@ -86,7 +86,7 @@ export async function onRequest(context) {
     const upperContent = content.toUpperCase().trim();
 
     // CASE 1: TOP-UP WALLET DEPOSIT (Content: NAP[USERNAME] or NAP [USERNAME])
-    const topupMatch = upperContent.match(/^NAP\s*([A-Z0-9_-]+)/i);
+    const topupMatch = upperContent.match(/^NAP\s*([A-Z0-9]+)/i);
     if (topupMatch) {
       const targetUser = topupMatch[1].toLowerCase();
       let user = globalUsers.get(targetUser);

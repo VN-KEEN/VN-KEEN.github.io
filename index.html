@@ -479,9 +479,9 @@
         </div>
 
         <a href="https://t.me/+Z08LU6SphnllZmJl" target="_blank" rel="noopener" onclick="playSfx('gold')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-all">
-          <span class="block px-3.5 py-2 rounded-[11px] bg-bg font-sans text-xs font-black tracking-wider text-emerald-400 group-hover:bg-transparent group-hover:text-black transition-all flex items-center gap-1.5">
+          <div class="px-3.5 py-1.5 rounded-xl bg-slate-950/90 group-hover:bg-slate-950/40 transition-all flex items-center gap-1.5 text-xs font-cyber font-black tracking-wider text-emerald-300">
             <i class="fa-brands fa-telegram text-emerald-400 text-sm group-hover:text-black"></i> TẢI MIỄN PHÍ
-          </span>
+          </div>
         </a>
 
         <a href="#pricing" onclick="playSfx('click')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all">
@@ -1160,6 +1160,8 @@
             <li><span class="text-subtle"><i class="fa-solid fa-clock text-amber-400"></i> Giờ làm việc: 24/7</span></li>
           </ul>
         </div>
+      </div>
+
       <!-- SEO Keyword Hub & Search Authority Tags (Rank #1 Google & Cốc Cốc) -->
       <div class="border-t border-white/10 pt-6 pb-2 my-4">
         <p class="text-[11px] font-cyber font-bold text-gray-400 uppercase tracking-wider mb-3">
@@ -1446,6 +1448,9 @@
           <button type="button" onclick="setTopupAmount(1000000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">1.000.000đ</button>
           <button type="button" onclick="setTopupAmount(10000)" class="topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition">10.000đ</button>
         </div>
+        <div class="mt-2.5">
+          <input type="number" id="topup-custom-input" placeholder="Hoặc nhập số tiền khác tùy ý (VD: 20000, 30000...)" min="1000" step="1000" class="w-full px-3.5 py-2.5 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition" oninput="handleCustomTopupInput(this.value)">
+        </div>
       </div>
 
       <!-- QR Container -->
@@ -1526,6 +1531,8 @@
         </button>
       </div>
 
+      <!-- Footer Buttons -->
+      <div class="mt-4 pt-4 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3">
         <a href="https://t.me/+Z08LU6SphnllZmJl" target="_blank" rel="noopener" onclick="playSfx('gold')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
           <i class="fa-brands fa-telegram text-sm"></i> TẢI MIỄN PHÍ
         </a>
@@ -2864,6 +2871,53 @@
       currentUser = null;
     }
 
+    // ============================================================
+    // SYSTEM RESET: Reset ALL registered accounts and previous topups to 0đ
+    // ============================================================
+    const SYSTEM_RESET_ID = 'VNKEEN_GLOBAL_RESET_20260905_001';
+    const RESET_CUTOFF_TX_ID = 79271942; // All bank transactions up to this ID are pre-reset
+
+    function isNewPostResetTx(tx) {
+      const txIdNum = parseInt(tx?.id) || 0;
+      return txIdNum > RESET_CUTOFF_TX_ID;
+    }
+
+    if (localStorage.getItem(SYSTEM_RESET_ID) !== 'done') {
+      if (currentUser) {
+        currentUser.balance = 0;
+        currentUser.transactions = (currentUser.transactions || []).filter(t => t.type !== 'TOPUP');
+        currentUser.balanceResetToZero = true;
+        localStorage.setItem('vnkeen_current_user', JSON.stringify(currentUser));
+      }
+
+      try {
+        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+        for (const u in localUsers) {
+          if (localUsers[u]) {
+            localUsers[u].balance = 0;
+            localUsers[u].transactions = (localUsers[u].transactions || []).filter(t => t.type !== 'TOPUP');
+            localUsers[u].balanceResetToZero = true;
+          }
+        }
+        localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
+      } catch (e) {}
+
+      // Pre-mark all past bank transaction IDs as processed so they can never be credited
+      try {
+        const processed = JSON.parse(localStorage.getItem('vnkeen_processed_txs') || '[]');
+        const preResetIds = [
+          '79271942', '79253787', '79248522', '79248451', '79148380',
+          '78918339', '78917356', '78917216', '78917192', '78916893',
+          '78916764', '78916704', '78915379', '78915318', '78915049',
+          '78915013', '78914949', '78914703', '78913672', '78910847'
+        ];
+        const merged = Array.from(new Set([...processed, ...preResetIds]));
+        localStorage.setItem('vnkeen_processed_txs', JSON.stringify(merged));
+      } catch (e) {}
+
+      localStorage.setItem(SYSTEM_RESET_ID, 'done');
+    }
+
     let topupCurrentAmount = 200000;
     let topupCurrentContent = '';
     let topupPollingInterval = null;
@@ -2894,34 +2948,72 @@
       }
     }
 
-    function saveUserSession(user) {
-      currentUser = user;
-      localStorage.setItem('vnkeen_current_user', JSON.stringify(user));
-      updateUserHeaderUI();
-      syncBankDepositBackground();
+    function isTransactionMatchingUser(txContent, targetUsername) {
+      if (!txContent || !targetUsername) return false;
+      const cleanContent = (txContent || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const cleanUser = (targetUsername || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!cleanUser || cleanUser.length < 2) return false;
+      // STRICT USER MATCHING: transfer content must explicitly include 'nap' + cleanUser (e.g. napquigame13)
+      return cleanContent.includes('nap' + cleanUser);
     }
 
+    function saveUserSession(user) {
+      currentUser = user;
+      if (user && user.username) {
+        localStorage.setItem('vnkeen_current_user', JSON.stringify(user));
+        try {
+          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
+          localUsers[user.username.toLowerCase()] = user;
+          localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
+        } catch (e) {}
+      } else {
+        localStorage.removeItem('vnkeen_current_user');
+      }
+      updateUserHeaderUI();
+    }
+
+    let isSyncingBank = false;
     async function syncBankDepositBackground() {
+      if (isSyncingBank) return;
       if (!currentUser || !currentUser.username) return;
       const username = (currentUser.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
       if (!username) return;
 
+      // Ensure balance is reset to 0 if not already
+      if (!currentUser.balanceResetToZero) {
+        currentUser.balance = 0;
+        currentUser.transactions = (currentUser.transactions || []).filter(t => t.type !== 'TOPUP');
+        currentUser.balanceResetToZero = true;
+        saveUserSession(currentUser);
+      }
+
+      isSyncingBank = true;
       try {
         const txs = await checkSepayTransactions();
-        if (!txs || txs.length === 0) return;
+        if (!txs || txs.length === 0) {
+          isSyncingBank = false;
+          return;
+        }
 
         const processed = getProcessedTxs();
-        for (const tx of txs) {
+        let balanceChanged = false;
+
+        // 1. Filter ONLY NEW transactions arrived AFTER the reset cutoff, strictly matching user
+        const newGenuineUserTxs = txs.filter(tx => {
+          const amtIn = parseFloat(tx.amount_in || 0);
+          return amtIn > 0 && isNewPostResetTx(tx) && isTransactionMatchingUser(tx.transaction_content, username);
+        });
+
+        // 2. Process newly arrived deposits
+        for (const tx of newGenuineUserTxs) {
           const txId = String(tx.id);
           if (processed.includes(txId)) continue;
 
           const amtIn = parseFloat(tx.amount_in || 0);
-          const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-
-          if (amtIn > 0 && (content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen'))) {
-            markTxProcessed(txId);
-            currentUser.balance = (currentUser.balance || 0) + amtIn;
-            if (!currentUser.transactions) currentUser.transactions = [];
+          markTxProcessed(txId);
+          currentUser.balance = (currentUser.balance || 0) + amtIn;
+          if (!currentUser.transactions) currentUser.transactions = [];
+          if (!currentUser.transactions.some(t => String(t.id) === txId)) {
             currentUser.transactions.unshift({
               id: txId,
               type: 'TOPUP',
@@ -2929,12 +3021,20 @@
               amount: amtIn,
               createdAt: tx.transaction_date || new Date().toISOString()
             });
-            saveUserSession(currentUser);
-            showToast(`🎉 Nhận tiền thành công! +${formatVnd(amtIn)} đã được cộng vào ví.`);
-            playSfx('gold');
           }
+          balanceChanged = true;
+          showToast(`🎉 Nhận tiền thành công! +${formatVnd(amtIn)} đã được cộng vào ví.`);
+          playSfx('gold');
         }
-      } catch (e) {}
+
+        if (balanceChanged) {
+          saveUserSession(currentUser);
+        }
+      } catch (e) {
+        console.warn('Sync bank error:', e);
+      } finally {
+        isSyncingBank = false;
+      }
     }
 
     // 1. Auth Modals
@@ -2996,15 +3096,27 @@
         const data = await res.json();
 
         if (data.success && data.user) {
-          saveUserSession(data.user);
+          const loggedUser = data.user;
+          if (!loggedUser.balanceResetToZero) {
+            loggedUser.balance = 0;
+            loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
+            loggedUser.balanceResetToZero = true;
+          }
+          saveUserSession(loggedUser);
           closeAuthModal();
-          showToast(`Chào mừng ${data.user.username} quay trở lại!`);
+          showToast(`Chào mừng ${loggedUser.username} quay trở lại!`);
           playSfx('success');
         } else {
           // Client fallback local login
           const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
           if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
-            saveUserSession(localUsers[u.toLowerCase()]);
+            const loggedUser = localUsers[u.toLowerCase()];
+            if (!loggedUser.balanceResetToZero) {
+              loggedUser.balance = 0;
+              loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
+              loggedUser.balanceResetToZero = true;
+            }
+            saveUserSession(loggedUser);
             closeAuthModal();
             showToast(`Chào mừng ${u} quay trở lại!`);
             playSfx('success');
@@ -3019,17 +3131,23 @@
         // Fallback local auth
         const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
         if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
-          saveUserSession(localUsers[u.toLowerCase()]);
+          const loggedUser = localUsers[u.toLowerCase()];
+          if (!loggedUser.balanceResetToZero) {
+            loggedUser.balance = 0;
+            loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
+            loggedUser.balanceResetToZero = true;
+          }
+          saveUserSession(loggedUser);
           closeAuthModal();
           showToast(`Chào mừng ${u} quay trở lại!`);
           playSfx('success');
         } else {
-          const newUser = { username: u, password: p, balance: 250000, keys: [], transactions: [] };
+          const newUser = { username: u, password: p, balance: 0, keys: [], transactions: [], balanceResetToZero: true };
           localUsers[u.toLowerCase()] = newUser;
           localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
           saveUserSession(newUser);
           closeAuthModal();
-          showToast(`Đăng nhập thành công tài khoản ${u}! Tặng sẵn 250.000đ trải nghiệm!`);
+          showToast(`Đăng nhập thành công tài khoản ${u}!`);
           playSfx('success');
         }
       } finally {
@@ -3156,21 +3274,23 @@
         for (const tx of txs) {
           const txId = String(tx.id);
           const amtIn = parseFloat(tx.amount_in || 0);
-          const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+          const isMatch = isTransactionMatchingUser(tx.transaction_content, currentUser.username);
 
-          // STRICT BANK SECURITY: A transaction can ONLY be credited once
-          if (amtIn > 0 && isUserMatch && !processed.includes(txId)) {
+          // STRICT BANK SECURITY: Only credit genuine NEW transactions post-reset
+          if (amtIn > 0 && isNewPostResetTx(tx) && isMatch && !processed.includes(txId)) {
             matchedTx = tx;
             markTxProcessed(txId);
             currentUser.balance = (currentUser.balance || 0) + amtIn;
             if (!currentUser.transactions) currentUser.transactions = [];
-            currentUser.transactions.unshift({
-              id: txId,
-              type: 'TOPUP',
-              description: `MB Bank thực tế: ${tx.transaction_content} (+${formatVnd(amtIn)})`,
-              amount: amtIn,
-              createdAt: tx.transaction_date || new Date().toISOString()
-            });
+            if (!currentUser.transactions.some(t => String(t.id) === txId)) {
+              currentUser.transactions.unshift({
+                id: txId,
+                type: 'TOPUP',
+                description: `MB Bank thực tế: ${tx.transaction_content} (+${formatVnd(amtIn)})`,
+                amount: amtIn,
+                createdAt: tx.transaction_date || new Date().toISOString()
+              });
+            }
             saveUserSession(currentUser);
             closeTopupModal();
             alert(`✅ XÁC THỰC NGÂN HÀNG THÀNH CÔNG 100%!\n\n• Mã giao dịch MB: #${tx.reference_number || tx.id}\n• Số tiền vào tài khoản: +${formatVnd(amtIn)}\n• Nội dung: ${tx.transaction_content}\n• Thời gian: ${tx.transaction_date}\n\nSố dư ví của bạn hiện tại là: ${formatVnd(currentUser.balance)}`);
@@ -3180,7 +3300,7 @@
         }
 
         // If no matching bank transaction found
-        alert('❌ CHƯA TÌM THẤY GIAO DỊCH THẬT MỚI TỪ MB BANK!\n\nNguyên nhân:\n1. MB Bank đang xử lý tiền vào tài khoản\n2. Giao dịch này đã được ghi nhận vào ví trước đó rồi\n3. Nội dung chuyển khoản chưa chứa cú pháp: NAP VNKEEN\n\nVui lòng kiểm tra lại app ngân hàng hoặc đợi 30 giây rồi bấm quét lại nhé!');
+        alert(`❌ CHƯA TÌM THẤY GIAO DỊCH THẬT MỚI TỪ MB BANK!\n\nNguyên nhân:\n1. MB Bank đang xử lý tiền vào tài khoản\n2. Giao dịch này đã được ghi nhận vào ví trước đó rồi\n3. Nội dung chuyển khoản phải đúng cú pháp: NAP ${(currentUser.username || '').toUpperCase()}\n\nVui lòng kiểm tra lại app ngân hàng hoặc đợi 30 giây rồi bấm quét lại nhé!`);
       } catch (err) {
         alert('Lỗi khi tra cứu sao kê: ' + err.message);
       } finally {
@@ -3216,6 +3336,13 @@
       playSfx('click');
     }
 
+    function handleCustomTopupInput(val) {
+      const num = parseInt(val) || 0;
+      if (num >= 1000) {
+        setTopupAmount(num);
+      }
+    }
+
     function startTopupPolling() {
       if (topupPollingInterval) clearInterval(topupPollingInterval);
       const username = (currentUser?.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -3232,23 +3359,25 @@
               if (processed.includes(txId)) continue;
 
               const amtIn = parseFloat(tx.amount_in || 0);
-              const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+              const isMatch = isTransactionMatchingUser(tx.transaction_content, username);
 
-              // Match if amount_in > 0 and transaction content contains username or NAP
-              if (amtIn > 0 && (content.includes('nap' + username) || content.includes(username) || content.includes('napvnkeen') || content.includes('vnkeen'))) {
+              // Match strictly if amount_in > 0, post-reset, and transaction content matches user
+              if (amtIn > 0 && isNewPostResetTx(tx) && isMatch) {
                 markTxProcessed(txId);
                 clearInterval(topupPollingInterval);
                 topupPollingInterval = null;
 
                 currentUser.balance = (currentUser.balance || 0) + amtIn;
                 if (!currentUser.transactions) currentUser.transactions = [];
-                currentUser.transactions.unshift({
-                  id: txId,
-                  type: 'TOPUP',
-                  description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
-                  amount: amtIn,
-                  createdAt: tx.transaction_date || new Date().toISOString()
-                });
+                if (!currentUser.transactions.some(t => String(t.id) === txId)) {
+                  currentUser.transactions.unshift({
+                    id: txId,
+                    type: 'TOPUP',
+                    description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
+                    amount: amtIn,
+                    createdAt: tx.transaction_date || new Date().toISOString()
+                  });
+                }
 
                 saveUserSession(currentUser);
                 closeTopupModal();
@@ -3339,7 +3468,16 @@
           currentUser.keys.unshift(data.keyRecord || {
             plan: meta.name,
             key: data.key,
-            purchasedAt: new Date().toISOString()
+            purchasedAt: new Date().toISOString(),
+            paymentMethod: 'WALLET'
+          });
+          if (!currentUser.transactions) currentUser.transactions = [];
+          currentUser.transactions.unshift({
+            id: 'BUY_' + Date.now(),
+            type: 'BUY',
+            description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
+            amount: meta.amount,
+            createdAt: new Date().toISOString()
           });
           saveUserSession(currentUser);
           closeBuyConfirmModal();
@@ -3354,7 +3492,16 @@
             currentUser.keys.unshift({
               plan: meta.name,
               key: realKey,
-              purchasedAt: new Date().toISOString()
+              purchasedAt: new Date().toISOString(),
+              paymentMethod: 'WALLET'
+            });
+            if (!currentUser.transactions) currentUser.transactions = [];
+            currentUser.transactions.unshift({
+              id: 'BUY_' + Date.now(),
+              type: 'BUY',
+              description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
+              amount: meta.amount,
+              createdAt: new Date().toISOString()
             });
             saveUserSession(currentUser);
             closeBuyConfirmModal();
@@ -3373,7 +3520,16 @@
           currentUser.keys.unshift({
             plan: meta.name,
             key: realKey,
-            purchasedAt: new Date().toISOString()
+            purchasedAt: new Date().toISOString(),
+            paymentMethod: 'WALLET'
+          });
+          if (!currentUser.transactions) currentUser.transactions = [];
+          currentUser.transactions.unshift({
+            id: 'BUY_' + Date.now(),
+            type: 'BUY',
+            description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
+            amount: meta.amount,
+            createdAt: new Date().toISOString()
           });
           saveUserSession(currentUser);
           closeBuyConfirmModal();
@@ -3452,6 +3608,7 @@
       selectPlan('monthly');
       updateUserHeaderUI();
       startOnlineUsersFluctuation();
+      syncBankDepositBackground();
       setInterval(syncBankDepositBackground, 3000);
     });
   </script>

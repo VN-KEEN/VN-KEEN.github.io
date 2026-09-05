@@ -66,6 +66,18 @@ export async function onRequest(context) {
   }
 
   try {
+    // SYSTEM RESET: Reset all existing users in memory to 0đ balance
+    if (!globalThis.__VNKEEN_GLOBAL_RESET_DONE_20260905) {
+      for (const [k, u] of globalUsers.entries()) {
+        if (u) {
+          u.balance = 0;
+          u.transactions = (u.transactions || []).filter(t => t.type !== 'TOPUP');
+          u.balanceResetToZero = true;
+        }
+      }
+      globalThis.__VNKEEN_GLOBAL_RESET_DONE_20260905 = true;
+    }
+
     // 1. REGISTER
     if (action === 'register' && request.method === 'POST') {
       const { username, password, contact } = await request.json();
