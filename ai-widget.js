@@ -403,7 +403,10 @@
 
     try {
       // Xác định endpoint API (/api/ai-chat hoặc fallback tới /api/chat)
-      const res = await fetch('/api/ai-chat', {
+      const apiUrl = (window.location.hostname.endsWith('pages.dev') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? '/api/ai-chat'
+        : 'https://vn-keen.pages.dev/api/ai-chat';
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
