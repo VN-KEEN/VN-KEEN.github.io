@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VN-KEEN AI STUDIO | Trợ Lý Trí Tuệ Nhân Tạo CS2 & Mod Skin</title>
+  <meta name="description" content="Trợ lý AI thông minh chính thức của VN-KEEN (vn-keen.pages.dev) - Tư vấn 14,000+ skin CS2, hướng dẫn mua key VIP, phân tích kỹ năng và giải đáp mọi câu hỏi công nghệ.">
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <meta name="theme-color" content="#070a12">
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Chakra+Petch:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#070a12',
+            surface: 'rgba(15, 23, 42, 0.85)',
+            accent: '#00e5ee',
+            accent2: '#a855f7',
+            gold: '#f59e0b'
+          },
+          fontFamily: {
+            cyber: ['Chakra Petch', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+            sans: ['Be Vietnam Pro', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #070a12; color: #f8fafc; }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 229, 238, 0.25);
+    }
+    .neon-cyan {
+      box-shadow: 0 0 20px rgba(0, 229, 238, 0.35);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <!-- Top Navbar -->
+  <header class="sticky top-0 z-50 border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md px-4 sm:px-8 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <img src="images/VN-KEEN.jpg" alt="Logo" class="size-10 rounded-xl border border-cyan-400/50 object-cover group-hover:scale-105 transition" onerror="this.src='favicon.jpg'">
+      <div>
+        <div class="font-cyber font-black text-xl tracking-wider text-white">VN<span class="text-cyan-400">-KEEN</span> <span class="text-amber-400 text-xs px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30">AI STUDIO</span></div>
+        <div class="font-mono text-[10px] text-gray-400">CS2 Intelligent Assistant</div>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6 font-cyber text-sm font-bold">
+      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-house mr-1"></i> Trang Chủ</a>
+      <a href="catalog.html" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid fa-images mr-1"></i> Kho 14K+ Skin ↗</a>
+      <a href="index.html#pricing" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-bolt mr-1"></i> Bảng Giá</a>
+      <a href="index.html#case-opening" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-box-open mr-1"></i> Mở Hòm CS2</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+        <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span> Gemini 3.8 Flash Online
+      </div>
+      <a href="https://t.me/+Z08LU6SphnllZmJl" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-cyber font-bold text-xs hover:opacity-90 transition">
+        <i class="fa-brands fa-telegram mr-1"></i> Kênh Telegram
+      </a>
+    </div>
+  </header>
+
+  <!-- Main AI Chat Canvas -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-4">
+    
+    <!-- Hero Banner -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="space-y-1 text-center sm:text-left">
+        <h1 class="font-cyber font-black text-2xl sm:text-3xl text-white">TRỢ LÝ AI TOÀN NĂNG VN-KEEN</h1>
+        <p class="text-gray-400 text-xs sm:text-sm">Chuyên gia tư vấn vũ khí, mở khóa 14,000+ skins CS2, hỗ trợ kỹ thuật và hỏi đáp thông minh 24/7.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <select id="modelSelector" class="bg-slate-900 border border-cyan-500/40 text-cyan-300 text-xs font-mono rounded-xl px-3 py-2 outline-none">
+          <option value="gemini-3.8-flash">Google Gemini 3.8 Flash (Mới nhất)</option>
+          <option value="gemini-3.7-flash">Google Gemini 3.7 Flash</option>
+          <option value="gemini-2.5-flash">Google Gemini 2.5 Flash</option>
+        </select>
+        <button id="clearChatBtn" class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-cyber font-bold transition flex items-center gap-1.5" title="Xóa lịch sử trò chuyện">
+          <i class="fa-solid fa-trash-can"></i> Xóa Chat
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div id="chatMessages" class="flex-1 min-h-[460px] max-h-[600px] overflow-y-auto glass-panel rounded-2xl p-4 sm:p-6 space-y-4">
+      <div class="flex items-start gap-3">
+        <img src="images/VN-KEEN.jpg" alt="AI" class="size-9 rounded-xl border border-cyan-400/40 object-cover mt-1" onerror="this.src='favicon.jpg'">
+        <div class="flex-1 bg-slate-900/90 border border-white/10 rounded-2xl rounded-tl-sm p-4 text-sm text-gray-200 space-y-3">
+          <p>Xin chào xạ thủ! Tôi là <strong>VN-KEEN AI</strong> 🤖 — Trợ lý thông minh chính thức của nền tảng Mod Skin CS2 số 1 Việt Nam.</p>
+          <p>Tôi có thể giải đáp toàn diện về:</p>
+          <ul class="list-disc list-inside space-y-1 text-gray-300">
+            <li>Kho 14,000+ Skin súng, dao Karambit, Butterfly, găng tay, sticker Katowice.</li>
+            <li>Độ an toàn tuyệt đối 100% không lo bị VAC Ban nhờ Source 2 Client Hook.</li>
+            <li>Hướng dẫn quét mã QR thanh toán SePay nhận KeyAuth tức thì.</li>
+            <li>Cài đặt settings chuột, crosshair, mẹo ném smoke/flash các map CS2.</li>
+          </ul>
+          <div class="pt-2 flex flex-wrap gap-2">
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Tư vấn combo dao và găng tay CS2 đẹp nhất phân khúc">🔪 Gợi ý Combo Dao + Găng</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Mod Skin tại VN-KEEN có bị Valve cấm hoặc VAC ban không?">🛡️ Giải thích an toàn VAC</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Hướng dẫn các bước nạp tiền tự động qua SePay để nhận key VIP">💎 Cách nạp tiền SePay</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Mẹo chỉnh độ nhạy chuột eDPI và tâm ngắm như s1mple và m0NESY">🎯 Cài đặt ngắm như Pro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Bar -->
+    <div class="glass-panel rounded-2xl p-3 flex items-center gap-3">
+      <input type="text" id="userInput" placeholder="Nhập câu hỏi của bạn về CS2 hoặc bất cứ điều gì..." class="flex-1 bg-slate-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-cyan-400 transition" autocomplete="off">
+      <button id="sendBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-cyber font-black text-sm tracking-wider flex items-center gap-2 transition neon-cyan cursor-pointer">
+        <span>GỬI</span> <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    const chatContainer = document.getElementById('chatMessages');
+    const input = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearChatBtn');
+    const modelSelector = document.getElementById('modelSelector');
+
+    let history = [];
+    let isThinking = false;
+
+    function formatText(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-cyan-400">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="text-amber-300">$1</em>')
+        .replace(new RegExp('\x60\x60\x60([\s\S]*?)\x60\x60\x60', 'g'), '<pre class="bg-black/50 p-3 rounded-xl overflow-x-auto text-xs font-mono my-2 text-emerald-300"><code>$1</code></pre>')
+        .replace(new RegExp('\x60([^\x60]+)\x60', 'g'), '<code class="bg-white/10 px-1.5 py-0.5 rounded text-cyan-300 font-mono text-xs">$1</code>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function appendMessage(role, text) {
+      const isUser = role === 'user';
+      const div = document.createElement('div');
+      div.className = 'flex items-start gap-3 ' + (isUser ? 'flex-row-reverse' : '');
+      
+      const avatar = isUser
+        ? '<div class="size-9 rounded-xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-black font-bold text-sm mt-1"><i class="fa-solid fa-user"></i></div>'
+        : '<img src="images/VN-KEEN.jpg" alt="AI" class="size-9 rounded-xl border border-cyan-400/40 object-cover mt-1" onerror="this.src=\'favicon.jpg\'">';
+
+      const bubbleStyle = isUser
+        ? 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white rounded-tr-sm'
+        : 'bg-slate-900/90 border border-white/10 text-gray-200 rounded-tl-sm';
+
+      div.innerHTML = avatar + '<div class="max-w-2xl ' + bubbleStyle + ' rounded-2xl p-4 text-sm leading-relaxed">' + formatText(text) + '</div>';
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return div;
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'flex items-start gap-3';
+      div.id = 'typingIndicator';
+      div.innerHTML = '<img src="images/VN-KEEN.jpg" alt="AI" class="size-9 rounded-xl border border-cyan-400/40 object-cover mt-1" onerror="this.src=\'favicon.jpg\'">' +
+        '<div class="bg-slate-900/90 border border-white/10 rounded-2xl rounded-tl-sm p-4 text-sm flex items-center gap-1.5">' +
+        '<span class="size-2 bg-cyan-400 rounded-full animate-bounce"></span>' +
+        '<span class="size-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>' +
+        '<span class="size-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>' +
+        '</div>';
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return div;
+    }
+
+    async function sendMessage(userText) {
+      const text = (userText || input.value || '').trim();
+      if (!text || isThinking) return;
+
+      input.value = '';
+      appendMessage('user', text);
+      history.push({ role: 'user', text });
+
+      isThinking = true;
+      const typingNode = showTyping();
+
+      try {
+        const res = await fetch('/api/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            history: history.slice(-10),
+            model: modelSelector.value
+          })
+        });
+
+        typingNode.remove();
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          appendMessage('assistant', '⚠️ Lỗi: ' + (errData.error || 'Không thể kết nối máy chủ AI. Hãy thử lại sau.'));
+          return;
+        }
+
+        const data = await res.json();
+        const reply = data.message?.text || data.text || 'Đã nhận được phản hồi.';
+        appendMessage('assistant', reply);
+        history.push({ role: 'assistant', text: reply });
+
+      } catch (err) {
+        typingNode.remove();
+        appendMessage('assistant', '⚠️ Lỗi mạng hoặc máy chủ ngoại tuyến: ' + err.message);
+      } finally {
+        isThinking = false;
+      }
+    }
+
+    sendBtn.addEventListener('click', () => sendMessage());
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      history = [];
+      chatContainer.innerHTML = '<div class="p-4 text-center text-xs text-gray-500 font-mono">Đã xóa toàn bộ lịch sử trò chuyện.</div>';
+    });
+
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      btn.onclick = () => sendMessage(btn.getAttribute('data-q'));
+    });
+  </script>
+</body>
+</html>
