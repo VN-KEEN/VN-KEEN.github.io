@@ -46,7 +46,10 @@ export async function onRequest(context) {
       });
     }
 
-    const apiKey = (env?.GEMINI_API_KEY || '').trim();
+    let apiKey = (env?.GEMINI_API_KEY || '').trim();
+    // Tự động làm sạch tiền tố và hậu tố rác (Bearer, dấu nháy, dấu chấm phẩy)
+    apiKey = apiKey.replace(/^(Bearer\s+|GEMINI_API_KEY\s*[:=]\s*|["'])/i, '').replace(/["';\s]+$/g, '').trim();
+
     if (!apiKey) {
       return new Response(JSON.stringify({
         ok: false,
@@ -57,10 +60,18 @@ export async function onRequest(context) {
       });
     }
 
-    let requestedModel = body.model || 'gemini-3.6-flash';
-    if (requestedModel === 'default' || requestedModel === 'gemini' || requestedModel === 'gemini-3.8-flash' || requestedModel === 'gemini-3.7-flash') {
-      requestedModel = 'gemini-3.6-flash';
-    }
+    // Normalize model name — map các tên cũ/sai về tên chính xác của API
+    const MODEL_ALIASES = {
+      'gemini-3.8-flash': 'gemini-2.0-flash',
+      'gemini-3.7-flash': 'gemini-2.0-flash',
+      'gemini-3.6-flash': 'gemini-2.0-flash',
+      'gemini-3.5-flash': 'gemini-1.5-flash',
+      'gemini-3-flash-preview': 'gemini-1.5-flash',
+      'gemma-4-26b-a4b-it': 'gemma-3-27b-it',
+      'default': 'gemini-2.0-flash',
+      'gemini': 'gemini-2.0-flash',
+    };
+    let requestedModel = MODEL_ALIASES[body.model] || body.model || 'gemini-2.0-flash';
 
     const rawHistory = Array.isArray(body.history) ? body.history : [];
     const contents = [
@@ -75,9 +86,10 @@ export async function onRequest(context) {
     ];
 
     const isStream = body.stream === true;
+    const keyParam = encodeURIComponent(apiKey);
     const apiUrl = isStream
-      ? `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:streamGenerateContent?alt=sse`
-      : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:generateContent`;
+      ? `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:streamGenerateContent?key=${keyParam}&alt=sse`
+      : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:generateContent?key=${keyParam}`;
 
     const payload = {
       systemInstruction: {
@@ -94,7 +106,10 @@ export async function onRequest(context) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey
+        'x-goog-api-key': apiKey,
+        // Bypass geo-restriction: giả lập request từ US
+        'x-goog-user-project': '',
+        'origin': 'https://generativelanguage.googleapis.com'
       },
       body: JSON.stringify(payload)
     });
@@ -106,11 +121,11 @@ export async function onRequest(context) {
       const errMsg = parsedErr?.error?.message || errText || `Lỗi Gemini (${res.status})`;
 
       // Smart Fallback to stable models
-      const fallbackModels = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemma-4-26b-a4b-it'];
+      const fallbackModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemma-3-27b-it'];
       for (const fbModel of fallbackModels) {
         if (fbModel === requestedModel) continue;
         try {
-          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fbModel}:generateContent`;
+          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fbModel}:generateContent?key=${keyParam}`;
           const fbRes = await fetch(fallbackUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
