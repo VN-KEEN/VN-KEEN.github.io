@@ -416,15 +416,51 @@
         })
       });
 
+      const data = await res.json().catch(() => ({}));
+
+      // Tự động chuyển qua gọi trực tiếp từ trình duyệt nếu Cloudflare PoP bị Google giới hạn vùng
+      if (data.geo_blocked && data.direct_key) {
+        try {
+          const directModel = data.model || 'gemini-3.8-flash';
+          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(directModel)}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
+          const directPayload = {
+            contents: [
+              ...history.slice(-10).map(h => ({
+                role: h.role === 'assistant' ? 'model' : 'user',
+                parts: [{ text: h.text }]
+              })),
+              { role: 'user', parts: [{ text }] }
+            ],
+            generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+          };
+          if (data.system_instruction) {
+            directPayload.systemInstruction = { parts: [{ text: data.system_instruction }] };
+          }
+          const directRes = await fetch(directUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(directPayload)
+          });
+          if (directRes.ok) {
+            const directData = await directRes.json();
+            const reply = directData?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim() || 'Không nhận được câu trả lời từ AI.';
+            typingNode.remove();
+            appendMessage('ai', reply);
+            history.push({ role: 'assistant', text: reply });
+            return;
+          }
+        } catch (directErr) {
+          console.warn('Widget direct fallback error:', directErr);
+        }
+      }
+
       typingNode.remove();
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        appendMessage('ai', '⚠️ Lỗi: ' + (errData.error || 'Không thể kết nối máy chủ AI. Hãy thử lại.'));
+      if (!res.ok || data.ok === false) {
+        appendMessage('ai', '⚠️ Lỗi: ' + (data.error || 'Không thể kết nối máy chủ AI. Hãy thử lại.'));
         return;
       }
 
-      const data = await res.json();
       const reply = data.message?.text || data.text || 'Đã nhận được phản hồi.';
       appendMessage('ai', reply);
       history.push({ role: 'assistant', text: reply });

@@ -86,7 +86,7 @@
       </div>
       <div class="flex items-center gap-2">
         <select id="modelSelector" class="bg-slate-900 border border-cyan-500/40 text-cyan-300 text-xs font-mono rounded-xl px-3 py-2 outline-none">
-          <option value="gemini-3.6-flash">Google Gemini 3.6 Flash (Siêu Tốc - Khuyên dùng)</option>
+          <option value="gemini-3.6-flash">Google Gemini 3.6 Flash (Siêu Tốc - Tối ưu)</option>
           <option value="gemini-3.5-flash">Google Gemini 3.5 Flash</option>
           <option value="gemini-3-flash-preview">Google Gemini 3.0 Flash Preview</option>
           <option value="gemma-4-26b-a4b-it">Google Gemma 4-26B Instruct</option>
@@ -210,15 +210,51 @@
           })
         });
 
+        const data = await res.json().catch(() => ({}));
+
+        // Tự động chuyển qua gọi trực tiếp từ trình duyệt nếu máy chủ Cloudflare bị Google giới hạn vùng (Hong Kong PoP)
+        if (data.geo_blocked && data.direct_key) {
+          try {
+            const directModel = data.model || modelSelector.value || 'gemini-3.6-flash';
+            const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(directModel)}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
+            const directPayload = {
+              contents: [
+                ...history.slice(-10).map(h => ({
+                  role: h.role === 'assistant' ? 'model' : 'user',
+                  parts: [{ text: h.text }]
+                })),
+                { role: 'user', parts: [{ text }] }
+              ],
+              generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+            };
+            if (data.system_instruction) {
+              directPayload.systemInstruction = { parts: [{ text: data.system_instruction }] };
+            }
+            const directRes = await fetch(directUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(directPayload)
+            });
+            if (directRes.ok) {
+              const directData = await directRes.json();
+              const reply = directData?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim() || 'Không nhận được câu trả lời từ AI.';
+              typingNode.remove();
+              appendMessage('assistant', reply);
+              history.push({ role: 'assistant', text: reply });
+              return;
+            }
+          } catch (directErr) {
+            console.warn('Direct fallback error:', directErr);
+          }
+        }
+
         typingNode.remove();
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          appendMessage('assistant', '⚠️ Lỗi: ' + (errData.error || 'Không thể kết nối máy chủ AI. Hãy thử lại sau.'));
+        if (!res.ok || data.ok === false) {
+          appendMessage('assistant', '⚠️ Lỗi: ' + (data.error || 'Không thể kết nối máy chủ AI. Hãy thử lại sau.'));
           return;
         }
 
-        const data = await res.json();
         const reply = data.message?.text || data.text || 'Đã nhận được phản hồi.';
         appendMessage('assistant', reply);
         history.push({ role: 'assistant', text: reply });

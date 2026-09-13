@@ -136,6 +136,20 @@ export async function onRequest(context) {
         } catch {}
       }
 
+      // If Cloudflare edge node is geo-blocked by Google (e.g. Hong Kong edge)
+      if (errMsg.toLowerCase().includes('location is not supported') || errMsg.toLowerCase().includes('user location')) {
+        return new Response(JSON.stringify({
+          ok: false,
+          geo_blocked: true,
+          direct_key: apiKey,
+          model: requestedModel,
+          system_instruction: SYSTEM_INSTRUCTION
+        }), {
+          status: 200,
+          headers: corsHeaders
+        });
+      }
+
       return new Response(JSON.stringify({
         ok: false,
         error: errMsg,
