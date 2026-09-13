@@ -60,18 +60,12 @@ export async function onRequest(context) {
       });
     }
 
-    // Normalize model name — map các tên cũ/sai về tên chính xác của API
-    const MODEL_ALIASES = {
-      'gemini-3.8-flash': 'gemini-2.0-flash',
-      'gemini-3.7-flash': 'gemini-2.0-flash',
-      'gemini-3.6-flash': 'gemini-2.0-flash',
-      'gemini-3.5-flash': 'gemini-1.5-flash',
-      'gemini-3-flash-preview': 'gemini-1.5-flash',
-      'gemma-4-26b-a4b-it': 'gemma-3-27b-it',
-      'default': 'gemini-2.0-flash',
-      'gemini': 'gemini-2.0-flash',
-    };
-    let requestedModel = MODEL_ALIASES[body.model] || body.model || 'gemini-2.0-flash';
+    // Valid active Gemini models (verified)
+    const VALID_MODELS = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
+    let requestedModel = body.model;
+    if (!requestedModel || !VALID_MODELS.includes(requestedModel)) {
+      requestedModel = 'gemini-3.6-flash';
+    }
 
     const rawHistory = Array.isArray(body.history) ? body.history : [];
     const contents = [
@@ -107,8 +101,6 @@ export async function onRequest(context) {
       headers: {
         'Content-Type': 'application/json',
         'x-goog-api-key': apiKey,
-        // Bypass geo-restriction: giả lập request từ US
-        'x-goog-user-project': '',
         'origin': 'https://generativelanguage.googleapis.com'
       },
       body: JSON.stringify(payload)
@@ -121,14 +113,14 @@ export async function onRequest(context) {
       const errMsg = parsedErr?.error?.message || errText || `Lỗi Gemini (${res.status})`;
 
       // Smart Fallback to stable models
-      const fallbackModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemma-3-27b-it'];
+      const fallbackModels = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
       for (const fbModel of fallbackModels) {
         if (fbModel === requestedModel) continue;
         try {
           const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fbModel}:generateContent?key=${keyParam}`;
           const fbRes = await fetch(fallbackUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey, 'origin': 'https://generativelanguage.googleapis.com' },
             body: JSON.stringify(payload)
           });
           if (fbRes.ok) {

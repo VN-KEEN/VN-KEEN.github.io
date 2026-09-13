@@ -46,7 +46,10 @@ export async function onRequest(context) {
       });
     }
 
-    const apiKey = (env?.GEMINI_API_KEY || '').trim();
+    let apiKey = (env?.GEMINI_API_KEY || '').trim();
+    // Tự động làm sạch tiền tố và hậu tố rác (Bearer, dấu nháy, dấu chấm phẩy)
+    apiKey = apiKey.replace(/^(Bearer\s+|GEMINI_API_KEY\s*[:=]\s*|["'])/i, '').replace(/["';\s]+$/g, '').trim();
+
     if (!apiKey) {
       return new Response(JSON.stringify({
         ok: false,
@@ -57,8 +60,9 @@ export async function onRequest(context) {
       });
     }
 
-    let requestedModel = body.model || 'gemini-3.6-flash';
-    if (requestedModel === 'default' || requestedModel === 'gemini' || requestedModel === 'gemini-3.8-flash' || requestedModel === 'gemini-3.7-flash') {
+    const VALID_MODELS = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
+    let requestedModel = body.model;
+    if (!requestedModel || !VALID_MODELS.includes(requestedModel)) {
       requestedModel = 'gemini-3.6-flash';
     }
 
@@ -75,9 +79,10 @@ export async function onRequest(context) {
     ];
 
     const isStream = body.stream === true;
+    const keyParam = encodeURIComponent(apiKey);
     const apiUrl = isStream
-      ? `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:streamGenerateContent?alt=sse`
-      : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:generateContent`;
+      ? `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:streamGenerateContent?key=${keyParam}&alt=sse`
+      : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(requestedModel)}:generateContent?key=${keyParam}`;
 
     const payload = {
       systemInstruction: {
@@ -94,7 +99,8 @@ export async function onRequest(context) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey
+        'x-goog-api-key': apiKey,
+        'origin': 'https://generativelanguage.googleapis.com'
       },
       body: JSON.stringify(payload)
     });
@@ -106,14 +112,14 @@ export async function onRequest(context) {
       const errMsg = parsedErr?.error?.message || errText || `Lỗi Gemini (${res.status})`;
 
       // Smart Fallback to stable models
-      const fallbackModels = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemma-4-26b-a4b-it'];
+      const fallbackModels = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
       for (const fbModel of fallbackModels) {
         if (fbModel === requestedModel) continue;
         try {
-          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fbModel}:generateContent`;
+          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fbModel}:generateContent?key=${keyParam}`;
           const fbRes = await fetch(fallbackUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey, 'origin': 'https://generativelanguage.googleapis.com' },
             body: JSON.stringify(payload)
           });
           if (fbRes.ok) {
