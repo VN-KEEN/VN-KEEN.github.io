@@ -447,7 +447,7 @@
                 <i class="fa-solid fa-laptop-code"></i> Dùng linh hoạt trên nhiều máy tính / thiết bị
               </div>
             </div>
-            <div class="font-orbitron text-2xl font-black text-amber-400">999.999đ</div>
+            <div class="font-orbitron text-2xl font-black text-amber-400">2.000.000đ</div>
           </div>
         </div>
 
@@ -469,8 +469,8 @@
           <div class="flex items-center justify-between">
             <span class="text-gray-400">Số tiền:</span>
             <div class="flex items-center gap-2">
-              <span id="paymentAmountDisplay" class="font-bold text-amber-400 text-sm">999.999 VNĐ</span>
-              <button onclick="copyText('999999', this)" class="text-[11px] text-amber-300 hover:text-white px-2 py-0.5 rounded bg-gray-800 border border-gray-700">
+              <span id="paymentAmountDisplay" class="font-bold text-amber-400 text-sm">2.000.000 VNĐ</span>
+              <button onclick="copyText('2000000', this)" class="text-[11px] text-amber-300 hover:text-white px-2 py-0.5 rounded bg-gray-800 border border-gray-700">
                 Copy
               </button>
             </div>
@@ -1156,10 +1156,11 @@
       const modal = document.getElementById('paymentModal');
       const qr = document.getElementById('vietQrImg');
       if (qr) {
-        qr.src = 'images/vietqr_payment.png';
+        qr.src = 'https://img.vietqr.io/image/MB-789789999888-compact2.png?amount=2000000&addInfo=CS2%20MOD%20VIP&accountName=NGUYEN%20PHU%20QUY';
+        qr.onerror = () => { qr.src = 'images/vietqr_payment.png'; };
       }
       const display = document.getElementById('paymentAmountDisplay');
-      if (display) display.textContent = `999.999 VNĐ`;
+      if (display) display.textContent = `2.000.000 VNĐ`;
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     }
@@ -1194,5 +1195,7 @@
     });
   </script>
 
-  <!-- VN-KEEN AI Assistant Floating Widget -->\n  <script src="ai-widget.js"></script>\n</body>
+  <!-- VN-KEEN AI Assistant Floating Widget -->
+  <script src="ai-widget.js"></script>
+</body>
 </html>
