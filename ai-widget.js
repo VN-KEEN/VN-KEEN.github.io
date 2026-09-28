@@ -426,7 +426,7 @@
         body: JSON.stringify({
           message: text,
           history: history.slice(-10),
-          model: 'gemini-2.5-flash'
+          model: 'gemini-3.8-flash'
         })
       });
 
@@ -437,7 +437,7 @@
       // server explicitly returns. This exposes that key to site visitors.
       if (data.geo_blocked && data.direct_key) {
         try {
-          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(data.model || 'gemini-2.5-flash')}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
+          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(data.model || 'gemini-3.8-flash')}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
           const directPayload = {
             systemInstruction: { parts: [{ text: data.system_instruction || '' }] },
             contents: [

@@ -24,8 +24,8 @@ export async function onRequest(context) {
       ok: true,
       service: 'VN-KEEN AI Assistant API',
       status: 'online',
-      defaultModel: 'gemini-2.5-flash',
-      availableModels: ['gemini-2.5-flash']
+      defaultModel: 'gemini-3.8-flash',
+      availableModels: ['gemini-3.8-flash']
     }), { headers: corsHeaders });
   }
 
@@ -61,10 +61,10 @@ export async function onRequest(context) {
     }
 
     // Valid active Gemini models (verified)
-    const VALID_MODELS = ['gemini-2.5-flash'];
+    const VALID_MODELS = ['gemini-3.8-flash'];
     let requestedModel = body.model;
     if (!requestedModel || !VALID_MODELS.includes(requestedModel)) {
-      requestedModel = 'gemini-2.5-flash';
+      requestedModel = 'gemini-3.8-flash';
     }
 
     const rawHistory = Array.isArray(body.history) ? body.history : [];
@@ -113,7 +113,7 @@ export async function onRequest(context) {
       const errMsg = parsedErr?.error?.message || errText || `Lỗi Gemini (${res.status})`;
 
       // Smart Fallback to stable models
-      const fallbackModels = ['gemini-2.5-flash'];
+      const fallbackModels = ['gemini-3.8-flash'];
       for (const fbModel of fallbackModels) {
         if (fbModel === requestedModel) continue;
         try {
