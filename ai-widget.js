@@ -281,12 +281,12 @@
         <div class="vnk-chat-title">
           <img src="images/VN-KEEN.jpg" alt="VN-KEEN AI" onerror="this.src='favicon.jpg'">
           <div>
-            <h4>VN-KEEN AI STUDIO</h4>
-            <p>● Gemini 3.8 Flash Online</p>
+            <h4>CHĂM SÓC KHÁCH HÀNG</h4>
+            <p>Trả lời tự động · Liên hệ Admin khi cần</p>
           </div>
         </div>
         <div class="vnk-chat-actions">
-          <a href="ai.html" target="_blank" class="vnk-act-btn" title="Mở trang Trợ Lý AI toàn màn hình" style="text-decoration:none;">
+          <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="vnk-act-btn" title="Liên hệ Admin qua Telegram" style="text-decoration:none;">
             <i class="fa-solid fa-up-right-from-square"></i>
           </a>
           <button class="vnk-act-btn" id="vnkClearBtn" title="Xóa lịch sử trò chuyện">
@@ -299,7 +299,7 @@
       </div>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖. Tôi có thể tư vấn <strong>14,000+ Skin CS2</strong>, cách mua key VIP KeyAuth hoặc giải đáp mọi câu hỏi cho bạn.
+          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Trợ lý AI hỗ trợ câu hỏi thường gặp; câu trả lời có thể cần kiểm tra lại. Với lỗi key hoặc thanh toán, hãy <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener">liên hệ Admin qua Telegram</a>. Không gửi mật khẩu, mã OTP hoặc key tại đây.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
             <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
@@ -309,17 +309,17 @@
         </div>
       </div>
       <div class="vnk-input-zone">
-        <input type="text" class="vnk-input" id="vnkInput" placeholder="Hỏi AI về CS2 hoặc bất kỳ điều gì..." autocomplete="off">
+        <input type="text" class="vnk-input" id="vnkInput" placeholder="Nhập câu hỏi về cài đặt, key hoặc hỗ trợ..." autocomplete="off">
         <button class="vnk-send-btn" id="vnkSendBtn" title="Gửi câu hỏi">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
       </div>
     </div>
-    <button class="vnk-ai-btn" id="vnkToggleBtn" title="Mở Trợ Lý AI VN-KEEN">
+    <button class="vnk-ai-btn" id="vnkToggleBtn" title="Mở chăm sóc khách hàng VN-KEEN">
       <div class="vnk-icon-wrap">
-        <i class="fa-solid fa-robot"></i>
+        <i class="fa-solid fa-headset"></i>
       </div>
-      <span>TRỢ LÝ AI CS2</span>
+      <span>CHĂM SÓC KHÁCH HÀNG</span>
       <span class="vnk-badge"></span>
     </button>
   `;
@@ -351,7 +351,7 @@
     history = [];
     messagesContainer.innerHTML = `
       <div class="vnk-msg ai">
-        Đã làm mới đoạn chat! Bạn cần VN-KEEN AI hỗ trợ điều gì?
+        Đã làm mới đoạn chat! Bạn cần trợ lý tự động hỗ trợ điều gì?
         <div class="vnk-chips">
           <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
           <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
