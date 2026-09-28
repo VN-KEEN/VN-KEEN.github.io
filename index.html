@@ -334,6 +334,7 @@
     }
     ::-webkit-scrollbar-thumb:hover { background: #00e5ee; }
   </style>
+<link rel="stylesheet" href="feature-gallery.css">
 </head>
   <!-- Epic KEEN Warrior Emblem Background Layer (Thu nhỏ lại gọn gàng ~4cm) -->
   <div class="fixed inset-0 pointer-events-none z-[-5] overflow-hidden">
@@ -617,257 +618,23 @@
   </section>
 
   <!-- VANTIX 2.1.2 SKINS MENU -->
-  <section id="features" class="relative py-24 bg-bg/50">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent uppercase">VANTIX 2.1.2 · VN-KEEN-SKIN</span>
-        <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
-          12 MỤC <span class="bg-gradient-to-r from-accent via-purple-400 to-pink-500 bg-clip-text text-transparent">TAB SKINS</span>
-        </h2>
-        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Đúng menu trong phần mềm: 3 tab SKINS, WORLD và SETTING. Tab SKINS có 12 mục theo thứ tự General, Weapons, Knives, Gloves, Agent, Music, Collection, Stickers, Keychains, Sprays, Crates, Pet.
-          <span class="block mt-2 text-xs sm:text-sm font-cyber font-bold text-accent">
-            <i class="fa-solid fa-hand-pointer animate-bounce mr-1"></i> Bấm vào từng tính năng bên dưới để xem trực tiếp các item trong Kho Skin!
-          </span>
-        </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-        <div class="block glass-panel rounded-3xl p-8 border border-slate-400/20 relative overflow-hidden">
-          <div class="size-16 rounded-2xl bg-slate-400/10 border border-slate-400/30 flex items-center justify-center mb-6">
-            <i class="fa-solid fa-sliders text-2xl text-slate-200"></i>
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg">1. General</h3>
-            <span class="text-[10px] font-mono text-slate-300 bg-slate-500/10 px-2 py-0.5 rounded">MỤC ĐẦU TAB SKINS</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Mục đầu tiên trong tab SKINS của VANTIX 2.1.2.
-          </p>
-        </div>
-        
-        <!-- Feature 2: Weapons -->
-        <a href="catalog.html?category=weapons" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-cyan-400/20 hover:border-cyan-400/60 hover:shadow-[0_0_30px_rgba(0,229,238,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(0,229,238,0.5)] transition-all">
-            <img src="images/features/feat_weapons.png" alt="Weapon Skins" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(0,229,238,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-cyan-400 transition">2. Weapons</h3>
-            <span class="text-[10px] font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">SKIN SÚNG</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Mở khóa trọn bộ skin từ phổ thông đến Covert & Contraband (AWP Dragon Lore, AK-47 Case Hardened Blue Gem #661, M4A4 Howl, Printstream,...). Tự do tinh chỉnh giá trị <strong>Float chuẩn xác 0.00001 (Factory New)</strong>, Pattern Seed và đồng hồ đếm mạng <strong>StatTrak™</strong> theo ý muốn.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-accent"></i> 1,452+ mẫu skin
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-accent group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 2: Knife skins -->
-        <a href="catalog.html?category=knives" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-yellow-500/20 hover:border-yellow-400/60 hover:shadow-[0_0_30px_rgba(234,179,8,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(234,179,8,0.5)] transition-all">
-            <img src="images/features/feat_knives.png" alt="Knife Skins" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-yellow-400 transition">3. Knives</h3>
-            <span class="text-[10px] font-mono text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded">SKIN DAO HIẾM</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Trang bị đầy đủ hơn 20 loại dao cận chiến CS2: <strong>Karambit, Butterfly Knife, M9 Bayonet, Skeleton, Talon, Kukri, Nomad, Stiletto,...</strong> Hỗ trợ tất cả các hệ màu ngọc đắt đỏ nhất: <em>Doppler Sapphire, Ruby, Black Pearl, Emerald, Fade 100% Full Gold, Gamma Doppler, Crimson Web</em>.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-yellow-400"></i> 428+ mẫu dao
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-yellow-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 3: Glove skins -->
-        <a href="catalog.html?category=gloves" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-pink-500/20 hover:border-pink-400/60 hover:shadow-[0_0_30px_rgba(236,72,153,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-pink-400/10 border border-pink-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] transition-all">
-            <img src="images/features/feat_gloves.png" alt="Glove Skins" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(236,72,153,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-pink-400 transition">4. Gloves</h3>
-            <span class="text-[10px] font-mono text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded">GĂNG TAY</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Đồng bộ combo màu sắc hoàn hảo giữa dao và găng tay trên góc nhìn thứ nhất (First-Person). Bao gồm toàn bộ bộ sưu tập <strong>Sport Gloves (Pandora's Box, Vice, Amphibious, Hedge Maze)</strong>, <strong>Driver Gloves (Snow Leopard, King Snake)</strong>, Specialist Gloves và Moto Gloves.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-pink-400"></i> 94+ mẫu găng tay
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-pink-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 6: Agents -->
-        <a href="catalog.html?category=agents" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-blue-500/20 hover:border-blue-400/60 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-blue-400/10 border border-blue-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all">
-            <img src="images/features/feat_agents.png" alt="Agents" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-blue-400 transition">5. Agent</h3>
-            <span class="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">ĐẶC VỤ T & CT</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Đổi diện mạo nhân vật cho cả phe Khủng Bố (T) và Chống Khủng Bố (CT). Mở khóa toàn bộ đặc vụ hiếm: <strong>Sir Bloody Darryl (Royale, Skullhead, Loudmouth, Miami, Silent)</strong>, <strong>Special Agent Ava</strong>, <strong>Cmdr. Mae 'Dead Cold' Jamison</strong>, <strong>Number K</strong> với đầy đủ câu thoại radio riêng biệt.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-blue-400"></i> 63+ đặc vụ T & CT
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-blue-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 7: Music Kits -->
-        <a href="catalog.html?category=music_kits" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-amber-500/20 hover:border-amber-400/60 hover:shadow-[0_0_30px_rgba(245,158,11,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transition-all">
-            <img src="images/features/feat_music.png" alt="Music Kits" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-amber-400 transition">6. Music</h3>
-            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">GÓI ÂM NHẠC MVP</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Thay đổi toàn bộ nhạc nền menu chính, nhạc mở đầu round, nhạc cảnh báo bom C4 đếm ngược 10 giây và <strong>Bản Nhạc Ăn Mừng MVP Anthem</strong> khi bạn tỏa sáng cuối round (EZ4ENCE, Scarlxrd - King, Karma, The Verkkars - Flashbang Dance, Denzel Curry - Walkin, Valve CS:GO Classics).
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-amber-400"></i> 188+ gói nhạc
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-amber-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 8: Collections -->
-        <a href="catalog.html?category=collectibles" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-rose-500/20 hover:border-rose-400/60 hover:shadow-[0_0_30px_rgba(251,113,133,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-rose-400/10 border border-rose-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(251,113,133,0.5)] transition-all">
-            <img src="images/features/feat_collections.png" alt="Collections" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(251,113,133,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-rose-400 transition">7. Collection</h3>
-            <span class="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">BỘ SƯU TẬP ĐẦY ĐỦ</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Hệ thống danh mục thông minh phân loại theo từng Bộ Sưu Tập lịch sử từ 2013 đến nay: <em>The Cobblestone Collection, Gods and Monsters, The Rising Sun, The St. Marc, The Norse, The Canals, Kilowatt Collection, Revolution, Dreams & Nightmares,...</em> Dễ dàng tìm kiếm và áp dụng trọn gói.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-rose-400"></i> 468+ huy hiệu & kỷ niệm
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-rose-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 4: Stickers -->
-        <a href="catalog.html?category=stickers" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-purple-500/20 hover:border-purple-400/60 hover:shadow-[0_0_30px_rgba(168,85,247,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-purple-400/10 border border-purple-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all">
-            <img src="images/features/feat_stickers.png" alt="Stickers" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-purple-400 transition">8. Stickers</h3>
-            <span class="text-[10px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">HÌNH DÁN TỰ DO</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Tận dụng cơ chế <strong>Custom Sticker Placement</strong> mới nhất của CS2: Dán tối đa 5 sticker ở bất kỳ vị trí và góc xoay nào trên thân súng. Sở hữu những sticker trị giá hàng chục nghìn đô như <em>Katowice 2014 Holo (Titan, iBUYPOWER, Reason, Dignitas, Vox), Howling Dawn, Crown Foil</em> hoàn toàn miễn phí.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-purple-400"></i> 11,130+ sticker
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-purple-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 5: Keychains (incl. StickerSlab) -->
-        <a href="catalog.html?category=keychains" target="_blank" onclick="playSfx('click')" class="block glass-panel rounded-3xl p-8 tilt-card group hover:-translate-y-2 transition-all border border-emerald-500/20 hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] relative overflow-hidden cursor-pointer" onmouseenter="playSfx('hover')">
-          <div class="size-16 rounded-2xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center p-2 mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all">
-            <img src="images/features/feat_keychains.png" alt="Keychains" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg group-hover:text-emerald-400 transition">9. Keychains</h3>
-            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">MÓC KHÓA & THẺ BÀI</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Cập nhật tính năng <strong>Weapon Charms (Keychains)</strong> mới nhất: Treo móc khóa xúc xắc, xúc tu, búp bê quái vật và kim cương lên mọi vị trí trên súng. Đặc biệt tích hợp <strong>StickerSlab</strong> — kẹp thẻ bài trưng bày sticker siêu độc đáo đung đưa theo chuyển động súng.
-          </p>
-          <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span class="text-xs text-muted font-sans flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-emerald-400"></i> 78+ móc khóa Charm
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-xs font-cyber font-bold text-emerald-400 group-hover:text-white group-hover:translate-x-1 transition-all">
-              Xem Trong Kho Skin <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </span>
-          </div>
-        </a>
-
-        <!-- Feature 10: Sprays -->
-        <div class="block glass-panel rounded-3xl p-8 border border-indigo-500/20 relative overflow-hidden">
-          <div class="size-16 rounded-2xl bg-indigo-400/10 border border-indigo-400/30 flex items-center justify-center mb-6">
-            <i class="fa-solid fa-spray-can text-2xl text-indigo-300"></i>
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg">10. Sprays</h3>
-            <span class="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">MỤC TRONG TAB SKINS</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Mục Sprays nằm trong tab SKINS của VANTIX 2.1.2, ngay sau Keychains.
-          </p>
-        </div>
-
-        <!-- Feature 11: Crates -->
-        <div class="block glass-panel rounded-3xl p-8 border border-orange-500/20 relative overflow-hidden">
-          <div class="size-16 rounded-2xl bg-orange-400/10 border border-orange-400/30 flex items-center justify-center mb-6 overflow-hidden">
-            <i class="fa-solid fa-box text-2xl text-orange-300"></i>
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg">11. Crates</h3>
-            <span class="text-[10px] font-mono text-orange-300 bg-orange-500/10 px-2 py-0.5 rounded">MỤC TRONG TAB SKINS</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Mục Crates nằm trong tab SKINS của VANTIX 2.1.2, ngay sau Sprays.
-          </p>
-        </div>
-
-        <!-- Feature 12: Pet -->
-        <div class="block glass-panel rounded-3xl p-8 border border-lime-500/20 relative overflow-hidden">
-          <div class="h-36 rounded-2xl bg-black border border-lime-400/30 mb-6 overflow-hidden">
-            <img src="images/preview-kho-do.jpg" alt="Pet" class="w-full h-full object-cover object-center">
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-cyber text-xl font-bold text-fg">12. Pet</h3>
-            <span class="text-[10px] font-mono text-lime-300 bg-lime-500/10 px-2 py-0.5 rounded">GÀ TRONG GAME</span>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Chọn pet gà: Chicken Egg, Chicken Chick, Chicken Catalana, Chicken Silkie và Chicken Feed. Mỗi pet có Pet Seed, Pet Level, số ngày lên cấp và hạn thức ăn.
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </section>
+<section id="features" class="relative py-24 bg-bg/50"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div class="text-center mb-16"><span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent">VANTIX 2.1.2 · VN-KEEN-SKIN</span><h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">KHÁM PHÁ 12 MỤC SKINS</h2><p class="mt-4 text-muted">Ảnh chụp trực tiếp trong phần mềm. Bấm vào ảnh để xem rõ từng tính năng.</p></div><div class="feature-photo-grid"><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/general.png" data-feature-title="General · Kho đồ tổng quan" aria-label="Xem ảnh lớn: General"><img src="images/features/general.png" alt="Giao diện Vantix: General" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">01 / SKINS · General</p><h3>Kho đồ tổng quan</h3><p>Xem các vật phẩm đã thêm vào inventory.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/weapons.png" data-feature-title="Weapons · Skin súng" aria-label="Xem ảnh lớn: Weapons"><img src="images/features/weapons.png" alt="Giao diện Vantix: Weapons" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">02 / SKINS · Weapons</p><h3>Skin súng</h3><p>Chọn mẫu súng, paint kit, Wear, Seed, StatTrak, sticker và móc khóa.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/knives.png" data-feature-title="Knives · Skin dao" aria-label="Xem ảnh lớn: Knives"><img src="images/features/knives.png" alt="Giao diện Vantix: Knives" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">03 / SKINS · Knives</p><h3>Skin dao</h3><p>Xem trước mẫu dao, tùy chỉnh Wear, Seed và tên riêng.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/gloves.png" data-feature-title="Gloves · Găng tay" aria-label="Xem ảnh lớn: Gloves"><img src="images/features/gloves.png" alt="Giao diện Vantix: Gloves" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">04 / SKINS · Gloves</p><h3>Găng tay</h3><p>Chọn mẫu găng tay và paint kit, điều chỉnh Wear và Seed.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/agent.png" data-feature-title="Agent · Đặc vụ T / CT" aria-label="Xem ảnh lớn: Agent"><img src="images/features/agent.png" alt="Giao diện Vantix: Agent" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">05 / SKINS · Agent</p><h3>Đặc vụ T / CT</h3><p>Xem trước đặc vụ của hai phe và lựa chọn patch.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/music.png" data-feature-title="Music · Gói âm nhạc" aria-label="Xem ảnh lớn: Music"><img src="images/features/music.png" alt="Giao diện Vantix: Music" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">06 / SKINS · Music</p><h3>Gói âm nhạc</h3><p>Chọn music kit, nghe thử các đoạn nhạc và tùy chỉnh StatTrak MVP.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/collection.png" data-feature-title="Collection · Huy hiệu & cúp" aria-label="Xem ảnh lớn: Collection"><img src="images/features/collection.png" alt="Giao diện Vantix: Collection" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">07 / SKINS · Collection</p><h3>Huy hiệu & cúp</h3><p>Duyệt Coins, Trophies, Medals và Pins trong bộ sưu tập.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/stickers.png" data-feature-title="Stickers · Hình dán" aria-label="Xem ảnh lớn: Stickers"><img src="images/features/stickers.png" alt="Giao diện Vantix: Stickers" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">08 / SKINS · Stickers</p><h3>Hình dán</h3><p>Tìm kiếm và xem các mẫu sticker trong thư viện.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/keychains.png" data-feature-title="Keychains · Móc khóa" aria-label="Xem ảnh lớn: Keychains"><img src="images/features/keychains.png" alt="Giao diện Vantix: Keychains" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">09 / SKINS · Keychains</p><h3>Móc khóa</h3><p>Duyệt các mẫu charm và móc khóa cho vũ khí.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/sprays.png" data-feature-title="Sprays · Graffiti" aria-label="Xem ảnh lớn: Sprays"><img src="images/features/sprays.png" alt="Giao diện Vantix: Sprays" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">10 / SKINS · Sprays</p><h3>Graffiti</h3><p>Tìm kiếm và lựa chọn các mẫu hình xịt.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/crates.png" data-feature-title="Crates · Hòm & gói vật phẩm" aria-label="Xem ảnh lớn: Crates"><img src="images/features/crates.png" alt="Giao diện Vantix: Crates" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">11 / SKINS · Crates</p><h3>Hòm & gói vật phẩm</h3><p>Duyệt các nhóm hòm, capsule, gói lưu niệm, music kit và chìa khóa.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/pet.png" data-feature-title="Pet · Thú cưng" aria-label="Xem ảnh lớn: Pet"><img src="images/features/pet.png" alt="Giao diện Vantix: Pet" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">12 / SKINS · Pet</p><h3>Thú cưng</h3><p>Chọn pet và thiết lập Seed, Level, ngày nâng cấp cùng hạn thức ăn.</p></div></article></div><h3 class="font-cyber text-2xl text-fg mt-12 mb-6">KHÁM PHÁ THÊM TRONG CRATES</h3><div class="feature-photo-grid"><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/autograph.png" data-feature-title="Autograph Capsules · Gói chữ ký" aria-label="Xem ảnh lớn: Autograph Capsules"><img src="images/features/autograph.png" alt="Giao diện Vantix: Autograph Capsules" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">CRATES · Autograph Capsules</p><h3>Gói chữ ký</h3><p>Ảnh tab gói hình dán chữ ký trong mục Crates.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/souvenir.png" data-feature-title="Souvenir Packages · Gói lưu niệm" aria-label="Xem ảnh lớn: Souvenir Packages"><img src="images/features/souvenir.png" alt="Giao diện Vantix: Souvenir Packages" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">CRATES · Souvenir Packages</p><h3>Gói lưu niệm</h3><p>Ảnh tab các gói lưu niệm trong mục Crates.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/music-crates.png" data-feature-title="Music Kits · Hộp âm nhạc" aria-label="Xem ảnh lớn: Music Kits"><img src="images/features/music-crates.png" alt="Giao diện Vantix: Music Kits" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">CRATES · Music Kits</p><h3>Hộp âm nhạc</h3><p>Ảnh tab các hộp music kit trong mục Crates.</p></div></article>
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/keys.png" data-feature-title="Keys · Chìa khóa hòm" aria-label="Xem ảnh lớn: Keys"><img src="images/features/keys.png" alt="Giao diện Vantix: Keys" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">CRATES · Keys</p><h3>Chìa khóa hòm</h3><p>Ảnh tab các loại chìa khóa trong mục Crates.</p></div></article></div></div></section>
+<dialog id="feature-photo-dialog" aria-labelledby="feature-photo-title"><div class="feature-photo-toolbar"><h2 id="feature-photo-title"></h2><form method="dialog"><button aria-label="Đóng ảnh">Đóng ✕</button></form></div><img id="feature-photo-full" alt=""></dialog>
+<script src="feature-gallery.js" defer></script>
 
   <!-- INTERACTIVE CS2 SKIN STUDIO & IN-GAME PREVIEW (Phòng Xem Trước Thực Tế 100%) -->
   <section id="studio" class="relative py-20 bg-bg/80 border-t border-cyan-500/20">
