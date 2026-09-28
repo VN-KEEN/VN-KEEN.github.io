@@ -404,6 +404,25 @@
     return 'AI hiện không khả dụng. Thông tin FAQ dự phòng:\n\n' + answer + '\n\nAdmin: https://t.me/VN_KEEN';
   }
 
+  async function requestWithRetry(url, options) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15000);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        const data = await response.json().catch(() => ({}));
+        if (![429, 502, 503, 504].includes(response.status) || attempt === 2) {
+          return { response, data };
+        }
+      } catch (error) {
+        if (attempt === 2) throw error;
+      } finally {
+        clearTimeout(timer);
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+    }
+  }
+
   async function handleSend(userText) {
     const text = (userText || input.value || '').trim();
     if (!text || isThinking) return;
@@ -420,17 +439,16 @@
       const apiUrl = (window.location.hostname.endsWith('pages.dev') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? '/api/ai-chat'
         : 'https://vn-keen.pages.dev/api/ai-chat';
-      const res = await fetch(apiUrl, {
+      const { response: res, data } = await requestWithRetry(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: text,
-          history: history.slice(-10),
+          history: history.slice(0, -1).slice(-10),
           model: 'gemini-3.8-flash'
         })
       });
 
-      const data = await res.json().catch(() => ({}));
 
       // User-approved compatibility path: Cloudflare can be blocked by Gemini
       // in some regions, so the browser calls Gemini directly with the key the
@@ -444,18 +462,16 @@
               ...history.slice(-10).map(item => ({
                 role: item.role === 'assistant' ? 'model' : 'user',
                 parts: [{ text: item.text }]
-              })),
-              { role: 'user', parts: [{ text }] }
+              }))
             ],
             generationConfig: { maxOutputTokens: 1024, temperature: 0.7 }
           };
-          const directRes = await fetch(directUrl, {
+          const { response: directRes, data: directData } = await requestWithRetry(directUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(directPayload)
           });
           if (directRes.ok) {
-            const directData = await directRes.json();
             const directReply = directData?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
             if (directReply) {
               typingNode.remove();
@@ -465,7 +481,7 @@
             }
           }
         } catch (directErr) {
-          console.warn('Direct Gemini fallback failed:', directErr);
+          console.warn('AI connection unavailable after retries.');
         }
       }
 
