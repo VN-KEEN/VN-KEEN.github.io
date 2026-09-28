@@ -19,6 +19,7 @@ async function check(statuses, expectedCalls, expectedStatus) {
   await check([503, 503, 200], 3, 200);
   await check([503, 503, 503], 3, 503);
   await check([403], 1, 403);
+  await check([429], 1, 429);
   await check([200], 1, 200);
   console.log('PASS: recovery, bounded retries, permanent errors, immediate success');
 })();

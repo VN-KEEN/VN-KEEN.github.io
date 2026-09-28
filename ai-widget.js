@@ -411,7 +411,7 @@
       try {
         const response = await fetch(url, { ...options, signal: controller.signal });
         const data = await response.json().catch(() => ({}));
-        if (![429, 502, 503, 504].includes(response.status) || attempt === 2) {
+        if (![502, 503, 504].includes(response.status) || attempt === 2) {
           return { response, data };
         }
       } catch (error) {
@@ -450,6 +450,12 @@
       });
 
 
+      if (res.status === 429) {
+        typingNode.remove();
+        appendMessage('ai', 'Trợ lý AI đã chạm hạn mức sử dụng của Google. Vui lòng thử lại sau hoặc liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ trực tiếp.');
+        return;
+      }
+
       // User-approved compatibility path: Cloudflare can be blocked by Gemini
       // in some regions, so the browser calls Gemini directly with the key the
       // server explicitly returns. This exposes that key to site visitors.
@@ -471,6 +477,11 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(directPayload)
           });
+          if (directRes.status === 429) {
+            typingNode.remove();
+            appendMessage('ai', 'Trợ lý AI đã chạm hạn mức sử dụng của Google. Vui lòng thử lại sau hoặc liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ trực tiếp.');
+            return;
+          }
           if (directRes.ok) {
             const directReply = directData?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
             if (directReply) {
