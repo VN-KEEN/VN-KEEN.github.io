@@ -426,11 +426,48 @@
         body: JSON.stringify({
           message: text,
           history: history.slice(-10),
-          model: 'gemini-3.8-flash'
+          model: 'gemini-2.5-flash'
         })
       });
 
       const data = await res.json().catch(() => ({}));
+
+      // User-approved compatibility path: Cloudflare can be blocked by Gemini
+      // in some regions, so the browser calls Gemini directly with the key the
+      // server explicitly returns. This exposes that key to site visitors.
+      if (data.geo_blocked && data.direct_key) {
+        try {
+          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(data.model || 'gemini-2.5-flash')}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
+          const directPayload = {
+            systemInstruction: { parts: [{ text: data.system_instruction || '' }] },
+            contents: [
+              ...history.slice(-10).map(item => ({
+                role: item.role === 'assistant' ? 'model' : 'user',
+                parts: [{ text: item.text }]
+              })),
+              { role: 'user', parts: [{ text }] }
+            ],
+            generationConfig: { maxOutputTokens: 1024, temperature: 0.7 }
+          };
+          const directRes = await fetch(directUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(directPayload)
+          });
+          if (directRes.ok) {
+            const directData = await directRes.json();
+            const directReply = directData?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
+            if (directReply) {
+              typingNode.remove();
+              appendMessage('ai', directReply);
+              history.push({ role: 'assistant', text: directReply });
+              return;
+            }
+          }
+        } catch (directErr) {
+          console.warn('Direct Gemini fallback failed:', directErr);
+        }
+      }
 
       typingNode.remove();
 
