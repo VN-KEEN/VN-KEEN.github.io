@@ -390,6 +390,20 @@
     return div;
   }
 
+
+  function supportFallback(text) {
+    const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    let answer;
+    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Xem Bảng giá trên trang chủ. Nếu đã thanh toán mà chưa nhận key, liên hệ Admin để kiểm tra giao dịch.';
+    else if (/vac|ban|an toan/.test(q)) answer = 'Không thể đảm bảo tài khoản không bị hạn chế khi sử dụng phần mềm bên thứ ba. Hãy cân nhắc trước khi sử dụng; không có cam kết an toàn 100%.';
+    else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
+    else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
+    else if (/cai|tai|khoi chay/.test(q)) answer = 'Bấm TẢI VN-KEEN-SKIN trên trang chủ, giải nén, mở VN-KEEN-SKIN.exe và nhập key còn hạn. Nếu có lỗi, gửi ảnh thông báo cho Admin; không gửi mật khẩu hoặc mã OTP.';
+    else if (/key|hwid|het han/.test(q)) answer = 'Với lỗi key, hết hạn hoặc đổi máy/HWID, hãy liên hệ Admin để kiểm tra. Khung trả lời tự động không thể xác nhận hay thay đổi thông tin key của bạn.';
+    else answer = 'Hiện chưa thể xử lý câu hỏi này tự động. Bạn vui lòng liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ.';
+    return 'AI hiện không khả dụng. Thông tin FAQ dự phòng:\n\n' + answer + '\n\nAdmin: https://t.me/VN_KEEN';
+  }
+
   async function handleSend(userText) {
     const text = (userText || input.value || '').trim();
     if (!text || isThinking) return;
@@ -418,46 +432,10 @@
 
       const data = await res.json().catch(() => ({}));
 
-      // Tự động chuyển qua gọi trực tiếp từ trình duyệt nếu Cloudflare PoP bị Google giới hạn vùng
-      if (data.geo_blocked && data.direct_key) {
-        try {
-          const directModel = data.model || 'gemini-3.8-flash';
-          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(directModel)}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
-          const directPayload = {
-            contents: [
-              ...history.slice(-10).map(h => ({
-                role: h.role === 'assistant' ? 'model' : 'user',
-                parts: [{ text: h.text }]
-              })),
-              { role: 'user', parts: [{ text }] }
-            ],
-            generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
-          };
-          if (data.system_instruction) {
-            directPayload.systemInstruction = { parts: [{ text: data.system_instruction }] };
-          }
-          const directRes = await fetch(directUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(directPayload)
-          });
-          if (directRes.ok) {
-            const directData = await directRes.json();
-            const reply = directData?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim() || 'Không nhận được câu trả lời từ AI.';
-            typingNode.remove();
-            appendMessage('ai', reply);
-            history.push({ role: 'assistant', text: reply });
-            return;
-          }
-        } catch (directErr) {
-          console.warn('Widget direct fallback error:', directErr);
-        }
-      }
-
       typingNode.remove();
 
-      if (!res.ok || data.ok === false) {
-        appendMessage('ai', '⚠️ Lỗi: ' + (data.error || 'Không thể kết nối máy chủ AI. Hãy thử lại.'));
+      if (!res.ok || data.ok === false || data.geo_blocked) {
+        appendMessage('ai', supportFallback(text));
         return;
       }
 
@@ -467,7 +445,7 @@
 
     } catch (err) {
       typingNode.remove();
-      appendMessage('ai', '⚠️ Lỗi mạng hoặc máy chủ đang ngoại tuyến: ' + err.message);
+      appendMessage('ai', supportFallback(text));
     } finally {
       isThinking = false;
     }
