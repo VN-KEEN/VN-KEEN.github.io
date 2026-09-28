@@ -439,61 +439,23 @@
       const apiUrl = (window.location.hostname.endsWith('pages.dev') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? '/api/ai-chat'
         : 'https://vn-keen.pages.dev/api/ai-chat';
-      const { response: res, data } = await requestWithRetry(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          history: history.slice(0, -1).slice(-10),
-          model: 'gemini-3.8-flash'
-        })
-      });
-
-
-      if (res.status === 429) {
-        typingNode.remove();
-        appendMessage('ai', 'Trợ lý AI đã chạm hạn mức sử dụng của Google. Vui lòng thử lại sau hoặc liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ trực tiếp.');
-        return;
-      }
-
-      // User-approved compatibility path: Cloudflare can be blocked by Gemini
-      // in some regions, so the browser calls Gemini directly with the key the
-      // server explicitly returns. This exposes that key to site visitors.
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 55000);
+      let res, data;
+      try {
+        res = await fetch(apiUrl, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history: history.slice(0, -1).slice(-6) }),
+          signal: controller.signal
+        });
+        data = await res.json();
+      } finally { clearTimeout(timer); }
       if (data.geo_blocked && data.direct_key) {
-        try {
-          const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(data.model || 'gemini-3.8-flash')}:generateContent?key=${encodeURIComponent(data.direct_key)}`;
-          const directPayload = {
-            systemInstruction: { parts: [{ text: data.system_instruction || '' }] },
-            contents: [
-              ...history.slice(-10).map(item => ({
-                role: item.role === 'assistant' ? 'model' : 'user',
-                parts: [{ text: item.text }]
-              }))
-            ],
-            generationConfig: { maxOutputTokens: 1024, temperature: 0.7 }
-          };
-          const { response: directRes, data: directData } = await requestWithRetry(directUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(directPayload)
-          });
-          if (directRes.status === 429) {
-            typingNode.remove();
-            appendMessage('ai', 'Trợ lý AI đã chạm hạn mức sử dụng của Google. Vui lòng thử lại sau hoặc liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ trực tiếp.');
-            return;
-          }
-          if (directRes.ok) {
-            const directReply = directData?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim();
-            if (directReply) {
-              typingNode.remove();
-              appendMessage('ai', directReply);
-              history.push({ role: 'assistant', text: directReply });
-              return;
-            }
-          }
-        } catch (directErr) {
-          console.warn('AI connection unavailable after retries.');
-        }
+        const { routeChat } = await import('./ai-router.mjs?v=rotation-1');
+        data = await routeChat(data.direct_key, history.slice(-7).map(item => ({
+          role: item.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: item.text }]
+        })), data.system_instruction || '');
       }
 
       typingNode.remove();
