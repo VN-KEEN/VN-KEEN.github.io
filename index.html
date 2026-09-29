@@ -2007,6 +2007,8 @@
     let currentPlan = 'monthly';
     let currentAmount = 300000;
     let currentContent = '';
+    let currentOrder = null;
+    const LICENSEGATE_API_BASE = 'https://vn-keen.pages.dev/api/licensegate';
 
     function randCode(n) {
       let out = '';
@@ -2047,10 +2049,10 @@
 
     function openCheckout(plan) {
       selectPlan(plan || 'monthly');
-      createQr();
       const modal = document.getElementById('modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+      void createQr();
     }
 
     function closeModal() {
@@ -2063,15 +2065,36 @@
       modal.classList.remove('flex');
     }
 
-    function createQr() {
+    async function createQr() {
       if (pollingInterval) clearInterval(pollingInterval);
-      currentContent = 'KEEN' + randCode(6);
-
       const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
+      const statusEl = document.getElementById('auto-listen-status');
+      if (statusEl) statusEl.textContent = 'Đang tạo đơn thanh toán an toàn...';
+
+      try {
+        const response = await fetch(`${LICENSEGATE_API_BASE}/checkout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product: 'skin', plan: meta.id })
+        });
+        const order = await response.json();
+        if (!response.ok || !order.success || !order.orderId || !order.token) {
+          throw new Error(order.code || 'CHECKOUT_UNAVAILABLE');
+        }
+
+        currentOrder = { orderId: order.orderId, token: order.token };
+        currentContent = order.orderId;
+        currentAmount = Number(order.amount) || meta.amount;
+      } catch (error) {
+        currentOrder = null;
+        if (statusEl) statusEl.textContent = 'Không thể tạo đơn. Vui lòng thử lại sau.';
+        showToast('Thanh toán chưa sẵn sàng. Vui lòng thử lại sau.');
+        return;
+      }
+
       const qrImg = document.getElementById('qr-img');
       if (qrImg) {
-        // High-res dynamic VietQR link with custom amount & content
-        qrImg.src = `https://img.vietqr.io/image/MB-789789999888-compact2.png?amount=${currentAmount}&addInfo=${currentContent}&accountName=NGUYEN%20PHU%20QUY`;
+        qrImg.src = `https://img.vietqr.io/image/${BANK.bin}-${BANK.account}-compact2.png?amount=${currentAmount}&addInfo=${encodeURIComponent(currentContent)}&accountName=${encodeURIComponent(BANK.accountName)}`;
         qrImg.onerror = () => { qrImg.src = 'images/vietqr_payment.png'; };
       }
 
@@ -2092,8 +2115,8 @@
       document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-qrcode text-amber-400"></i> QUÉT MÃ QR THANH TOÁN';
       showView('pay-qr');
 
-      // Start Real-Time Auto Polling
-      startOrderPolling(currentContent);
+      if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${currentContent}...`;
+      startOrderPolling(currentOrder);
     }
 
     const SEPAY_CONFIG = {
@@ -2175,57 +2198,26 @@
       return key;
     }
 
-    function startOrderPolling(orderId) {
+    function startOrderPolling(order) {
       const statusEl = document.getElementById('auto-listen-status');
-      if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${orderId}...`;
+      if (!order?.orderId || !order?.token) return;
+      if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${order.orderId}...`;
 
       if (pollingInterval) clearInterval(pollingInterval);
-      const cleanOrderId = (orderId || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
       pollingInterval = setInterval(async () => {
         try {
-          // 1. Direct SePay Real-time API
-          const txs = await checkSepayTransactions();
-          if (txs && txs.length > 0) {
-            const processed = getProcessedTxs();
-            for (const tx of txs) {
-              const txId = String(tx.id);
-              if (processed.includes(txId)) continue;
-
-              const amtIn = parseFloat(tx.amount_in || 0);
-              const content = (tx.transaction_content || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-
-              if (amtIn > 0 && cleanOrderId && content.includes(cleanOrderId)) {
-                markTxProcessed(txId);
-                clearInterval(pollingInterval);
-                pollingInterval = null;
-
-                const newKey = getNextLicenseGateKey(currentPlan);
-                if (currentUser) {
-                  if (!currentUser.keys) currentUser.keys = [];
-                  const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
-                  currentUser.keys.unshift({
-                    plan: meta.name,
-                    key: newKey,
-                    purchasedAt: new Date().toISOString()
-                  });
-                  saveUserSession(currentUser);
-                }
-                onPaymentSuccess(newKey);
-                return;
-              }
-            }
-          }
-
-          // 2. Fallback backend
-          const res = await fetch(`/api/check-order?orderId=${orderId}`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.status === 'PAID') {
-              clearInterval(pollingInterval);
-              pollingInterval = null;
-              onPaymentSuccess(data.key || getNextLicenseGateKey(currentPlan));
-            }
+          const res = await fetch(`${LICENSEGATE_API_BASE}/status?orderId=${encodeURIComponent(order.orderId)}`, {
+            headers: { Authorization: `Bearer ${order.token}` },
+            cache: 'no-store'
+          });
+          const data = await res.json();
+          if (data.status === 'FULFILLED' && data.key) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
+            onPaymentSuccess(data.key);
+          } else if (data.status === 'PENDING' && statusEl) {
+            statusEl.textContent = `Đã tạo đơn ${order.orderId}. Đang chờ ngân hàng xác nhận...`;
           }
         } catch (err) {}
       }, 2000);
@@ -2233,6 +2225,14 @@
 
     function onPaymentSuccess(key) {
       deliveredKey = key;
+      if (currentUser) {
+        const meta = PLAN_META[currentPlan] || PLAN_META.monthly;
+        currentUser.keys = currentUser.keys || [];
+        if (!currentUser.keys.some(item => item.key === key)) {
+          currentUser.keys.unshift({ plan: meta.name, key, purchasedAt: new Date().toISOString(), paymentMethod: 'VIETQR' });
+          saveUserSession(currentUser);
+        }
+      }
       localStorage.setItem('vnkeen_last_key', key);
       localStorage.setItem('vnkeen_last_order', currentContent);
 
