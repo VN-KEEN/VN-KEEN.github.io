@@ -200,10 +200,17 @@ export async function onRequest(context) {
     if (action === 'buy_with_balance' && request.method === 'POST') {
       const { username, plan } = await request.json();
       const cleanUser = (username || '').trim().toLowerCase();
-      const user = globalUsers.get(cleanUser);
+      let user = globalUsers.get(cleanUser);
 
       if (!user) {
-        return new Response(JSON.stringify({ success: false, message: 'Vui lòng đăng nhập trước khi mua!' }), { status: 401, headers: corsHeaders });
+        const persisted = env?.LICENSE_DB
+          ? await env.LICENSE_DB.prepare('SELECT username,display_name,balance FROM wallet_accounts WHERE username=?').bind(cleanUser).first()
+          : null;
+        if (!persisted) {
+          return new Response(JSON.stringify({ success: false, message: 'Vui lòng đăng nhập trước khi mua!' }), { status: 401, headers: corsHeaders });
+        }
+        user = { username: cleanUser, displayName: persisted.display_name, password: '', balance: persisted.balance, keys: [], transactions: [] };
+        globalUsers.set(cleanUser, user);
       }
 
       const PLANS = {
