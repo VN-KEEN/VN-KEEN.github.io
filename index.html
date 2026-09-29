@@ -2889,7 +2889,7 @@
         });
         const data = await res.json();
 
-        if (data.success && data.key && (data.key.startsWith('VN-KEEN-SKIN') || data.key.startsWith('KEYAUTH'))) {
+        if (data.success && data.key && data.key.startsWith('VN-KEEN-SKIN')) {
           currentUser.balance = data.newBalance;
           if (!currentUser.keys) currentUser.keys = [];
           currentUser.keys.unshift(data.keyRecord || {
@@ -2912,58 +2912,10 @@
           showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. License Key từ LicenseGate đã sẵn sàng trong Kho!`);
           playSfx('gold');
         } else {
-          if (currentUser.balance >= meta.amount) {
-            currentUser.balance -= meta.amount;
-            const realKey = getNextLicenseGateKey(pendingBuyPlan);
-            if (!currentUser.keys) currentUser.keys = [];
-            currentUser.keys.unshift({
-              plan: meta.name,
-              key: realKey,
-              purchasedAt: new Date().toISOString(),
-              paymentMethod: 'WALLET'
-            });
-            if (!currentUser.transactions) currentUser.transactions = [];
-            currentUser.transactions.unshift({
-              id: 'BUY_' + Date.now(),
-              type: 'BUY',
-              description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
-              amount: meta.amount,
-              createdAt: new Date().toISOString()
-            });
-            saveUserSession(currentUser);
-            closeBuyConfirmModal();
-            openMyKeysModal();
-            showToast(`🎉 Mua ${meta.name} thành công! License Key: ${realKey}`);
-            playSfx('gold');
-          } else {
-            alert(data.message || 'Số dư trong ví không đủ!');
-          }
+          showToast(data.message || 'Không thể tạo key LicenseGate. Số dư chưa bị trừ.');
         }
       } catch (err) {
-        if (currentUser.balance >= meta.amount) {
-          currentUser.balance -= meta.amount;
-          const realKey = getNextLicenseGateKey(pendingBuyPlan);
-          if (!currentUser.keys) currentUser.keys = [];
-          currentUser.keys.unshift({
-            plan: meta.name,
-            key: realKey,
-            purchasedAt: new Date().toISOString(),
-            paymentMethod: 'WALLET'
-          });
-          if (!currentUser.transactions) currentUser.transactions = [];
-          currentUser.transactions.unshift({
-            id: 'BUY_' + Date.now(),
-            type: 'BUY',
-            description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
-            amount: meta.amount,
-            createdAt: new Date().toISOString()
-          });
-          saveUserSession(currentUser);
-          closeBuyConfirmModal();
-          openMyKeysModal();
-          showToast(`🎉 Mua ${meta.name} thành công! License Key: ${realKey}`);
-          playSfx('gold');
-        }
+        showToast('Không thể kết nối LicenseGate. Số dư chưa bị trừ.');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA (CẤP KEY NGAY)';

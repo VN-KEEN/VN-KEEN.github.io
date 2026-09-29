@@ -16,36 +16,41 @@ function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
 
 async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
   const licenseKey = generateLicenseGateKey('VN-KEEN-SKIN');
-  if (env?.LICENSEGATE_API_KEY) {
-    try {
-      const expirationDate = days >= 9999 ? '2099-12-31T23:59:59.000Z' : new Date(Date.now() + days * 86400 * 1000).toISOString();
-      const res = await fetch('https://api.licensegate.io/admin/licenses', {
-        method: 'POST',
-        headers: {
-          'Authorization': env.LICENSEGATE_API_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          active: true,
-          name: 'WALLET-' + Date.now(),
-          notes: 'VN-KEEN Wallet Buy / ' + planId,
-          licenseKey: licenseKey,
-          licenseScope: 'VN-KEEN-SKIN',
-          expirationDate: expirationDate,
-          ipLimit: 1,
-          validationPoints: 1000,
-          validationLimit: 1000,
-          replenishAmount: 1000,
-          replenishInterval: 'DAY'
-        })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        return data.licenseKey || licenseKey;
-      }
-    } catch (err) {
-      console.error('LicenseGate API error:', err);
-    }
+  if (!env?.LICENSEGATE_API_KEY) throw new Error('LICENSE_PROVIDER_NOT_CONFIGURED');
+  const expirationDate = days >= 9999 ? '2099-12-31T23:59:59.000Z' : new Date(Date.now() + days * 86400 * 1000).toISOString();
+  let res;
+  try {
+    res = await fetch('https://api.licensegate.io/admin/licenses', {
+      method: 'POST',
+      headers: {
+        'Authorization': env.LICENSEGATE_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        active: true,
+        name: 'WALLET-' + Date.now(),
+        notes: 'VN-KEEN Wallet Buy / ' + planId,
+        licenseKey,
+        licenseScope: 'VN-KEEN-SKIN',
+        expirationDate,
+        ipLimit: 1,
+        validationPoints: 1000,
+        validationLimit: 1000,
+        replenishAmount: 1000,
+        replenishInterval: 'DAY'
+      })
+    });
+  } catch (err) {
+    console.error('LicenseGate API error:', err);
+    throw new Error('LICENSE_PROVIDER_UNAVAILABLE');
+  }
+  if (!res.ok) {
+    console.error('LicenseGate create failed:', res.status);
+    throw new Error('LICENSE_PROVIDER_UNAVAILABLE');
+  }
+  const data = await res.json();
+  if (data.licenseKey !== licenseKey || data.licenseScope !== 'VN-KEEN-SKIN' || data.active !== true) {
+    throw new Error('LICENSE_PROVIDER_MISMATCH');
   }
   return licenseKey;
 }
@@ -199,11 +204,10 @@ export async function onRequest(context) {
         }), { status: 400, headers: corsHeaders });
       }
 
-      // Deduct balance
-      user.balance -= selectedPlan.price;
-
-      // Generate LicenseGate Key
+      // Create the provider-side license before charging the wallet. Never issue
+      // a locally generated key when LicenseGate is unavailable.
       const key = await createLicenseGateLicense(env, plan, selectedPlan.days);
+      user.balance -= selectedPlan.price;
 
       const keyRecord = {
         id: 'KEY_' + Date.now(),
