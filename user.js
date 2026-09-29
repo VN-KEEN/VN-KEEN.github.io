@@ -2,27 +2,49 @@
 const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = new Map());
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
-// Helper function to call KeyAuth Seller API
-async function generateKeyAuthLicense(sellerKey, days = 9999, mask = 'KEEN-****-****-****') {
-  if (!sellerKey || sellerKey === 'YOUR_KEYAUTH_SELLER_KEY') {
-    const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-    return KEEN---;
-  }
+function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const buf = new Uint8Array(16);
+  crypto.getRandomValues(buf);
+  const block = (start) => {
+    let s = '';
+    for (let i = 0; i < 4; i++) s += chars[buf[start + i] % chars.length];
+    return s;
+  };
+  return `${prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
+}
 
-  try {
-    const url = https://keyauth.win/api/seller/?sellerkey=&type=add&expiry=&mask=&level=1&amount=1&format=json;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.success && data.key) {
-      return data.key;
+async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
+  const licenseKey = generateLicenseGateKey('VN-KEEN-SKIN');
+  if (env?.LICENSEGATE_API_KEY) {
+    try {
+      const expirationDate = days >= 9999 ? null : new Date(Date.now() + days * 86400 * 1000).toISOString();
+      const res = await fetch('https://api.licensegate.io/admin/licenses', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + env.LICENSEGATE_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          active: true,
+          name: 'WALLET-' + Date.now(),
+          notes: 'VN-KEEN Wallet Buy / ' + planId,
+          licenseKey: licenseKey,
+          licenseScope: 'VN-KEEN-SKIN',
+          expirationDate: expirationDate,
+          ipLimit: 1,
+          validationLimit: null
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.licenseKey || licenseKey;
+      }
+    } catch (err) {
+      console.error('LicenseGate API error:', err);
     }
-    console.error('KeyAuth Error:', data);
-  } catch (err) {
-    console.error('KeyAuth Fetch Error:', err);
   }
-
-  const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-  return KEEN---;
+  return licenseKey;
 }
 
 export async function onRequest(context) {
@@ -42,6 +64,18 @@ export async function onRequest(context) {
   }
 
   try {
+    // SYSTEM RESET: Reset all existing users in memory to 0đ balance
+    if (!globalThis.__VNKEEN_GLOBAL_RESET_DONE_20260905) {
+      for (const [k, u] of globalUsers.entries()) {
+        if (u) {
+          u.balance = 0;
+          u.transactions = (u.transactions || []).filter(t => t.type !== 'TOPUP');
+          u.balanceResetToZero = true;
+        }
+      }
+      globalThis.__VNKEEN_GLOBAL_RESET_DONE_20260905 = true;
+    }
+
     // 1. REGISTER
     if (action === 'register' && request.method === 'POST') {
       const { username, password, contact } = await request.json();
@@ -158,16 +192,15 @@ export async function onRequest(context) {
       if (user.balance < selectedPlan.price) {
         return new Response(JSON.stringify({
           success: false,
-          message: Số dư trong ví (đ) không đủ để thanh toán  (đ). Vui lòng nạp thêm tiền vào ví!
+          message: 'Số dư trong ví không đủ để thanh toán gói này. Vui lòng nạp thêm tiền vào ví!'
         }), { status: 400, headers: corsHeaders });
       }
 
       // Deduct balance
       user.balance -= selectedPlan.price;
 
-      // Generate KeyAuth Key
-      const sellerKey = env?.KEYAUTH_SELLER_KEY || 'YOUR_KEYAUTH_SELLER_KEY';
-      const key = await generateKeyAuthLicense(sellerKey, selectedPlan.days, 'KEEN-****-****-****');
+      // Generate LicenseGate Key
+      const key = await createLicenseGateLicense(env, plan, selectedPlan.days);
 
       const keyRecord = {
         id: 'KEY_' + Date.now(),
@@ -181,7 +214,7 @@ export async function onRequest(context) {
       user.keys.unshift(keyRecord);
       user.transactions.unshift({
         type: 'BUY_KEY',
-        description: Mua ,
+        description: `Mua ${selectedPlan.name}`,
         amount: -selectedPlan.price,
         createdAt: new Date().toISOString()
       });

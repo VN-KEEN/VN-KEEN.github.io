@@ -2,51 +2,49 @@
 const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = new Map());
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
-// Real KeyAuth License Stock Vault
-const KEYAUTH_STOCKS = {
-  daily: [
-    'KEYAUTH-bey6Pd-pDpGxi-MJSgsX-qThlI4-iBLLZU-kTWxX5',
-    'KEYAUTH-a3PcZm-tUyHOZ-w1dH7c-rv3KqJ-C7Pgj8-I7Jnu0',
-    'KEYAUTH-3kkOvF-VCfcdM-bYCHiD-crYZgU-pnOFpk-qZa6r6'
-  ],
-  monthly: [
-    'KEYAUTH-T1Vu85-NM6wFf-9zhSHO-PVDp6E-vt1YVI-hHLSE2',
-    'KEYAUTH-XDfuq8-SYwjUF-v7ObLu-rxodkj-GjDXuc-nN7tQV'
-  ],
-  lifetime: [
-    'KEYAUTH-uPxf6H-7z7DQk-MKyJGG-LDBar3-wqi7Am-VBlH9j'
-  ]
-};
+function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const buf = new Uint8Array(16);
+  crypto.getRandomValues(buf);
+  const block = (start) => {
+    let s = '';
+    for (let i = 0; i < 4; i++) s += chars[buf[start + i] % chars.length];
+    return s;
+  };
+  return `${prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
+}
 
-const usedKeyAuthKeys = globalThis.__VNKEEN_USED_KEYS || (globalThis.__VNKEEN_USED_KEYS = new Set());
-
-// Helper function to call KeyAuth Seller API or dispatch real stock keys
-async function generateKeyAuthLicense(sellerKey, planId = 'monthly', days = 30) {
-  // 1. Try real stock vault first
-  const pool = KEYAUTH_STOCKS[planId] || KEYAUTH_STOCKS.monthly;
-  for (const k of pool) {
-    if (!usedKeyAuthKeys.has(k)) {
-      usedKeyAuthKeys.add(k);
-      return k;
-    }
-  }
-
-  // 2. Try KeyAuth Seller API if configured
-  if (sellerKey && sellerKey !== 'YOUR_KEYAUTH_SELLER_KEY') {
+async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
+  const licenseKey = generateLicenseGateKey('VN-KEEN-SKIN');
+  if (env?.LICENSEGATE_API_KEY) {
     try {
-      const url = `https://keyauth.win/api/seller/?sellerkey=${sellerKey}&type=add&expiry=${days}&mask=KEYAUTH-******-******-******-******-******-******&level=1&amount=1&format=json`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.success && data.key) {
-        return data.key;
+      const expirationDate = days >= 9999 ? null : new Date(Date.now() + days * 86400 * 1000).toISOString();
+      const res = await fetch('https://api.licensegate.io/admin/licenses', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + env.LICENSEGATE_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          active: true,
+          name: 'ORDER-' + Date.now(),
+          notes: 'VN-KEEN Webhook Order / ' + planId,
+          licenseKey: licenseKey,
+          licenseScope: 'VN-KEEN-SKIN',
+          expirationDate: expirationDate,
+          ipLimit: 1,
+          validationLimit: null
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.licenseKey || licenseKey;
       }
     } catch (err) {
-      console.error('KeyAuth Fetch Error:', err);
+      console.error('LicenseGate API error:', err);
     }
   }
-
-  const randomHex = () => Math.random().toString(36).substring(2, 8);
-  return `KEYAUTH-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}`;
+  return licenseKey;
 }
 
 export async function onRequest(context) {
@@ -158,7 +156,7 @@ export async function onRequest(context) {
     }
 
     const planId = (days === 1 ? 'daily' : (days === 30 ? 'monthly' : 'lifetime'));
-    const generatedKey = await generateKeyAuthLicense(sellerKey, planId, days);
+    const generatedKey = await createLicenseGateLicense(env, planId, days);
 
     const orderData = {
       orderId: orderId,

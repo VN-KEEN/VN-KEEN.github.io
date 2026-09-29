@@ -702,12 +702,12 @@
   <section id="pricing" class="relative py-24 bg-bg/70">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">KEYAUTH LICENSING · AUTO DELIVERY 24/7</span>
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">LICENSEGATE SYSTEM · AUTO DELIVERY 24/7</span>
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
           BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
         <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Hệ thống cấp License Key KeyAuth sau khi giao dịch VietQR được xác nhận. Kích hoạt chuẩn 1 PC (HWID Lock bảo mật), trải nghiệm trọn vẹn 14,000+ skins CS2!
+          Hệ thống cấp License Key LicenseGate sau khi giao dịch VietQR được xác nhận. Kích hoạt bảo mật (1 IP Lock), định dạng VN-KEEN-SKIN-XXXX-XXXX-XXXX-XXXX, trải nghiệm trọn vẹn 14,000+ skins CS2!
         </p>
       </div>
 
@@ -1035,14 +1035,14 @@
         </div>
       </div>
 
-      <!-- VIEW 2: Auto Payment Success & Key Delivery (KeyAuth Auto Key) -->
+      <!-- VIEW 2: Auto Payment Success & Key Delivery (LicenseGate Auto Key) -->
       <div id="pay-success" class="hidden space-y-5 text-center">
         <div class="size-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-400 text-3xl shadow-[0_0_30px_rgba(16,185,129,0.5)] animate-bounce">
           <i class="fa-solid fa-circle-check"></i>
         </div>
         <div>
           <h4 class="font-cyber text-2xl font-black text-emerald-400">THANH TOÁN THÀNH CÔNG!</h4>
-          <p class="text-xs text-muted mt-1 font-mono">Hệ thống KeyAuth đã tự động tạo License Key bản quyền cho bạn.</p>
+          <p class="text-xs text-muted mt-1 font-mono">Hệ thống LicenseGate đã tự động tạo License Key bản quyền cho bạn.</p>
         </div>
 
         <!-- Generated Key Display Box -->
@@ -1052,7 +1052,7 @@
             <span class="text-emerald-400">● ĐÃ KÍCH HOẠT VĨNH VIỄN</span>
           </div>
           <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-900 border border-white/10">
-            <span id="delivered-key-text" class="font-mono text-base font-black text-yellow-300 tracking-widest break-all select-all">KEEN-XXXX-XXXX-XXXX</span>
+            <span id="delivered-key-text" class="font-mono text-base font-black text-yellow-300 tracking-widest break-all select-all">VN-KEEN-SKIN-XXXX-XXXX-XXXX-XXXX</span>
             <button type="button" onclick="copyDeliveredKey()" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-yellow-300 text-black font-bold text-xs transition-all flex items-center gap-1 shadow-md">
               <i class="fa-regular fa-copy"></i> Copy
             </button>
@@ -2153,42 +2153,26 @@
       return null;
     }
 
-    const KEYAUTH_STOCK_VAULT = {
-      daily: [
-        'KEYAUTH-bey6Pd-pDpGxi-MJSgsX-qThlI4-iBLLZU-kTWxX5',
-        'KEYAUTH-a3PcZm-tUyHOZ-w1dH7c-rv3KqJ-C7Pgj8-I7Jnu0',
-        'KEYAUTH-3kkOvF-VCfcdM-bYCHiD-crYZgU-pnOFpk-qZa6r6'
-      ],
-      monthly: [
-        'KEYAUTH-T1Vu85-NM6wFf-9zhSHO-PVDp6E-vt1YVI-hHLSE2',
-        'KEYAUTH-XDfuq8-SYwjUF-v7ObLu-rxodkj-GjDXuc-nN7tQV'
-      ],
-      lifetime: [
-        'KEYAUTH-uPxf6H-7z7DQk-MKyJGG-LDBar3-wqi7Am-VBlH9j'
-      ]
-    };
+    function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const buf = new Uint8Array(16);
+      crypto.getRandomValues(buf);
+      const block = (start) => {
+        let s = '';
+        for (let i = 0; i < 4; i++) s += chars[buf[start + i] % chars.length];
+        return s;
+      };
+      return `${prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
+    }
 
-    function getNextRealKeyAuthKey(planId) {
-      const plan = planId || 'monthly';
-      let usedKeys = [];
+    function getNextLicenseGateKey(planId) {
+      const key = generateLicenseGateKey('VN-KEEN-SKIN');
       try {
-        usedKeys = JSON.parse(localStorage.getItem('vnkeen_used_keyauth_keys') || '[]');
-      } catch (e) {
-        usedKeys = [];
-      }
-      const pool = KEYAUTH_STOCK_VAULT[plan] || KEYAUTH_STOCK_VAULT['monthly'];
-
-      for (const k of pool) {
-        if (!usedKeys.includes(k)) {
-          usedKeys.push(k);
-          localStorage.setItem('vnkeen_used_keyauth_keys', JSON.stringify(usedKeys));
-          return k;
-        }
-      }
-
-      // If pool runs low, generate formatted key
-      const randomHex = () => Math.random().toString(36).substring(2, 8);
-      return `KEYAUTH-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}-${randomHex()}`;
+        let usedKeys = JSON.parse(localStorage.getItem('vnkeen_used_licensegate_keys') || '[]');
+        usedKeys.push(key);
+        localStorage.setItem('vnkeen_used_licensegate_keys', JSON.stringify(usedKeys));
+      } catch (e) {}
+      return key;
     }
 
     function startOrderPolling(orderId) {
@@ -2216,7 +2200,7 @@
                 clearInterval(pollingInterval);
                 pollingInterval = null;
 
-                const newKey = getNextRealKeyAuthKey(currentPlan);
+                const newKey = getNextLicenseGateKey(currentPlan);
                 if (currentUser) {
                   if (!currentUser.keys) currentUser.keys = [];
                   const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
@@ -2240,7 +2224,7 @@
             if (data.status === 'PAID') {
               clearInterval(pollingInterval);
               pollingInterval = null;
-              onPaymentSuccess(data.key || getNextRealKeyAuthKey(currentPlan));
+              onPaymentSuccess(data.key || getNextLicenseGateKey(currentPlan));
             }
           }
         } catch (err) {}
@@ -2257,7 +2241,7 @@
       showView('pay-success');
 
       playSfx('gold');
-      showToast('🎉 Nhận tiền thành công! License Key đã được tạo tự động!');
+      showToast('🎉 Nhận tiền thành công! License Key LicenseGate đã được tạo tự động!');
     }
 
     function copyDeliveredKey() {
@@ -2291,7 +2275,7 @@
       playSfx('hover');
       res.classList.remove('hidden');
 
-      const savedKey = localStorage.getItem('vnkeen_last_key') || 'KEEN-9A82-4FC1-889B';
+      const savedKey = localStorage.getItem('vnkeen_last_key') || 'VN-KEEN-SKIN-9A82-4FC1-889B-E2F4';
       res.innerHTML = `
         <div class="flex items-center gap-2 text-ok font-bold mb-1.5">
           <i class="fa-solid fa-circle-check"></i> TÌM THẤY BẢN QUYỀN HỆ THỐNG
@@ -2905,7 +2889,7 @@
         });
         const data = await res.json();
 
-        if (data.success && data.key && data.key.startsWith('KEYAUTH')) {
+        if (data.success && data.key && (data.key.startsWith('VN-KEEN-SKIN') || data.key.startsWith('KEYAUTH'))) {
           currentUser.balance = data.newBalance;
           if (!currentUser.keys) currentUser.keys = [];
           currentUser.keys.unshift(data.keyRecord || {
@@ -2925,12 +2909,12 @@
           saveUserSession(currentUser);
           closeBuyConfirmModal();
           openMyKeysModal();
-          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. License Key thật từ KeyAuth đã sẵn sàng trong Kho!`);
+          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. License Key từ LicenseGate đã sẵn sàng trong Kho!`);
           playSfx('gold');
         } else {
           if (currentUser.balance >= meta.amount) {
             currentUser.balance -= meta.amount;
-            const realKey = getNextRealKeyAuthKey(pendingBuyPlan);
+            const realKey = getNextLicenseGateKey(pendingBuyPlan);
             if (!currentUser.keys) currentUser.keys = [];
             currentUser.keys.unshift({
               plan: meta.name,
@@ -2949,7 +2933,7 @@
             saveUserSession(currentUser);
             closeBuyConfirmModal();
             openMyKeysModal();
-            showToast(`🎉 Mua ${meta.name} thành công! License Key thật: ${realKey}`);
+            showToast(`🎉 Mua ${meta.name} thành công! License Key: ${realKey}`);
             playSfx('gold');
           } else {
             alert(data.message || 'Số dư trong ví không đủ!');
@@ -2958,7 +2942,7 @@
       } catch (err) {
         if (currentUser.balance >= meta.amount) {
           currentUser.balance -= meta.amount;
-          const realKey = getNextRealKeyAuthKey(pendingBuyPlan);
+          const realKey = getNextLicenseGateKey(pendingBuyPlan);
           if (!currentUser.keys) currentUser.keys = [];
           currentUser.keys.unshift({
             plan: meta.name,
@@ -2977,7 +2961,7 @@
           saveUserSession(currentUser);
           closeBuyConfirmModal();
           openMyKeysModal();
-          showToast(`🎉 Mua ${meta.name} thành công! License Key thật: ${realKey}`);
+          showToast(`🎉 Mua ${meta.name} thành công! License Key: ${realKey}`);
           playSfx('gold');
         }
       } finally {

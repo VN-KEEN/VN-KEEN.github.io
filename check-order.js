@@ -1,4 +1,4 @@
-﻿const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
+const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
 export async function onRequestGet(context) {
   const { request, env } = context;
@@ -32,7 +32,7 @@ export async function onRequestGet(context) {
       status: 'PAID',
       orderId: order.orderId,
       key: order.key,
-      plan: 'Lifetime Multi-Device',
+      plan: order.planTitle || order.plan || 'LicenseGate Bản Quyền',
       paidAt: order.paidAt
     }), {
       status: 200,

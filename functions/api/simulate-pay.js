@@ -6,9 +6,10 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const orderId = (body.orderId || 'KEENTEST99').toUpperCase();
     
-    // Generate test or KeyAuth license
-    const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-    const generatedKey = `KEEN-${randomHex()}-${randomHex()}-${randomHex()}`;
+    // Generate LicenseGate license
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const block = () => Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const generatedKey = `VN-KEEN-SKIN-${block()}-${block()}-${block()}-${block()}`;
 
     const orderData = {
       orderId: orderId,

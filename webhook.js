@@ -1,33 +1,69 @@
-﻿// Global memory caches
+// Global memory caches
 const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = new Map());
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
-// Helper function to call KeyAuth Seller API
-async function generateKeyAuthLicense(sellerKey, days = 9999, mask = 'KEEN-****-****-****') {
-  if (!sellerKey || sellerKey === 'YOUR_KEYAUTH_SELLER_KEY') {
-    const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-    return KEEN---;
-  }
-
-  try {
-    const url = https://keyauth.win/api/seller/?sellerkey=&type=add&expiry=&mask=&level=1&amount=1&format=json;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.success && data.key) {
-      return data.key;
-    }
-    console.error('KeyAuth Error:', data);
-  } catch (err) {
-    console.error('KeyAuth Fetch Error:', err);
-  }
-
-  const randomHex = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-  return KEEN---;
+function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const buf = new Uint8Array(16);
+  crypto.getRandomValues(buf);
+  const block = (start) => {
+    let s = '';
+    for (let i = 0; i < 4; i++) s += chars[buf[start + i] % chars.length];
+    return s;
+  };
+  return `${prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
 }
 
-export async function onRequestPost(context) {
+async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
+  const licenseKey = generateLicenseGateKey('VN-KEEN-SKIN');
+  if (env?.LICENSEGATE_API_KEY) {
+    try {
+      const expirationDate = days >= 9999 ? null : new Date(Date.now() + days * 86400 * 1000).toISOString();
+      const res = await fetch('https://api.licensegate.io/admin/licenses', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + env.LICENSEGATE_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          active: true,
+          name: 'ORDER-' + Date.now(),
+          notes: 'VN-KEEN Webhook Order / ' + planId,
+          licenseKey: licenseKey,
+          licenseScope: 'VN-KEEN-SKIN',
+          expirationDate: expirationDate,
+          ipLimit: 1,
+          validationLimit: null
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.licenseKey || licenseKey;
+      }
+    } catch (err) {
+      console.error('LicenseGate API error:', err);
+    }
+  }
+  return licenseKey;
+}
+
+export async function onRequest(context) {
   const { request, env } = context;
-  
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json'
+  };
+
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  if (request.method === 'GET') {
+    return new Response(JSON.stringify({ status: 'OK', message: 'VN-KEEN Webhook is running 24/7' }), { headers: corsHeaders });
+  }
+
   try {
     const body = await request.json();
     
@@ -48,7 +84,7 @@ export async function onRequestPost(context) {
     const upperContent = content.toUpperCase().trim();
 
     // CASE 1: TOP-UP WALLET DEPOSIT (Content: NAP[USERNAME] or NAP [USERNAME])
-    const topupMatch = upperContent.match(/^NAP\s*([A-Z0-9_-]+)/i);
+    const topupMatch = upperContent.match(/^NAP\s*([A-Z0-9]+)/i);
     if (topupMatch) {
       const targetUser = topupMatch[1].toLowerCase();
       let user = globalUsers.get(targetUser);
@@ -69,7 +105,7 @@ export async function onRequestPost(context) {
       user.balance += amount;
       const trans = {
         type: 'TOPUP',
-        description: Nạp tiền VietQR MB Bank (+đ),
+        description: `Nạp tiền VietQR MB Bank (+${amount}đ)`,
         amount: amount,
         createdAt: new Date().toISOString()
       };
@@ -89,7 +125,7 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({
         success: true,
         type: 'TOPUP',
-        message: Nạp thành công +đ vào tài khoản . Số dư mới: đ,
+        message: `Nạp thành công +${amount}đ vào tài khoản ${user.displayName}. Số dư mới: ${user.balance}đ`,
         user: { username: user.displayName, balance: user.balance }
       }), {
         status: 200,
@@ -119,8 +155,8 @@ export async function onRequestPost(context) {
       planTitle = '30 Ngày (1 Tháng)';
     }
 
-    // Generate Key via KeyAuth
-    const generatedKey = await generateKeyAuthLicense(sellerKey, days, 'KEEN-****-****-****');
+    const planId = (days === 1 ? 'daily' : (days === 30 ? 'monthly' : 'lifetime'));
+    const generatedKey = await createLicenseGateLicense(env, planId, days);
 
     const orderData = {
       orderId: orderId,
