@@ -3,7 +3,7 @@ const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = ne
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
 export async function onRequestGet(context) {
-  const { request } = context;
+  const { request, env } = context;
   const url = new URL(request.url);
   const code = (url.searchParams.get('code') || '').toUpperCase().trim();
   const username = (url.searchParams.get('username') || '').toLowerCase().trim();
@@ -30,6 +30,10 @@ export async function onRequestGet(context) {
   }
 
   // 2. Check by username
+  if (username && env?.LICENSE_DB) {
+    const account = await env.LICENSE_DB.prepare('SELECT username,display_name,balance FROM wallet_accounts WHERE username=?').bind(username).first();
+    if (account) return new Response(JSON.stringify({ success: true, paid: false, user: { username: account.display_name, balance: account.balance, keys: [] } }), { status: 200, headers: corsHeaders });
+  }
   if (username && globalUsers.has(username)) {
     const user = globalUsers.get(username);
     return new Response(JSON.stringify({

@@ -105,7 +105,25 @@ export async function onRequest(context) {
         globalUsers.set(targetUser, user);
       }
 
-      user.balance += amount;
+      const referenceId = body.id == null ? '' : String(body.id);
+      if (env?.LICENSE_DB && referenceId) {
+        const duplicate = await env.LICENSE_DB.prepare('SELECT id FROM wallet_ledger WHERE reference_id=?').bind(referenceId).first();
+        if (duplicate) {
+          const current = await env.LICENSE_DB.prepare('SELECT balance FROM wallet_accounts WHERE username=?').bind(targetUser).first();
+          return new Response(JSON.stringify({ success: true, type: 'TOPUP', duplicate: true, user: { username: user.displayName, balance: current?.balance || 0 } }), { status: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+        }
+        const now = new Date().toISOString();
+        await env.LICENSE_DB.prepare('INSERT OR IGNORE INTO wallet_accounts (username,display_name,balance,created_at,updated_at) VALUES (?,?,0,?,?)')
+          .bind(targetUser, user.displayName, now, now).run();
+        await env.LICENSE_DB.prepare('UPDATE wallet_accounts SET balance=balance+?,updated_at=? WHERE username=?')
+          .bind(amount, now, targetUser).run();
+        const current = await env.LICENSE_DB.prepare('SELECT balance FROM wallet_accounts WHERE username=?').bind(targetUser).first();
+        user.balance = current.balance;
+        await env.LICENSE_DB.prepare('INSERT INTO wallet_ledger (id,username,type,amount,description,reference_id,created_at) VALUES (?,?,?,?,?,?,?)')
+          .bind('TOPUP-' + referenceId, targetUser, 'TOPUP', amount, `Nạp tiền VietQR MB Bank (+${amount}đ)`, referenceId, now).run();
+      } else {
+        user.balance += amount;
+      }
       const trans = {
         type: 'TOPUP',
         description: `Nạp tiền VietQR MB Bank (+${amount}đ)`,

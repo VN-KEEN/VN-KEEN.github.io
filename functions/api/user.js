@@ -2,6 +2,16 @@
 const globalUsers = globalThis.__VNKEEN_USERS || (globalThis.__VNKEEN_USERS = new Map());
 const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
 
+async function walletAccount(env, username, displayName = username) {
+  if (!env?.LICENSE_DB) return null;
+  const existing = await env.LICENSE_DB.prepare('SELECT username,display_name,balance FROM wallet_accounts WHERE username=?').bind(username).first();
+  if (existing) return existing;
+  const now = new Date().toISOString();
+  await env.LICENSE_DB.prepare('INSERT OR IGNORE INTO wallet_accounts (username,display_name,balance,created_at,updated_at) VALUES (?,?,0,?,?)')
+    .bind(username, displayName, now, now).run();
+  return await env.LICENSE_DB.prepare('SELECT username,display_name,balance FROM wallet_accounts WHERE username=?').bind(username).first();
+}
+
 function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const buf = new Uint8Array(16);
@@ -108,6 +118,8 @@ export async function onRequest(context) {
       };
 
       globalUsers.set(cleanUser, newUser);
+      const wallet = await walletAccount(env, cleanUser, newUser.displayName);
+      if (wallet) newUser.balance = wallet.balance;
 
       return new Response(JSON.stringify({
         success: true,
@@ -146,6 +158,8 @@ export async function onRequest(context) {
       } else if (user.password !== password) {
         return new Response(JSON.stringify({ success: false, message: 'Mật khẩu không chính xác!' }), { status: 400, headers: corsHeaders });
       }
+      const wallet = await walletAccount(env, cleanUser, user.displayName);
+      if (wallet) user.balance = wallet.balance;
 
       return new Response(JSON.stringify({
         success: true,
@@ -168,6 +182,8 @@ export async function onRequest(context) {
       if (!user) {
         return new Response(JSON.stringify({ success: false, message: 'Tài khoản không tồn tại' }), { status: 404, headers: corsHeaders });
       }
+      const wallet = await walletAccount(env, cleanUser, user.displayName);
+      if (wallet) user.balance = wallet.balance;
 
       return new Response(JSON.stringify({
         success: true,
@@ -191,13 +207,15 @@ export async function onRequest(context) {
       }
 
       const PLANS = {
-        daily: { name: 'Gói Thuê 1 Ngày (24H)', price: 19999, days: 1 },
-        monthly: { name: 'Gói Thuê 30 Ngày (1 Tháng)', price: 199999, days: 30 },
-        lifetime: { name: 'Gói Bản Quyền Vĩnh Viễn', price: 999999, days: 9999 }
+        daily: { name: 'Gói Thuê 1 Ngày (24H)', price: 20000, days: 1 },
+        monthly: { name: 'Gói Thuê 30 Ngày (1 Tháng)', price: 300000, days: 30 },
+        lifetime: { name: 'Gói Bản Quyền Vĩnh Viễn', price: 2000000, days: 9999 }
       };
 
       const selectedPlan = PLANS[plan] || PLANS.monthly;
-      if (user.balance < selectedPlan.price) {
+      const wallet = await walletAccount(env, cleanUser, user.displayName);
+      const balance = wallet ? wallet.balance : user.balance;
+      if (balance < selectedPlan.price) {
         return new Response(JSON.stringify({
           success: false,
           message: 'Số dư trong ví không đủ để thanh toán gói này. Vui lòng nạp thêm tiền vào ví!'
@@ -207,7 +225,17 @@ export async function onRequest(context) {
       // Create the provider-side license before charging the wallet. Never issue
       // a locally generated key when LicenseGate is unavailable.
       const key = await createLicenseGateLicense(env, plan, selectedPlan.days);
-      user.balance -= selectedPlan.price;
+      if (wallet) {
+        const now = new Date().toISOString();
+        const charged = await env.LICENSE_DB.prepare('UPDATE wallet_accounts SET balance=balance-?,updated_at=? WHERE username=? AND balance>=? RETURNING balance')
+          .bind(selectedPlan.price, now, cleanUser, selectedPlan.price).first();
+        if (!charged) throw new Error('INSUFFICIENT_BALANCE');
+        user.balance = charged.balance;
+        await env.LICENSE_DB.prepare('INSERT INTO wallet_ledger (id,username,type,amount,description,reference_id,created_at) VALUES (?,?,?,?,?,?,?)')
+          .bind('BUY_' + Date.now(), cleanUser, 'BUY_KEY', -selectedPlan.price, `Mua ${selectedPlan.name}`, key, now).run();
+      } else {
+        user.balance -= selectedPlan.price;
+      }
 
       const keyRecord = {
         id: 'KEY_' + Date.now(),
@@ -239,6 +267,13 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({ success: false, message: 'Invalid action' }), { status: 400, headers: corsHeaders });
 
   } catch (err) {
-    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: corsHeaders });
+    const message = err.message === 'LICENSE_PROVIDER_UNAVAILABLE'
+      ? 'LicenseGate đang tạm thời không phản hồi. Số dư chưa bị trừ.'
+      : err.message === 'LICENSE_PROVIDER_MISMATCH'
+        ? 'LicenseGate không xác nhận được key. Số dư chưa bị trừ.'
+        : err.message === 'LICENSE_PROVIDER_NOT_CONFIGURED'
+          ? 'Máy chủ chưa cấu hình LicenseGate. Số dư chưa bị trừ.'
+          : err.message || 'Không thể hoàn tất giao dịch.';
+    return new Response(JSON.stringify({ success: false, message, error: err.message }), { status: 500, headers: corsHeaders });
   }
 }
