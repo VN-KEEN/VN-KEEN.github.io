@@ -395,7 +395,7 @@
     const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     let answer;
     if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Xem Bảng giá trên trang chủ. Nếu đã thanh toán mà chưa nhận key, liên hệ Admin để kiểm tra giao dịch.';
-    else if (/vac|\bban\b|an toan|den bu|hoan tien/.test(q)) answer = 'Chính sách VN-KEEN: nếu tài khoản bị ban do sử dụng VN-KEEN, chúng tôi cam kết đền một tài khoản tương đương và hoàn tiền gói key. Liên hệ Admin qua Telegram để được xử lý.';
+    else if (/vac|\bban\b|an toan|den bu|hoan tien/.test(q)) answer = 'Theo trải nghiệm của chúng tôi qua nhiều phiên bản, chưa ghi nhận trường hợp bị ban. VN-KEEN cam kết đền tài khoản tương đương và hoàn tiền gói key nếu bị ban do sử dụng VN-KEEN. Liên hệ Admin qua Telegram để được xử lý.';
     else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
     else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
     else if (/cai|tai|khoi chay/.test(q)) answer = 'Bấm TẢI VN-KEEN-SKIN trên trang chủ, giải nén, mở VN-KEEN-SKIN.exe và nhập key còn hạn. Nếu có lỗi, gửi ảnh thông báo cho Admin; không gửi mật khẩu hoặc mã OTP.';
