@@ -1,2 +1,7 @@
 import { handle } from '../../../licensegate-service.mjs';
-export const onRequest = ({ request, env, params }) => handle(request, env, params.action);
+import { handleWalletWebhook } from '../../wallet-webhook.mjs';
+
+export const onRequest = ({ request, env, params }) =>
+  params.action === 'webhook'
+    ? handleWalletWebhook(request, env)
+    : handle(request, env, params.action);

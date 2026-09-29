@@ -1,42 +1,7 @@
-const globalOrders = globalThis.__VNKEEN_ORDERS || (globalThis.__VNKEEN_ORDERS = new Map());
-
-export async function onRequestPost(context) {
-  const { request, env } = context;
-  try {
-    const body = await request.json();
-    const orderId = (body.orderId || 'KEENTEST99').toUpperCase();
-    
-    // Generate LicenseGate license
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    const block = () => Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    const generatedKey = `VN-KEEN-SKIN-${block()}-${block()}-${block()}-${block()}`;
-
-    const orderData = {
-      orderId: orderId,
-      status: 'PAID',
-      amount: 999999,
-      key: generatedKey,
-      paidAt: new Date().toISOString()
-    };
-
-    globalOrders.set(orderId, orderData);
-
-    if (env?.ORDERS_KV) {
-      await env.ORDERS_KV.put(orderId, JSON.stringify(orderData), { expirationTtl: 86400 });
-    }
-
-    return new Response(JSON.stringify({
-      success: true,
-      message: 'Simulated payment succeeded',
-      order: orderData
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ success: false, error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
-  }
+// Test payments must use a local fixture, never a production HTTP endpoint.
+export function onRequest() {
+  return new Response(JSON.stringify({ success: false, code: 'LEGACY_ENDPOINT_DISABLED' }), {
+    status: 410,
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+  });
 }

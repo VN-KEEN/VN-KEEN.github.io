@@ -702,7 +702,7 @@
   <section id="pricing" class="relative py-24 bg-bg/70">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">LICENSEGATE SYSTEM · AUTO DELIVERY 24/7</span>
+        <span class="font-cyber text-xs font-bold tracking-[0.25em] text-csgold uppercase">WALLET · LICENSEGATE DELIVERY</span>
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
           BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
@@ -984,7 +984,7 @@
 
         <!-- Pure Clean QR Container (Khớp khung chuẩn - Bảo mật thông tin) -->
         <div class="flex justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[240px] mx-auto border border-blue-900/30">
-          <img id="qr-img" src="images/vietqr_payment.png" alt="VietQR CS2 Mod Skin" class="h-auto w-full max-w-[220px] aspect-square object-contain">
+          <img id="qr-img" alt="VietQR CS2 Mod Skin" class="hidden h-auto w-full max-w-[220px] aspect-square object-contain">
         </div>
 
         <!-- Payment Fields (Amount & Content only) -->
@@ -1058,7 +1058,7 @@
             </button>
           </div>
           <p class="text-[11px] text-gray-400 font-sans">
-            Dùng key này để kích hoạt khi mở phần mềm. Key đã được tự động lưu vào trình duyệt của bạn!
+             Dùng key này để kích hoạt khi mở phần mềm. Key được lưu trong Kho Key trên máy chủ.
           </p>
         </div>
 
@@ -1138,7 +1138,7 @@
           <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Mật Khẩu</label>
           <div class="relative">
             <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
-            <input type="password" id="login-password" required placeholder="Nhập mật khẩu..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+            <input type="password" id="login-password" required maxlength="128" autocomplete="current-password" placeholder="Nhập mật khẩu..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
           </div>
         </div>
 
@@ -1153,7 +1153,7 @@
           <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Tên Đăng Nhập Mới</label>
           <div class="relative">
             <i class="fa-solid fa-user-plus absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
-            <input type="text" id="reg-username" required placeholder="Từ 3-20 ký tự (viết liền)..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+            <input type="text" id="reg-username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]{3,32}" autocomplete="username" placeholder="3–32 chữ cái, chữ số hoặc dấu _..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
           </div>
         </div>
 
@@ -1161,7 +1161,7 @@
           <label class="block text-xs font-mono text-muted mb-1.5 uppercase">Mật Khẩu</label>
           <div class="relative">
             <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
-            <input type="password" id="reg-password" required placeholder="Tối thiểu 4 ký tự..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
+            <input type="password" id="reg-password" required minlength="10" maxlength="128" autocomplete="new-password" placeholder="Từ 10–128 ký tự..." class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-white/10 rounded-xl text-xs font-mono text-white focus:border-amber-400 focus:outline-none transition">
           </div>
         </div>
 
@@ -1200,7 +1200,7 @@
         </div>
         <h3 class="font-cyber text-2xl font-black text-white">NẠP TIỀN VÀO VÍ TỰ ĐỘNG</h3>
         <p class="text-xs text-muted font-sans mt-1">
-          Nạp tiền trước để mua Key bất cứ lúc nào trong 1 giây (MB Bank 24/7)
+          Số dư chỉ được cộng khi máy chủ xác nhận giao dịch ngân hàng.
         </p>
       </div>
 
@@ -1222,11 +1222,12 @@
 
       <!-- QR Container -->
       <div class="flex justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[220px] mx-auto border border-blue-900/30 mb-4">
-        <img id="topup-qr-img" src="images/vietqr_payment.png" alt="VietQR Nạp Tiền" class="h-auto w-full max-w-[200px] aspect-square object-contain">
+        <img id="topup-qr-img" alt="VietQR Nạp Tiền" class="hidden h-auto w-full max-w-[200px] aspect-square object-contain">
       </div>
 
       <!-- Payment Transfer Info -->
       <div class="space-y-2 text-xs font-mono mb-4">
+        <p id="topup-bank-display" class="text-center text-muted break-words">Chưa xác nhận thông tin ngân hàng.</p>
         <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-white/10">
           <div>
             <p class="text-[9px] uppercase text-subtle">Số Tiền Nạp</p>
@@ -1240,9 +1241,9 @@
         <div class="flex items-center justify-between rounded-xl bg-slate-950 px-3.5 py-2.5 border border-amber-500/40 bg-amber-950/20">
           <div>
             <p class="text-[9px] uppercase text-amber-400 font-bold">Nội Dung Chuyển Khoản (Bắt Buộc)</p>
-            <p class="font-bold text-amber-300 text-base tracking-wider" id="topup-content-display">NAP USER123</p>
+            <p class="font-bold text-amber-300 text-base tracking-wider" id="topup-content-display">CHƯA SẴN SÀNG</p>
           </div>
-          <button type="button" onclick="copyData(topupCurrentContent, 'Đã sao chép nội dung nạp!')" class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-bold hover:scale-105 transition">
+          <button type="button" id="topup-copy-code" disabled onclick="copyTopupCode()" class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-bold hover:scale-105 transition disabled:opacity-40">
             <i class="fa-regular fa-copy mr-1"></i> Copy Mã
           </button>
         </div>
@@ -1284,6 +1285,7 @@
       </div>
 
       <!-- Keys List Container -->
+      <div id="my-keys-pending" class="hidden mb-4 p-3 rounded-xl border border-amber-500/40 text-amber-300 text-xs" role="status"></div>
       <div id="my-keys-list" class="space-y-3 overflow-y-auto flex-1 pr-1 max-h-[400px]">
         <!-- Keys injected via JS -->
       </div>
@@ -1340,22 +1342,24 @@
           <span id="buy-confirm-price" class="font-bold text-amber-400 text-sm">300.000đ</span>
         </div>
         <div class="flex items-center justify-between pb-2 border-b border-white/10">
-          <span class="text-muted uppercase">Số Dư Hiện Tại:</span>
-          <span id="buy-confirm-balance" class="font-bold text-emerald-400">250.000đ</span>
+          <span class="text-muted uppercase">Số Dư Khả Dụng:</span>
+          <span id="buy-confirm-balance" class="font-bold text-emerald-400">—</span>
         </div>
         <div class="flex items-center justify-between pt-1">
-          <span class="text-muted uppercase">Số Dư Còn Lại:</span>
-          <span id="buy-confirm-remaining" class="font-bold text-cyan-300">50.001đ</span>
+          <span class="text-muted uppercase">Khả Dụng Sau Mua:</span>
+          <span id="buy-confirm-remaining" class="font-bold text-cyan-300">—</span>
         </div>
       </div>
+
+      <div id="buy-confirm-alert" class="hidden mb-4 p-3 rounded-xl text-xs" role="status" aria-live="polite"></div>
 
       <!-- Action Buttons -->
       <div class="space-y-3">
         <button type="button" id="btn-execute-buy" onclick="executeBuyWithBalance()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-400 font-cyber font-black text-sm text-black shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA (CẤP KEY NGAY)
+          <i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA
         </button>
         <button type="button" onclick="closeBuyConfirmModal()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-muted hover:text-white transition">
-          Hủy Bỏ
+          Đóng (không hủy yêu cầu đã gửi)
         </button>
       </div>
 
@@ -1987,15 +1991,8 @@
     });
 
     /* ============================================================
-       7. VIETQR & CHECKOUT SYSTEM (100% PRESERVED PAYMENT DATA)
+       7. PLAN DISPLAY & SERVER WALLET CHECKOUT
        ============================================================ */
-    const BANK = {
-      bin: '970422',
-      bankName: 'MB Bank',
-      account: '789789999888',
-      accountName: 'NGUYEN PHU QUY'
-    };
-
     const PLAN_META = {
       daily: { id: 'daily', name: 'Gói Thuê 1 Ngày (24H)', amount: 20000, price: '20.000đ', period: '/ 1 Ngày', days: 1 },
       monthly: { id: 'monthly', name: 'Gói Thuê 30 Ngày (1 Tháng)', amount: 300000, price: '300.000đ', period: '/ 30 Ngày', days: 30 },
@@ -2003,20 +2000,9 @@
       vip: { id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 2000000, price: '2.000.000đ', period: '/ Vĩnh Viễn', days: 9999 }
     };
 
-    const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let currentPlan = 'monthly';
     let currentAmount = 300000;
     let currentContent = '';
-    let currentOrder = null;
-    const LICENSEGATE_API_BASE = 'https://vn-keen.pages.dev/api/licensegate';
-
-    function randCode(n) {
-      let out = '';
-      const buf = new Uint8Array(n);
-      crypto.getRandomValues(buf);
-      for (let i = 0; i < n; i++) out += ALPHA[buf[i] % ALPHA.length];
-      return out;
-    }
 
     function formatVnd(n) { return n.toLocaleString('vi-VN') + 'đ'; }
 
@@ -2035,218 +2021,21 @@
       playSfx('click');
     }
 
-    let pollingInterval = null;
-    let deliveredKey = '';
-
-    function showView(viewId) {
-      ['pay-qr', 'pay-success', 'pay-login'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-      });
-      const target = document.getElementById(viewId);
-      if (target) target.classList.remove('hidden');
-    }
-
     function openCheckout(plan) {
-      selectPlan(plan || 'monthly');
-      const modal = document.getElementById('modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      void createQr();
+      const normalized = plan === 'vip' ? 'lifetime' : (plan || 'monthly');
+      if (typeof openCheckoutSmart === 'function') openCheckoutSmart(normalized);
     }
 
     function closeModal() {
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-        pollingInterval = null;
-      }
       const modal = document.getElementById('modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    async function createQr() {
-      if (pollingInterval) clearInterval(pollingInterval);
-      const meta = PLAN_META[currentPlan] || PLAN_META['monthly'];
-      const statusEl = document.getElementById('auto-listen-status');
-      if (statusEl) statusEl.textContent = 'Đang tạo đơn thanh toán an toàn...';
-
-      try {
-        const response = await fetch(`${LICENSEGATE_API_BASE}/checkout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ product: 'skin', plan: meta.id })
-        });
-        const order = await response.json();
-        if (!response.ok || !order.success || !order.orderId || !order.token) {
-          throw new Error(order.code || 'CHECKOUT_UNAVAILABLE');
-        }
-
-        currentOrder = { orderId: order.orderId, token: order.token };
-        currentContent = order.orderId;
-        currentAmount = Number(order.amount) || meta.amount;
-      } catch (error) {
-        currentOrder = null;
-        if (statusEl) statusEl.textContent = 'Không thể tạo đơn. Vui lòng thử lại sau.';
-        showToast('Thanh toán chưa sẵn sàng. Vui lòng thử lại sau.');
-        return;
-      }
-
-      const qrImg = document.getElementById('qr-img');
-      if (qrImg) {
-        qrImg.src = `https://img.vietqr.io/image/${BANK.bin}-${BANK.account}-compact2.png?amount=${currentAmount}&addInfo=${encodeURIComponent(currentContent)}&accountName=${encodeURIComponent(BANK.accountName)}`;
-        qrImg.onerror = () => { qrImg.src = 'images/vietqr_payment.png'; };
-      }
-
-      const planNameEl = document.getElementById('modal-plan-name');
-      if (planNameEl) planNameEl.textContent = meta.name;
-      const planPeriodEl = document.getElementById('modal-plan-period');
-      if (planPeriodEl) planPeriodEl.textContent = meta.period.replace('/ ', '');
-
-      const qrAmt = document.getElementById('qr-amount');
-      if (qrAmt) qrAmt.textContent = formatVnd(currentAmount);
-      const qrCont = document.getElementById('qr-content');
-      if (qrCont) qrCont.textContent = currentContent;
-
-      const msg = encodeURIComponent(`Mình đã CK VN-KEEN đơn ${currentContent} (${formatVnd(currentAmount)} - ${meta.name}). Nhờ admin kích hoạt License Key giúp mình nhé!`);
-      const tgBtn = document.getElementById('tg-after-pay');
-      if (tgBtn) tgBtn.href = `https://t.me/VN_KEEN?text=${msg}`;
-
-      document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-qrcode text-amber-400"></i> QUÉT MÃ QR THANH TOÁN';
-      showView('pay-qr');
-
-      if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${currentContent}...`;
-      startOrderPolling(currentOrder);
-    }
-
-    const SEPAY_CONFIG = {
-      apiToken: 'KF2Q9YENXSPW5HW4LA93XVSIMJWDBCBWIBI0NXPNEAYTUQ6VRGVGYG0YZGSVCJHM',
-      accountNumber: '789789999888'
-    };
-
-    function getProcessedTxs() {
-      try {
-        return JSON.parse(localStorage.getItem('vnkeen_processed_txs') || '[]');
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function markTxProcessed(txId) {
-      const list = getProcessedTxs();
-      if (!list.includes(String(txId))) {
-        list.push(String(txId));
-        localStorage.setItem('vnkeen_processed_txs', JSON.stringify(list));
-      }
-    }
-
-    async function checkSepayTransactions() {
-      // 1. Try Cloudflare Worker API (Bypass CORS & real-time sync)
-      try {
-        const res = await fetch('https://long-morning-6139.babyboy06112024.workers.dev/');
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.transactions) return data.transactions;
-        }
-      } catch (e) {}
-
-      // 2. Try Cloudflare Pages /api/sepay endpoint
-      try {
-        const res = await fetch('/api/sepay');
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.transactions) return data.transactions;
-        }
-      } catch (e) {}
-
-      // 3. Try Direct SePay User API
-      try {
-        const res = await fetch(`https://my.sepay.vn/userapi/transactions/list?account_number=${SEPAY_CONFIG.accountNumber}&limit=20`, {
-          headers: {
-            'Authorization': `Bearer ${SEPAY_CONFIG.apiToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          return data.transactions || [];
-        }
-      } catch (e) {}
-
-      return null;
-    }
-
-    function generateLicenseGateKey(prefix = 'VN-KEEN-SKIN') {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const buf = new Uint8Array(16);
-      crypto.getRandomValues(buf);
-      const block = (start) => {
-        let s = '';
-        for (let i = 0; i < 4; i++) s += chars[buf[start + i] % chars.length];
-        return s;
-      };
-      return `${prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
-    }
-
-    function getNextLicenseGateKey(planId) {
-      const key = generateLicenseGateKey('VN-KEEN-SKIN');
-      try {
-        let usedKeys = JSON.parse(localStorage.getItem('vnkeen_used_licensegate_keys') || '[]');
-        usedKeys.push(key);
-        localStorage.setItem('vnkeen_used_licensegate_keys', JSON.stringify(usedKeys));
-      } catch (e) {}
-      return key;
-    }
-
-    function startOrderPolling(order) {
-      const statusEl = document.getElementById('auto-listen-status');
-      if (!order?.orderId || !order?.token) return;
-      if (statusEl) statusEl.textContent = `Hệ thống đang tự động lắng nghe mã ${order.orderId}...`;
-
-      if (pollingInterval) clearInterval(pollingInterval);
-
-      pollingInterval = setInterval(async () => {
-        try {
-          const res = await fetch(`${LICENSEGATE_API_BASE}/status?orderId=${encodeURIComponent(order.orderId)}`, {
-            headers: { Authorization: `Bearer ${order.token}` },
-            cache: 'no-store'
-          });
-          const data = await res.json();
-          if (data.status === 'FULFILLED' && data.key) {
-            clearInterval(pollingInterval);
-            pollingInterval = null;
-            onPaymentSuccess(data.key);
-          } else if (data.status === 'PENDING' && statusEl) {
-            statusEl.textContent = `Đã tạo đơn ${order.orderId}. Đang chờ ngân hàng xác nhận...`;
-          }
-        } catch (err) {}
-      }, 2000);
-    }
-
-    function onPaymentSuccess(key) {
-      deliveredKey = key;
-      if (currentUser) {
-        const meta = PLAN_META[currentPlan] || PLAN_META.monthly;
-        currentUser.keys = currentUser.keys || [];
-        if (!currentUser.keys.some(item => item.key === key)) {
-          currentUser.keys.unshift({ plan: meta.name, key, purchasedAt: new Date().toISOString(), paymentMethod: 'VIETQR' });
-          saveUserSession(currentUser);
-        }
-      }
-      localStorage.setItem('vnkeen_last_key', key);
-      localStorage.setItem('vnkeen_last_order', currentContent);
-
-      document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i> THANH TOÁN THÀNH CÔNG!';
-      document.getElementById('delivered-key-text').textContent = key;
-      showView('pay-success');
-
-      playSfx('gold');
-      showToast('🎉 Nhận tiền thành công! License Key LicenseGate đã được tạo tự động!');
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
+      closeBuyConfirmModal?.();
     }
 
     function copyDeliveredKey() {
-      if (!deliveredKey) deliveredKey = document.getElementById('delivered-key-text')?.textContent || '';
-      copyData(deliveredKey, 'Đã sao chép License Key vào clipboard!');
+      const key = document.getElementById('delivered-key-text')?.textContent?.trim();
+      if (key && !key.includes('XXXX')) copyData(key, 'Đã sao chép License Key!');
     }
 
     function copyData(text, msg) {
@@ -2274,195 +2063,39 @@
       }
       playSfx('hover');
       res.classList.remove('hidden');
-
-      const savedKey = localStorage.getItem('vnkeen_last_key') || 'VN-KEEN-SKIN-9A82-4FC1-889B-E2F4';
-      res.innerHTML = `
-        <div class="flex items-center gap-2 text-ok font-bold mb-1.5">
-          <i class="fa-solid fa-circle-check"></i> TÌM THẤY BẢN QUYỀN HỆ THỐNG
-        </div>
-        <p class="text-muted">Mã đơn / Tra cứu: <span class="text-accent font-bold">${code}</span></p>
-        <p class="text-muted">Gói: <strong>VN-KEEN CS2 MODSKIN (Trọn Đời)</strong></p>
-        <p class="text-muted">Key gần nhất: <span class="text-csgold font-mono font-bold">${savedKey}</span></p>
-        <p class="text-muted">Trạng thái: <span class="text-ok font-bold">HOẠT ĐỘNG (Ready)</span></p>
-      `;
+      res.replaceChildren();
+      const title = document.createElement('p');
+      title.className = 'text-amber-300 font-bold mb-1.5';
+      title.textContent = 'Tra cứu đơn cần được xác nhận từ máy chủ.';
+      const detail = document.createElement('p');
+      detail.className = 'text-muted';
+      detail.textContent = `Mã đã nhập: ${code}`;
+      const hint = document.createElement('p');
+      hint.className = 'text-muted mt-1';
+      hint.textContent = 'Đăng nhập để xem Kho License Key và trạng thái giao dịch của tài khoản.';
+      res.append(title, detail, hint);
     }
 
     /* ============================================================
        6. USER AUTH, WALLET BALANCE & INSTANT KEY INVENTORY
        ============================================================ */
+    // The server owns identity, money and keys. Browser storage contains only
+    // the session token and the request id/plan needed to safely retry an order.
     let currentUser = null;
-    try {
-      const savedUser = localStorage.getItem('vnkeen_current_user');
-      if (savedUser) currentUser = JSON.parse(savedUser);
-    } catch (e) {
-      currentUser = null;
-    }
-
-    // ============================================================
-    // SYSTEM RESET: Reset ALL registered accounts and previous topups to 0đ
-    // ============================================================
-    const SYSTEM_RESET_ID = 'VNKEEN_GLOBAL_RESET_20260905_001';
-    const RESET_CUTOFF_TX_ID = 79271942; // All bank transactions up to this ID are pre-reset
-
-    function isNewPostResetTx(tx) {
-      const txIdNum = parseInt(tx?.id) || 0;
-      return txIdNum > RESET_CUTOFF_TX_ID;
-    }
-
-    if (localStorage.getItem(SYSTEM_RESET_ID) !== 'done') {
-      if (currentUser) {
-        currentUser.balance = 0;
-        currentUser.transactions = (currentUser.transactions || []).filter(t => t.type !== 'TOPUP');
-        currentUser.balanceResetToZero = true;
-        localStorage.setItem('vnkeen_current_user', JSON.stringify(currentUser));
-      }
-
-      try {
-        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-        for (const u in localUsers) {
-          if (localUsers[u]) {
-            localUsers[u].balance = 0;
-            localUsers[u].transactions = (localUsers[u].transactions || []).filter(t => t.type !== 'TOPUP');
-            localUsers[u].balanceResetToZero = true;
-          }
-        }
-        localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
-      } catch (e) {}
-
-      // Pre-mark all past bank transaction IDs as processed so they can never be credited
-      try {
-        const processed = JSON.parse(localStorage.getItem('vnkeen_processed_txs') || '[]');
-        const preResetIds = [
-          '79271942', '79253787', '79248522', '79248451', '79148380',
-          '78918339', '78917356', '78917216', '78917192', '78916893',
-          '78916764', '78916704', '78915379', '78915318', '78915049',
-          '78915013', '78914949', '78914703', '78913672', '78910847'
-        ];
-        const merged = Array.from(new Set([...processed, ...preResetIds]));
-        localStorage.setItem('vnkeen_processed_txs', JSON.stringify(merged));
-      } catch (e) {}
-
-      localStorage.setItem(SYSTEM_RESET_ID, 'done');
-    }
+    let sessionToken = null;
+    const USER_API_BASE = location.hostname === 'vn-keen.github.io'
+      ? 'https://vn-keen.pages.dev/api/user?action=' : '/api/user?action=';
+    const SESSION_TOKEN_KEY = 'vnkeen_session_token';
+    const REQUEST_ID_PREFIX = 'vnkeen_wallet_request:';
 
     let topupCurrentAmount = 200000;
     let topupCurrentContent = '';
     let topupPollingInterval = null;
     let pendingBuyPlan = 'monthly';
-
-    function updateUserHeaderUI() {
-      const guestZone = document.getElementById('nav-guest-zone');
-      const userZone = document.getElementById('nav-user-zone');
-      const userNameEl = document.getElementById('nav-user-name');
-      const userBalEl = document.getElementById('nav-user-balance');
-      const keyBadgeEl = document.getElementById('nav-key-badge');
-
-      if (currentUser && currentUser.username) {
-        if (guestZone) guestZone.classList.add('hidden');
-        if (userZone) {
-          userZone.classList.remove('hidden');
-          userZone.classList.add('flex');
-        }
-        if (userNameEl) userNameEl.textContent = currentUser.username;
-        if (userBalEl) userBalEl.textContent = formatVnd(currentUser.balance || 0);
-        if (keyBadgeEl) keyBadgeEl.textContent = String((currentUser.keys || []).length);
-      } else {
-        if (guestZone) guestZone.classList.remove('hidden');
-        if (userZone) {
-          userZone.classList.add('hidden');
-          userZone.classList.remove('flex');
-        }
-      }
-    }
-
-    function isTransactionMatchingUser(txContent, targetUsername) {
-      if (!txContent || !targetUsername) return false;
-      const cleanContent = (txContent || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      const cleanUser = (targetUsername || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      if (!cleanUser || cleanUser.length < 2) return false;
-      // STRICT USER MATCHING: transfer content must explicitly include 'nap' + cleanUser (e.g. napquigame13)
-      return cleanContent.includes('nap' + cleanUser);
-    }
-
-    function saveUserSession(user) {
-      currentUser = user;
-      if (user && user.username) {
-        localStorage.setItem('vnkeen_current_user', JSON.stringify(user));
-        try {
-          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-          localUsers[user.username.toLowerCase()] = user;
-          localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
-        } catch (e) {}
-      } else {
-        localStorage.removeItem('vnkeen_current_user');
-      }
-      updateUserHeaderUI();
-    }
-
-    let isSyncingBank = false;
-    async function syncBankDepositBackground() {
-      if (isSyncingBank) return;
-      if (!currentUser || !currentUser.username) return;
-      const username = (currentUser.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      if (!username) return;
-
-      // Ensure balance is reset to 0 if not already
-      if (!currentUser.balanceResetToZero) {
-        currentUser.balance = 0;
-        currentUser.transactions = (currentUser.transactions || []).filter(t => t.type !== 'TOPUP');
-        currentUser.balanceResetToZero = true;
-        saveUserSession(currentUser);
-      }
-
-      isSyncingBank = true;
-      try {
-        const txs = await checkSepayTransactions();
-        if (!txs || txs.length === 0) {
-          isSyncingBank = false;
-          return;
-        }
-
-        const processed = getProcessedTxs();
-        let balanceChanged = false;
-
-        // 1. Filter ONLY NEW transactions arrived AFTER the reset cutoff, strictly matching user
-        const newGenuineUserTxs = txs.filter(tx => {
-          const amtIn = parseFloat(tx.amount_in || 0);
-          return amtIn > 0 && isNewPostResetTx(tx) && isTransactionMatchingUser(tx.transaction_content, username);
-        });
-
-        // 2. Process newly arrived deposits
-        for (const tx of newGenuineUserTxs) {
-          const txId = String(tx.id);
-          if (processed.includes(txId)) continue;
-
-          const amtIn = parseFloat(tx.amount_in || 0);
-          markTxProcessed(txId);
-          currentUser.balance = (currentUser.balance || 0) + amtIn;
-          if (!currentUser.transactions) currentUser.transactions = [];
-          if (!currentUser.transactions.some(t => String(t.id) === txId)) {
-            currentUser.transactions.unshift({
-              id: txId,
-              type: 'TOPUP',
-              description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
-              amount: amtIn,
-              createdAt: tx.transaction_date || new Date().toISOString()
-            });
-          }
-          balanceChanged = true;
-          showToast(`🎉 Nhận tiền thành công! +${formatVnd(amtIn)} đã được cộng vào ví.`);
-          playSfx('gold');
-        }
-
-        if (balanceChanged) {
-          saveUserSession(currentUser);
-        }
-      } catch (e) {
-        console.warn('Sync bank error:', e);
-      } finally {
-        isSyncingBank = false;
-      }
-    }
+    let walletPurchaseBusy = false;
+    let topupRefreshBusy = false;
+    let sessionGeneration = 0;
+    const walletRequests = new Map();
 
     // 1. Auth Modals
     function openAuthModal(tab = 'login') {
@@ -2503,80 +2136,160 @@
       }
     }
 
+    /* ============================================================
+       7. SERVER-AUTHORITATIVE WALLET CLIENT
+       ============================================================ */
+    function walletUserShape(user) {
+      if (!user || typeof user !== 'object') return null;
+      const bank = user.bank && typeof user.bank === 'object' ? {
+        account: String(user.bank.account || ''),
+        bank: String(user.bank.bank || ''),
+        name: String(user.bank.name || '')
+      } : { account: '', bank: '', name: '' };
+      return {
+        ...user,
+        username: String(user.username || ''),
+        balance: Number(user.balance || 0),
+        availableBalance: Number(user.availableBalance ?? user.balance ?? 0),
+        reservedBalance: Number(user.reservedBalance || 0),
+        depositCode: String(user.depositCode || ''),
+        bank,
+        keys: Array.isArray(user.keys) ? user.keys : [],
+        transactions: Array.isArray(user.transactions) ? user.transactions : [],
+        pendingOrders: Array.isArray(user.pendingOrders) ? user.pendingOrders : []
+      };
+    }
+
+    function setServerUser(user) {
+      currentUser = walletUserShape(user);
+      reconcilePendingOrders(currentUser);
+      updateUserHeaderUI();
+      return currentUser;
+    }
+
+    function clearServerSession() {
+      sessionGeneration += 1;
+      sessionToken = null;
+      currentUser = null;
+      try { sessionStorage.removeItem(SESSION_TOKEN_KEY); } catch (e) {}
+      topupCurrentContent = '';
+      closeTopupModal();
+      const qr = document.getElementById('topup-qr-img');
+      if (qr) { qr.removeAttribute('src'); qr.classList.add('hidden'); }
+      updateUserHeaderUI();
+    }
+
+    function persistSessionToken(token) {
+      sessionGeneration += 1;
+      sessionToken = String(token || '');
+      try {
+        if (sessionToken) sessionStorage.setItem(SESSION_TOKEN_KEY, sessionToken);
+        else sessionStorage.removeItem(SESSION_TOKEN_KEY);
+      } catch (e) {}
+    }
+
+    function apiErrorMessage(data, status) {
+      if (data?.code === 'LEGACY_ACCOUNT_UNMIGRATED') return data.message || 'Tài khoản cũ cần quản trị viên khôi phục trước khi đăng nhập.';
+      if (data?.code === 'INSUFFICIENT_BALANCE') return data.message || 'Số dư khả dụng không đủ cho gói này.';
+      if (data?.code === 'PURCHASE_PENDING') return data.message || 'Đã có một yêu cầu mua đang chờ xử lý. Hãy tiếp tục bằng đúng mã yêu cầu đó.';
+      if (data?.code === 'LICENSE_PENDING') return data.message || 'Đã nhận yêu cầu. Đang chờ LicenseGate xác nhận.';
+      return data?.message || data?.error || (status === 401 ? 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' : 'Máy chủ không thể hoàn tất yêu cầu.');
+    }
+
+    async function userApi(action, options = {}) {
+      const headers = { Accept: 'application/json' };
+      if (options.body !== undefined) headers['Content-Type'] = 'application/json';
+      if (sessionToken && action !== 'login' && action !== 'register') headers.Authorization = `Bearer ${sessionToken}`;
+      const response = await fetch(`${USER_API_BASE}${encodeURIComponent(action)}`, {
+        method: options.method || 'GET',
+        headers,
+        body: options.body === undefined ? undefined : JSON.stringify(options.body),
+        cache: 'no-store'
+      });
+      let data = {};
+      try { data = await response.json(); } catch (e) {}
+      if (response.status === 401 && action !== 'login' && action !== 'register') clearServerSession();
+      return { response, data };
+    }
+
+    async function refreshCurrentUser() {
+      if (!sessionToken) return null;
+      const generation = sessionGeneration;
+      const tokenAtStart = sessionToken;
+      try {
+        const { response, data } = await userApi('me');
+        if (generation !== sessionGeneration || tokenAtStart !== sessionToken) return null;
+        const user = data?.user || (data?.username ? data : null);
+        if (!response.ok || data.success === false || !user) {
+          if (response.status === 401) clearServerSession();
+          return null;
+        }
+        return setServerUser(user);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function updateUserHeaderUI() {
+      const guestZone = document.getElementById('nav-guest-zone');
+      const userZone = document.getElementById('nav-user-zone');
+      const userNameEl = document.getElementById('nav-user-name');
+      const userBalEl = document.getElementById('nav-user-balance');
+      const keyBadgeEl = document.getElementById('nav-key-badge');
+      if (currentUser && currentUser.username && sessionToken) {
+        guestZone?.classList.add('hidden');
+        userZone?.classList.remove('hidden');
+        userZone?.classList.add('flex');
+        if (userNameEl) userNameEl.textContent = currentUser.username;
+        if (userBalEl) userBalEl.textContent = formatVnd(currentUser.balance);
+        if (keyBadgeEl) keyBadgeEl.textContent = String(currentUser.keys.length);
+      } else {
+        guestZone?.classList.remove('hidden');
+        userZone?.classList.add('hidden');
+        userZone?.classList.remove('flex');
+        if (userNameEl) userNameEl.textContent = '';
+        if (userBalEl) userBalEl.textContent = formatVnd(0);
+        if (keyBadgeEl) keyBadgeEl.textContent = '0';
+      }
+    }
+
+    function showAuthError(message) {
+      const alertBox = document.getElementById('auth-alert');
+      if (!alertBox) return;
+      alertBox.className = 'mt-4 p-3 rounded-xl text-xs font-mono text-center bg-red-500/20 border border-red-500/40 text-red-400';
+      alertBox.textContent = message;
+      alertBox.classList.remove('hidden');
+    }
+
     async function handleLogin(e) {
       e.preventDefault();
       const u = document.getElementById('login-username').value.trim();
-      const p = document.getElementById('login-password').value.trim();
-      const alertBox = document.getElementById('auth-alert');
+      const p = document.getElementById('login-password').value;
       const btn = document.getElementById('btn-login-submit');
-
-      if (!u || !p) return;
+      if (!/^[A-Za-z0-9_]{3,32}$/.test(u) || p.length < 10 || p.length > 128) {
+        showAuthError('Tên đăng nhập phải gồm 3–32 chữ cái/chữ số/dấu _; mật khẩu phải dài 10–128 ký tự.');
+        return;
+      }
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG ĐĂNG NHẬP...';
-
+      const generation = sessionGeneration;
       try {
-        const res = await fetch('/api/user?action=login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: u, password: p })
-        });
-        const data = await res.json();
-
-        if (data.success && data.user) {
-          const loggedUser = data.user;
-          if (!loggedUser.balanceResetToZero) {
-            loggedUser.balance = 0;
-            loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
-            loggedUser.balanceResetToZero = true;
-          }
-          saveUserSession(loggedUser);
-          closeAuthModal();
-          showToast(`Chào mừng ${loggedUser.username} quay trở lại!`);
-          playSfx('success');
-        } else {
-          // Client fallback local login
-          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-          if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
-            const loggedUser = localUsers[u.toLowerCase()];
-            if (!loggedUser.balanceResetToZero) {
-              loggedUser.balance = 0;
-              loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
-              loggedUser.balanceResetToZero = true;
-            }
-            saveUserSession(loggedUser);
-            closeAuthModal();
-            showToast(`Chào mừng ${u} quay trở lại!`);
-            playSfx('success');
-          } else {
-            alertBox.className = 'mt-4 p-3 rounded-xl text-xs font-mono text-center bg-red-500/20 border border-red-500/40 text-red-400';
-            alertBox.textContent = data.message || 'Sai tên đăng nhập hoặc mật khẩu!';
-            alertBox.classList.remove('hidden');
-            playSfx('error');
-          }
+        const { response, data } = await userApi('login', { method: 'POST', body: { username: u, password: p } });
+        if (generation !== sessionGeneration) return;
+        if (!response.ok || !data.success || !data.token || !data.user) {
+          showAuthError(apiErrorMessage(data, response.status));
+          playSfx('error');
+          return;
         }
-      } catch (err) {
-        // Fallback local auth
-        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-        if (localUsers[u.toLowerCase()] && localUsers[u.toLowerCase()].password === p) {
-          const loggedUser = localUsers[u.toLowerCase()];
-          if (!loggedUser.balanceResetToZero) {
-            loggedUser.balance = 0;
-            loggedUser.transactions = (loggedUser.transactions || []).filter(t => t.type !== 'TOPUP');
-            loggedUser.balanceResetToZero = true;
-          }
-          saveUserSession(loggedUser);
-          closeAuthModal();
-          showToast(`Chào mừng ${u} quay trở lại!`);
-          playSfx('success');
-        } else {
-          const newUser = { username: u, password: p, balance: 0, keys: [], transactions: [], balanceResetToZero: true };
-          localUsers[u.toLowerCase()] = newUser;
-          localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
-          saveUserSession(newUser);
-          closeAuthModal();
-          showToast(`Đăng nhập thành công tài khoản ${u}!`);
-          playSfx('success');
-        }
+        persistSessionToken(data.token);
+        setServerUser(data.user);
+        document.getElementById('login-password').value = '';
+        closeAuthModal();
+        showToast(`Chào mừng ${currentUser.username} quay trở lại!`);
+        playSfx('success');
+      } catch (error) {
+        showAuthError('Không thể kết nối máy chủ đăng nhập. Vui lòng thử lại.');
+        playSfx('error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY';
@@ -2586,397 +2299,485 @@
     async function handleRegister(e) {
       e.preventDefault();
       const u = document.getElementById('reg-username').value.trim();
-      const p = document.getElementById('reg-password').value.trim();
+      const p = document.getElementById('reg-password').value;
       const c = document.getElementById('reg-contact').value.trim();
-      const alertBox = document.getElementById('auth-alert');
       const btn = document.getElementById('btn-reg-submit');
-
-      if (!u || !p || u.length < 3) return;
+      if (!/^[A-Za-z0-9_]{3,32}$/.test(u) || p.length < 10 || p.length > 128) {
+        showAuthError('Tên đăng nhập phải gồm 3–32 chữ cái/chữ số/dấu _; mật khẩu phải dài 10–128 ký tự.');
+        return;
+      }
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG TẠO TÀI KHOẢN...';
-
+      const generation = sessionGeneration;
       try {
-        const res = await fetch('/api/user?action=register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: u, password: p, contact: c })
-        });
-        const data = await res.json();
-
-        if (data.success && data.user) {
-          saveUserSession(data.user);
-          closeAuthModal();
-          showToast(`Chúc mừng ${data.user.username} đã tạo tài khoản thành công!`);
-          playSfx('gold');
-        } else {
-          const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-          if (localUsers[u.toLowerCase()]) {
-            alertBox.className = 'mt-4 p-3 rounded-xl text-xs font-mono text-center bg-red-500/20 border border-red-500/40 text-red-400';
-            alertBox.textContent = 'Tên tài khoản này đã được sử dụng!';
-            alertBox.classList.remove('hidden');
-            playSfx('error');
-          } else {
-            const newUser = { username: u, password: p, contact: c, balance: 0, keys: [], transactions: [] };
-            localUsers[u.toLowerCase()] = newUser;
-            localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
-            saveUserSession(newUser);
-            closeAuthModal();
-            showToast(`Tạo tài khoản ${u} thành công!`);
-            playSfx('gold');
-          }
+        const { response, data } = await userApi('register', { method: 'POST', body: { username: u, password: p, contact: c } });
+        if (generation !== sessionGeneration) return;
+        if (!response.ok || !data.success || !data.token || !data.user) {
+          showAuthError(apiErrorMessage(data, response.status));
+          playSfx('error');
+          return;
         }
-      } catch (err) {
-        const localUsers = JSON.parse(localStorage.getItem('vnkeen_local_db') || '{}');
-        const newUser = { username: u, password: p, contact: c, balance: 0, keys: [], transactions: [] };
-        localUsers[u.toLowerCase()] = newUser;
-        localStorage.setItem('vnkeen_local_db', JSON.stringify(localUsers));
-        saveUserSession(newUser);
+        persistSessionToken(data.token);
+        setServerUser(data.user);
+        document.getElementById('reg-password').value = '';
         closeAuthModal();
-        showToast(`Tạo tài khoản ${u} thành công!`);
+        showToast(`Chúc mừng ${currentUser.username} đã tạo tài khoản thành công!`);
         playSfx('gold');
+      } catch (error) {
+        showAuthError('Không thể kết nối máy chủ đăng ký. Vui lòng thử lại.');
+        playSfx('error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> TẠO TÀI KHOẢN MỚI';
       }
     }
 
-    function logoutUser() {
-      currentUser = null;
-      localStorage.removeItem('vnkeen_current_user');
-      updateUserHeaderUI();
+    async function logoutUser() {
+      try { if (sessionToken) await userApi('logout', { method: 'POST', body: {} }); } catch (e) {}
+      clearServerSession();
       showToast('Đã đăng xuất tài khoản an toàn.');
       playSfx('click');
     }
 
-    // 2. Wallet Topup Modals & Radar
-    function openTopupModal() {
-      if (!currentUser) {
+    function setTopupAmount(amt) {
+      const numericAmount = Number(amt);
+      topupCurrentAmount = Number.isFinite(numericAmount) ? Math.max(1000, Math.floor(numericAmount)) : 1000;
+      const bank = currentUser?.bank || {};
+      const code = String(currentUser?.depositCode || '');
+      topupCurrentContent = code;
+      const display = document.getElementById('topup-amount-display');
+      const contDisplay = document.getElementById('topup-content-display');
+      const bankDisplay = document.getElementById('topup-bank-display');
+      const copyCode = document.getElementById('topup-copy-code');
+      if (display) display.textContent = formatVnd(topupCurrentAmount);
+      if (contDisplay) contDisplay.textContent = code || 'CHƯA SẴN SÀNG';
+      if (bankDisplay) {
+        bankDisplay.textContent = bank.account && bank.bank
+          ? `${bank.bank} · ${bank.account}${bank.name ? ` · ${bank.name}` : ''}`
+          : 'Thông tin ngân hàng chưa sẵn sàng. Mã QR đã bị tắt.';
+      }
+      if (copyCode) copyCode.disabled = !code;
+      const qr = document.getElementById('topup-qr-img');
+      // Never retain a previous user's QR: only render after this response has
+      // supplied both a bank destination and a server-issued deposit code.
+      const hasBank = Boolean(bank.account && bank.bank && code);
+      if (qr && hasBank) {
+        const bankName = bank.bank || 'MB';
+        const accountName = bank.name || '';
+        qr.src = `https://img.vietqr.io/image/${encodeURIComponent(bankName)}-${encodeURIComponent(bank.account)}-compact2.png?amount=${topupCurrentAmount}&addInfo=${encodeURIComponent(code)}&accountName=${encodeURIComponent(accountName)}`;
+        qr.onerror = () => {
+          qr.removeAttribute('src');
+          qr.classList.add('hidden');
+          const status = document.getElementById('topup-listen-status');
+          if (status) status.textContent = 'Không tải được mã QR ngân hàng; vui lòng thử lại sau.';
+        };
+        qr.classList.remove('hidden');
+      } else if (qr) {
+        qr.removeAttribute('src');
+        qr.classList.add('hidden');
+      }
+      document.querySelectorAll('.topup-preset-btn').forEach(btn => {
+        btn.className = btn.textContent.includes(topupCurrentAmount.toLocaleString('vi-VN'))
+          ? 'topup-preset-btn active py-2.5 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition'
+          : 'topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition';
+      });
+    }
+
+    function copyTopupCode() {
+      if (topupCurrentContent) copyData(topupCurrentContent, 'Đã sao chép mã nạp!');
+    }
+
+    function handleCustomTopupInput(val) {
+      const amount = Number.parseInt(val, 10) || 0;
+      if (amount >= 1000) setTopupAmount(amount);
+    }
+
+    async function syncBankDepositBackground() {
+      if (topupRefreshBusy) return;
+      topupRefreshBusy = true;
+      const before = currentUser?.balance;
+      try {
+        const fresh = await refreshCurrentUser();
+        if (fresh) {
+          const status = document.getElementById('topup-listen-status');
+          if (typeof before === 'number' && fresh.balance !== before && status) {
+            status.textContent = `Số dư đã được máy chủ cập nhật: ${formatVnd(fresh.balance)}`;
+          }
+          setTopupAmount(topupCurrentAmount);
+        }
+      } finally {
+        topupRefreshBusy = false;
+      }
+    }
+
+    async function openTopupModal() {
+      if (!sessionToken || !currentUser) {
         openAuthModal('login');
-        showToast('Vui lòng đăng nhập trước khi nạp tiền vào ví!');
+        showAuthError('Vui lòng đăng nhập trước khi nạp tiền vào ví.');
         return;
       }
+      const generation = sessionGeneration;
+      const tokenAtStart = sessionToken;
+      const fresh = await refreshCurrentUser();
+      if (!fresh || generation !== sessionGeneration || tokenAtStart !== sessionToken) return;
       setTopupAmount(200000);
-      const m = document.getElementById('topupModal');
-      if (m) {
-        m.classList.remove('hidden');
-        m.classList.add('flex');
-      }
+      const modal = document.getElementById('topupModal');
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
       startTopupPolling();
     }
 
     function closeTopupModal() {
-      if (topupPollingInterval) {
-        clearInterval(topupPollingInterval);
-        topupPollingInterval = null;
-      }
-      const m = document.getElementById('topupModal');
-      if (m) {
-        m.classList.add('hidden');
-        m.classList.remove('flex');
-      }
-    }
-
-    async function confirmTopupSuccessManual() {
-      if (!currentUser) {
-        showToast('Vui lòng đăng nhập tài khoản trước!');
-        return;
-      }
-      const btn = document.getElementById('btn-manual-verify-topup');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG QUÉT SAO KÊ MB BANK THẬT...';
-      }
-
-      try {
-        const txs = await checkSepayTransactions();
-        if (!txs || txs.length === 0) {
-          alert('Chưa thể lấy dữ liệu từ ngân hàng MB Bank! Vui lòng thử lại sau vài giây.');
-          return;
-        }
-
-        const username = (currentUser.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const processed = getProcessedTxs();
-        let matchedTx = null;
-
-        for (const tx of txs) {
-          const txId = String(tx.id);
-          const amtIn = parseFloat(tx.amount_in || 0);
-          const isMatch = isTransactionMatchingUser(tx.transaction_content, currentUser.username);
-
-          // STRICT BANK SECURITY: Only credit genuine NEW transactions post-reset
-          if (amtIn > 0 && isNewPostResetTx(tx) && isMatch && !processed.includes(txId)) {
-            matchedTx = tx;
-            markTxProcessed(txId);
-            currentUser.balance = (currentUser.balance || 0) + amtIn;
-            if (!currentUser.transactions) currentUser.transactions = [];
-            if (!currentUser.transactions.some(t => String(t.id) === txId)) {
-              currentUser.transactions.unshift({
-                id: txId,
-                type: 'TOPUP',
-                description: `MB Bank thực tế: ${tx.transaction_content} (+${formatVnd(amtIn)})`,
-                amount: amtIn,
-                createdAt: tx.transaction_date || new Date().toISOString()
-              });
-            }
-            saveUserSession(currentUser);
-            closeTopupModal();
-            alert(`✅ XÁC THỰC NGÂN HÀNG THÀNH CÔNG 100%!\n\n• Mã giao dịch MB: #${tx.reference_number || tx.id}\n• Số tiền vào tài khoản: +${formatVnd(amtIn)}\n• Nội dung: ${tx.transaction_content}\n• Thời gian: ${tx.transaction_date}\n\nSố dư ví của bạn hiện tại là: ${formatVnd(currentUser.balance)}`);
-            playSfx('gold');
-            return;
-          }
-        }
-
-        // If no matching bank transaction found
-        alert(`❌ CHƯA TÌM THẤY GIAO DỊCH THẬT MỚI TỪ MB BANK!\n\nNguyên nhân:\n1. MB Bank đang xử lý tiền vào tài khoản\n2. Giao dịch này đã được ghi nhận vào ví trước đó rồi\n3. Nội dung chuyển khoản phải đúng cú pháp: NAP ${(currentUser.username || '').toUpperCase()}\n\nVui lòng kiểm tra lại app ngân hàng hoặc đợi 30 giây rồi bấm quét lại nhé!`);
-      } catch (err) {
-        alert('Lỗi khi tra cứu sao kê: ' + err.message);
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fa-solid fa-satellite-dish text-sm"></i> QUÉT & XÁC THỰC SAO KÊ MB BANK THẬT (100%)';
-        }
-      }
-    }
-
-    function setTopupAmount(amt) {
-      topupCurrentAmount = amt;
-      const display = document.getElementById('topup-amount-display');
-      if (display) display.textContent = formatVnd(amt);
-
-      const usernameCode = (currentUser?.username || 'KEEN').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
-      topupCurrentContent = `NAP ${usernameCode}`;
-      const contDisplay = document.getElementById('topup-content-display');
-      if (contDisplay) contDisplay.textContent = topupCurrentContent;
-
-      const qr = document.getElementById('topup-qr-img');
-      if (qr) {
-        qr.src = `https://img.vietqr.io/image/MB-789789999888-compact2.png?amount=${amt}&addInfo=${encodeURIComponent(topupCurrentContent)}&accountName=NGUYEN%20PHU%20QUY`;
-      }
-
-      document.querySelectorAll('.topup-preset-btn').forEach(btn => {
-        if (btn.textContent.includes(amt.toLocaleString('vi-VN'))) {
-          btn.className = 'topup-preset-btn active py-2.5 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition';
-        } else {
-          btn.className = 'topup-preset-btn py-2.5 rounded-xl border border-white/10 hover:border-amber-400 bg-slate-950 text-gray-200 transition';
-        }
-      });
-      playSfx('click');
-    }
-
-    function handleCustomTopupInput(val) {
-      const num = parseInt(val) || 0;
-      if (num >= 1000) {
-        setTopupAmount(num);
-      }
+      if (topupPollingInterval) clearInterval(topupPollingInterval);
+      topupPollingInterval = null;
+      const modal = document.getElementById('topupModal');
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
     }
 
     function startTopupPolling() {
       if (topupPollingInterval) clearInterval(topupPollingInterval);
-      const username = (currentUser?.username || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      if (!username) return;
-
+      const status = document.getElementById('topup-listen-status');
+      if (status) status.textContent = currentUser?.bank?.account && currentUser?.bank?.bank && currentUser?.depositCode
+        ? 'Đang chờ máy chủ xác nhận giao dịch nạp tiền...'
+        : 'Thông tin ngân hàng chưa sẵn sàng; không thể tạo mã QR.';
       topupPollingInterval = setInterval(async () => {
-        try {
-          // 1. Direct SePay Real-time Bank Transaction API
-          const txs = await checkSepayTransactions();
-          if (txs && txs.length > 0) {
-            const processed = getProcessedTxs();
-            for (const tx of txs) {
-              const txId = String(tx.id);
-              if (processed.includes(txId)) continue;
-
-              const amtIn = parseFloat(tx.amount_in || 0);
-              const isMatch = isTransactionMatchingUser(tx.transaction_content, username);
-
-              // Match strictly if amount_in > 0, post-reset, and transaction content matches user
-              if (amtIn > 0 && isNewPostResetTx(tx) && isMatch) {
-                markTxProcessed(txId);
-                clearInterval(topupPollingInterval);
-                topupPollingInterval = null;
-
-                currentUser.balance = (currentUser.balance || 0) + amtIn;
-                if (!currentUser.transactions) currentUser.transactions = [];
-                if (!currentUser.transactions.some(t => String(t.id) === txId)) {
-                  currentUser.transactions.unshift({
-                    id: txId,
-                    type: 'TOPUP',
-                    description: `Nạp tiền SePay MB Bank (+${formatVnd(amtIn)})`,
-                    amount: amtIn,
-                    createdAt: tx.transaction_date || new Date().toISOString()
-                  });
-                }
-
-                saveUserSession(currentUser);
-                closeTopupModal();
-                showToast(`🎉 Nạp tiền thành công! Đã nhận +${formatVnd(amtIn)} vào ví.`);
-                playSfx('gold');
-                return;
-              }
-            }
-          }
-
-          // 2. Fallback backend check
-          const res = await fetch(`/api/topup-check?code=${encodeURIComponent(topupCurrentContent)}&username=${username}`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.paid || (data.user && data.user.balance > (currentUser?.balance || 0))) {
-              clearInterval(topupPollingInterval);
-              topupPollingInterval = null;
-              const newBal = data.order ? (currentUser.balance + data.order.amount) : data.user.balance;
-              currentUser.balance = newBal;
-              saveUserSession(currentUser);
-              closeTopupModal();
-              showToast(`🎉 Nạp tiền thành công! Số dư mới: ${formatVnd(currentUser.balance)}`);
-              playSfx('gold');
-            }
-          }
-        } catch (e) {}
-      }, 2000);
+        if (!sessionToken) return closeTopupModal();
+        await syncBankDepositBackground();
+      }, 3000);
     }
 
+    async function confirmTopupSuccessManual() {
+      await syncBankDepositBackground();
+      const status = document.getElementById('topup-listen-status');
+      if (status) status.textContent = 'Đã yêu cầu máy chủ làm mới số dư; không thể xác nhận thủ công từ trình duyệt.';
+    }
 
+    function setBuyAlert(message, kind = 'error') {
+      const alertBox = document.getElementById('buy-confirm-alert');
+      if (!alertBox) return;
+      alertBox.className = `mt-4 p-3 rounded-xl text-xs font-mono text-center ${kind === 'pending' ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300' : 'bg-red-500/20 border border-red-500/40 text-red-300'}`;
+      alertBox.textContent = message;
+      alertBox.classList.remove('hidden');
+    }
 
-    // 3. Buy With Balance confirmation
-    function openCheckoutSmart(planId) {
-      pendingBuyPlan = planId || 'monthly';
-      const meta = PLAN_META[pendingBuyPlan] || PLAN_META['monthly'];
+    function normalizePlan(plan) {
+      if (plan === 'vip') return 'lifetime';
+      return ['daily', 'monthly', 'lifetime'].includes(plan) ? plan : null;
+    }
 
-      if (currentUser) {
-        if (currentUser.balance >= meta.amount) {
-          document.getElementById('buy-confirm-plan').textContent = meta.name;
-          document.getElementById('buy-confirm-price').textContent = meta.price;
-          document.getElementById('buy-confirm-balance').textContent = formatVnd(currentUser.balance);
-          document.getElementById('buy-confirm-remaining').textContent = formatVnd(currentUser.balance - meta.amount);
-          
-          const m = document.getElementById('buyConfirmModal');
-          if (m) {
-            m.classList.remove('hidden');
-            m.classList.add('flex');
-          }
-          playSfx('click');
-        } else {
-          if (confirm(`Số dư trong ví (${formatVnd(currentUser.balance)}) chưa đủ để mua ${meta.name} (${meta.price}).\n\nBạn có muốn Nạp thêm tiền vào ví ngay không?`)) {
-            openTopupModal();
-          } else {
-            openCheckout(pendingBuyPlan);
-          }
+    function walletRequestKey(username = currentUser?.username) {
+      const user = String(username || '').toLowerCase();
+      return `${REQUEST_ID_PREFIX}${user}`;
+    }
+
+    function readWalletRequest(username = currentUser?.username) {
+      if (!username) return null;
+      const key = walletRequestKey(username);
+      if (walletRequests.has(key)) return walletRequests.get(key);
+      try {
+        const raw = sessionStorage.getItem(key);
+        if (!raw) return null;
+        let value;
+        try { value = JSON.parse(raw); } catch (e) {
+          // The previous client stored a bare id without its plan. Never guess
+          // the plan and replay it as a new purchase; only the server can recover it.
+          value = { requestId: raw, plan: null, status: 'UNKNOWN' };
         }
-      } else {
-        openCheckout(pendingBuyPlan);
-      }
+        if (!value || !/^[A-Za-z0-9_-]{8,80}$/.test(value.requestId || '')) {
+          return { requestId: '', plan: null, status: 'UNKNOWN' };
+        }
+        const request = { requestId: value.requestId, plan: normalizePlan(value.plan), status: value.status || 'UNKNOWN' };
+        walletRequests.set(key, request);
+        return request;
+      } catch (e) { return null; }
     }
+
+    function writeWalletRequest(request, username = currentUser?.username, mustPersist = false) {
+      if (!request?.requestId || !username) return false;
+      const key = walletRequestKey(username);
+      const value = { requestId: String(request.requestId), plan: normalizePlan(request.plan), status: request.status || 'UNKNOWN' };
+      try {
+        sessionStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {
+        if (mustPersist) return false;
+      }
+      walletRequests.set(key, value);
+      return true;
+    }
+
+    function clearWalletRequestId(requestId, username = currentUser?.username) {
+      const existing = readWalletRequest(username);
+      if (existing?.requestId !== requestId) return;
+      const key = walletRequestKey(username);
+      walletRequests.delete(key);
+      try { sessionStorage.removeItem(key); } catch (e) {}
+    }
+
+    function updateWalletRequestStatus(status) {
+      const request = readWalletRequest();
+      if (request) { request.status = status; writeWalletRequest(request); }
+    }
+
+    function newWalletRequestId() {
+      if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+      if (!globalThis.crypto?.getRandomValues) {
+        return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
+      }
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function getWalletRequestId(plan = pendingBuyPlan) {
+      const existing = readWalletRequest();
+      if (existing) {
+        if (!existing.requestId || existing.plan !== plan) throw new Error('UNRESOLVED_REQUEST');
+        return existing.requestId;
+      }
+      const request = { requestId: newWalletRequestId(), plan: normalizePlan(plan), status: 'UNKNOWN' };
+      if (!writeWalletRequest(request, currentUser.username, true)) throw new Error('STORAGE_UNAVAILABLE');
+      return request.requestId;
+    }
+
+    function reconcilePendingOrders(user) {
+      if (!user?.username) return [];
+      const pending = (Array.isArray(user.pendingOrders) ? user.pendingOrders : [])
+        .filter(order => /^[A-Za-z0-9_-]{8,80}$/.test(order?.requestId || '') && normalizePlan(order.plan));
+      const local = readWalletRequest(user.username);
+      const localKey = (Array.isArray(user.keys) ? user.keys : [])
+        .find(key => String(key?.id || '') === String(local?.requestId || ''));
+      if (local?.requestId && localKey) {
+        // A key carrying this request id is proof that an ambiguous attempt
+        // completed; only then is it safe to forget the browser retry marker.
+        clearWalletRequestId(local.requestId, user.username);
+      }
+      const server = pending.find(order => order.requestId === local?.requestId) || (!local || local.plan ? pending[0] : null);
+      if (server && (!local || local.requestId === server.requestId || local.plan)) {
+        // The server permits one active order per account, including across tabs.
+        writeWalletRequest({ requestId: server.requestId, plan: server.plan, status: 'PENDING' }, user.username);
+      }
+      // An empty pending list is NOT proof that an ambiguous attempt failed;
+      // keep even a legacy id with an unknown plan until keys/pending reconcile it.
+      return pending;
+    }
+
+    function pendingOrderSummary() {
+      const pending = Array.isArray(currentUser?.pendingOrders) ? currentUser.pendingOrders : [];
+      const orders = pending.filter(order => order?.requestId && normalizePlan(order.plan)).map(order => ({
+        requestId: String(order.requestId), plan: order.plan, status: order.status || 'PENDING'
+      }));
+      const local = readWalletRequest();
+      if (local && !orders.some(order => order.requestId === local.requestId)) orders.push(local);
+      return orders;
+    }
+
+    async function prepareWalletPurchase(planId) {
+      pendingBuyPlan = normalizePlan(planId) || 'monthly';
+      if (!sessionToken) {
+        openAuthModal('login');
+        showAuthError('Đăng nhập để mua bằng số dư ví.');
+        return;
+      }
+      const generation = sessionGeneration;
+      const tokenAtStart = sessionToken;
+      await refreshCurrentUser();
+      if (!currentUser || generation !== sessionGeneration || tokenAtStart !== sessionToken) return;
+      const localRequest = readWalletRequest();
+      const serverRequest = pendingOrderSummary()[0];
+      const existingRequest = serverRequest || localRequest;
+      const hasExistingRequest = Boolean(existingRequest);
+      if (existingRequest?.plan && existingRequest.plan !== pendingBuyPlan) pendingBuyPlan = existingRequest.plan;
+      const meta = PLAN_META[pendingBuyPlan] || PLAN_META.monthly;
+      const available = Number(currentUser.availableBalance ?? currentUser.balance ?? 0);
+      document.getElementById('buy-confirm-plan').textContent = meta.name;
+      document.getElementById('buy-confirm-price').textContent = meta.price;
+      document.getElementById('buy-confirm-balance').textContent = formatVnd(available);
+      document.getElementById('buy-confirm-remaining').textContent = formatVnd(Math.max(0, available - meta.amount));
+      const btn = document.getElementById('btn-execute-buy');
+      if (btn) btn.disabled = available < meta.amount && !hasExistingRequest;
+      const modal = document.getElementById('buyConfirmModal');
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
+      if (hasExistingRequest) {
+        setBuyAlert(`Đơn ${existingRequest.requestId} đang được xử lý cho ${meta.name}. Hãy tiếp tục bằng đúng mã yêu cầu này.`, 'pending');
+      } else if (available < meta.amount) {
+        setBuyAlert(`Số dư khả dụng ${formatVnd(available)} chưa đủ. Hãy nạp thêm tiền rồi thử lại.`, 'error');
+      } else {
+        document.getElementById('buy-confirm-alert')?.classList.add('hidden');
+      }
+      playSfx('click');
+    }
+
+    function openCheckoutSmart(planId) { void prepareWalletPurchase(planId); }
 
     function closeBuyConfirmModal() {
-      const m = document.getElementById('buyConfirmModal');
-      if (m) {
-        m.classList.add('hidden');
-        m.classList.remove('flex');
-      }
+      const modal = document.getElementById('buyConfirmModal');
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
     }
 
     async function executeBuyWithBalance() {
-      if (!currentUser) return;
-      const meta = PLAN_META[pendingBuyPlan] || PLAN_META['monthly'];
+      if (!sessionToken || !currentUser) {
+        setBuyAlert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        return;
+      }
+      if (walletPurchaseBusy) return;
+      const meta = PLAN_META[pendingBuyPlan] || PLAN_META.monthly;
       const btn = document.getElementById('btn-execute-buy');
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG TẠO KEY...';
-
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
+      walletPurchaseBusy = true;
+      const generation = sessionGeneration;
+      const tokenAtStart = sessionToken;
       try {
-        const res = await fetch('/api/user?action=buy_with_balance', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: currentUser.username, plan: pendingBuyPlan })
-        });
-        const data = await res.json();
-
-        if (data.success && data.key && data.key.startsWith('VN-KEEN-SKIN')) {
-          currentUser.balance = data.newBalance;
-          if (!currentUser.keys) currentUser.keys = [];
-          currentUser.keys.unshift(data.keyRecord || {
-            plan: meta.name,
-            key: data.key,
-            purchasedAt: new Date().toISOString(),
-            paymentMethod: 'WALLET'
-          });
-          if (!currentUser.transactions) currentUser.transactions = [];
-          currentUser.transactions.unshift({
-            id: 'BUY_' + Date.now(),
-            type: 'BUY',
-            description: `Mua gói ${meta.name} (-${formatVnd(meta.amount)})`,
-            amount: meta.amount,
-            createdAt: new Date().toISOString()
-          });
-          saveUserSession(currentUser);
+        const requestId = getWalletRequestId(pendingBuyPlan);
+        const { response, data } = await userApi('buy_with_balance', { method: 'POST', body: { plan: pendingBuyPlan, requestId } });
+        if (generation !== sessionGeneration || tokenAtStart !== sessionToken) return;
+        if (data.user) setServerUser(data.user);
+        if (response.ok && data.success && data.status === 'FULFILLED' && data.key) {
+          clearWalletRequestId(requestId);
           closeBuyConfirmModal();
+          await refreshCurrentUser();
           openMyKeysModal();
-          showToast(`🎉 Chúc mừng! Mua ${meta.name} thành công. License Key từ LicenseGate đã sẵn sàng trong Kho!`);
+          showToast(`🎉 Mua ${meta.name} thành công. Key đã được lưu trong Kho.`);
           playSfx('gold');
-        } else {
-          showToast(data.message || 'Không thể tạo key LicenseGate. Số dư chưa bị trừ.');
+          return;
         }
-      } catch (err) {
-        showToast('Không thể kết nối máy chủ mua key. Số dư chưa bị trừ.');
+        if (response.status === 202 || data.code === 'LICENSE_PENDING' || data.status === 'PENDING') {
+          writeWalletRequest({ requestId: String(data.requestId || requestId), plan: normalizePlan(data.plan || pendingBuyPlan), status: 'PENDING' });
+          setBuyAlert(apiErrorMessage(data, response.status), 'pending');
+          return;
+        }
+        if (response.status === 409) {
+          if (data.code === 'INSUFFICIENT_BALANCE') {
+            // No order was recorded; keep the same id reusable after a top-up.
+            setBuyAlert(apiErrorMessage(data, response.status));
+            return;
+          }
+          const existingPlan = normalizePlan(data.plan || data.existingPlan || data.pendingOrder?.plan || pendingBuyPlan) || pendingBuyPlan;
+          const existingRequestId = data.requestId || data.existingRequestId || data.pendingOrder?.requestId;
+          if (existingRequestId) writeWalletRequest({ requestId: String(existingRequestId), plan: existingPlan, status: 'PENDING' });
+          pendingBuyPlan = existingPlan;
+          setBuyAlert(apiErrorMessage(data, response.status) || 'Đã có một yêu cầu mua đang chờ. Hãy tiếp tục bằng đúng mã yêu cầu đó.', 'pending');
+          return;
+        }
+        updateWalletRequestStatus('UNKNOWN');
+        setBuyAlert(apiErrorMessage(data, response.status));
+      } catch (error) {
+        updateWalletRequestStatus('UNKNOWN');
+        setBuyAlert('Không xác định được kết quả giao dịch. Không đóng cửa sổ; hãy thử lại để tiếp tục cùng yêu cầu này.', 'pending');
       } finally {
+        walletPurchaseBusy = false;
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-check-double"></i> XÁC NHẬN MUA (CẤP KEY NGAY)';
       }
     }
 
-    // 4. My Keys Inventory Modal
-    function openMyKeysModal() {
-      if (!currentUser) {
+    async function openMyKeysModal() {
+      if (!sessionToken) {
         openAuthModal('login');
+        showAuthError('Vui lòng đăng nhập để xem Kho License Key.');
         return;
       }
+      const generation = sessionGeneration;
+      const tokenAtStart = sessionToken;
+      await refreshCurrentUser();
+      if (!currentUser || generation !== sessionGeneration || tokenAtStart !== sessionToken) return;
       renderMyKeysList();
-      const m = document.getElementById('myKeysModal');
-      if (m) {
-        m.classList.remove('hidden');
-        m.classList.add('flex');
-      }
+      const modal = document.getElementById('myKeysModal');
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
     }
 
     function closeMyKeysModal() {
-      const m = document.getElementById('myKeysModal');
-      if (m) {
-        m.classList.add('hidden');
-        m.classList.remove('flex');
-      }
+      const modal = document.getElementById('myKeysModal');
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
     }
 
     function renderMyKeysList() {
       const list = document.getElementById('my-keys-list');
       const empty = document.getElementById('my-keys-empty');
       if (!list || !empty) return;
-
-      const keys = currentUser?.keys || [];
-      if (keys.length === 0) {
+      const pendingBox = document.getElementById('my-keys-pending');
+      const pending = pendingOrderSummary();
+      if (pendingBox) {
+        pendingBox.replaceChildren();
+        if (pending.length) {
+          pendingBox.classList.remove('hidden');
+          const title = document.createElement('div');
+          title.className = 'font-bold mb-1';
+          title.textContent = 'Đơn mua đang chờ xác nhận';
+          pendingBox.appendChild(title);
+          pending.forEach(order => {
+            const row = document.createElement('div');
+            row.className = 'flex flex-wrap items-center gap-2 mt-1';
+            const label = document.createElement('span');
+            label.textContent = `${PLAN_META[order.plan]?.name || 'Yêu cầu chưa xác định gói'} · ${order.requestId}`;
+            row.appendChild(label);
+            if (PLAN_META[order.plan]) {
+              const retry = document.createElement('button');
+              retry.type = 'button';
+              retry.className = 'underline hover:text-white';
+              retry.textContent = 'Tiếp tục';
+              retry.addEventListener('click', () => {
+                closeMyKeysModal();
+                void prepareWalletPurchase(order.plan);
+              });
+              row.appendChild(retry);
+            }
+            pendingBox.appendChild(row);
+          });
+        } else {
+          pendingBox.classList.add('hidden');
+        }
+      }
+      list.replaceChildren();
+      const keys = Array.isArray(currentUser?.keys) ? currentUser.keys : [];
+      if (!keys.length) {
         list.classList.add('hidden');
         empty.classList.remove('hidden');
         return;
       }
-
       list.classList.remove('hidden');
       empty.classList.add('hidden');
+      keys.forEach((keyRecord) => {
+        const row = document.createElement('div');
+        row.className = 'p-4 rounded-2xl bg-slate-950 border border-purple-500/40 hover:border-purple-400 transition shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3';
+        const details = document.createElement('div');
+        const meta = document.createElement('div');
+        meta.className = 'flex items-center gap-2 mb-1';
+        const plan = document.createElement('span');
+        plan.className = 'px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono text-[10px] font-bold border border-purple-500/30';
+        plan.textContent = String(keyRecord?.plan || 'License Key');
+        const date = document.createElement('span');
+        date.className = 'text-[10px] text-muted font-mono';
+        const parsedDate = keyRecord?.purchasedAt ? new Date(keyRecord.purchasedAt) : null;
+        date.textContent = parsedDate && !Number.isNaN(parsedDate.valueOf()) ? parsedDate.toLocaleString('vi-VN') : '';
+        meta.append(plan, date);
+        const keyText = document.createElement('div');
+        keyText.className = 'font-mono text-base font-black text-amber-400 tracking-wider select-all break-all';
+        keyText.textContent = String(keyRecord?.key || '');
+        details.append(meta, keyText);
+        const copy = document.createElement('button');
+        copy.type = 'button';
+        copy.className = 'px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-cyber font-bold text-xs transition shadow flex items-center gap-1.5 shrink-0';
+        copy.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Key';
+        copy.addEventListener('click', () => copyData(String(keyRecord?.key || ''), 'Đã sao chép License Key!'));
+        row.append(details, copy);
+        list.appendChild(row);
+      });
+    }
 
-      list.innerHTML = keys.map((k, idx) => `
-        <div class="p-4 rounded-2xl bg-slate-950 border border-purple-500/40 hover:border-purple-400 transition shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono text-[10px] font-bold border border-purple-500/30">
-                ${k.plan || 'License Key'}
-              </span>
-              <span class="text-[10px] text-muted font-mono">${new Date(k.purchasedAt || Date.now()).toLocaleString('vi-VN')}</span>
-            </div>
-            <div class="font-mono text-base font-black text-amber-400 tracking-wider select-all">
-              ${k.key}
-            </div>
-          </div>
-          <button type="button" onclick="copyData('${k.key}', 'Đã sao chép License Key!')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-cyber font-bold text-xs transition shadow flex items-center gap-1.5 shrink-0">
-            <i class="fa-regular fa-copy"></i> Copy Key
-          </button>
-        </div>
-      `).join('');
+    async function restoreServerSession() {
+      try { sessionToken = sessionStorage.getItem(SESSION_TOKEN_KEY); } catch (e) { sessionToken = null; }
+      updateUserHeaderUI();
+      if (sessionToken) {
+        const user = await refreshCurrentUser();
+        const pending = pendingOrderSummary();
+        if (user && pending.length) pendingBuyPlan = normalizePlan(pending[0].plan);
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -2987,8 +2788,7 @@
       selectPlan('monthly');
       updateUserHeaderUI();
 
-      syncBankDepositBackground();
-      setInterval(syncBankDepositBackground, 3000);
+      restoreServerSession();
     });
   </script>
   <!-- VN-KEEN AI Assistant Floating Widget -->
