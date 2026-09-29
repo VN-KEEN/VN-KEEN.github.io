@@ -531,7 +531,7 @@
 
   <!-- LOAD THE CATALOG DATASET (With Cache-Busting Version) -->
   <script src="catalog_data.js?v=2.2"></script>
-  <script src="catalog_extra.js?v=2"></script>
+  <script src="catalog_extra.js?v=3"></script>
 
   <!-- CATALOG LOGIC ENGINE -->
   <script>
@@ -1094,7 +1094,7 @@
         document.getElementById('modalPetPreview')?.remove();
         const modalImage = document.getElementById('modalImage');
         modalImage.style.display = item.petCrop ? 'none' : '';
-        document.getElementById('modalStatTrakToggle').style.display = item.petCrop ? 'none' : '';
+        document.getElementById('modalStatTrakToggle').style.display = item.category === 'pet' ? 'none' : '';
         if (item.petCrop) {
           const preview = document.createElement('div');
           preview.id = 'modalPetPreview';
@@ -1104,7 +1104,7 @@
         }
         document.getElementById('modalSkinName').textContent = item.name;
         document.getElementById('modalRarityBadge').className = `text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono ${rc.badge}`;
-        document.getElementById('modalRarityBadge').textContent = item.petCrop ? 'PET' : rc.text;
+        document.getElementById('modalRarityBadge').textContent = item.rarityLabel || rc.text;
         document.getElementById('modalCategoryBadge').textContent = item.subType || item.category;
 
         modal.classList.remove('hidden');

@@ -11,8 +11,16 @@ for(const [source,category] of [['graffiti','sprays'],['crates','crates']]){
   items.push({id:1000000+items.length,name:item.name,category,subType:category==='sprays'?'Graffiti':item.type||'Container',weaponClass:'',rarity,rarityScore,image:item.image});
  }
 }
-for(const [name,x,y] of [['Chicken Egg',554,314],['Chicken Chick',876,314],['Chicken Catalana',554,575],['Chicken Silkie',876,575]]) {
- items.push({id:1000000+items.length,name,category:'pet',subType:'Pet',weaponClass:'',rarity:'restricted',rarityScore:4,image:'images/features/pet.png',petCrop:[x,y,289,214]});
+// Names, types, rarity labels and image URLs verified at https://stash.clash.gg/pets.
+for(const [name,slug,type,rarityLabel] of [
+ ['Chicken Egg','chicken-egg','Egg','Chưa có độ hiếm'],
+ ['Chicken Feed','chicken-feed','Feed','Chưa có độ hiếm'],
+ ['Pet Chick','pet-chick','Pet','Rare'],
+ ['Pet Chicken | Catalana','pet-chicken-catalana','Pet','Rare'],
+ ['Pet Chicken | Silkie','pet-chicken-silkie','Pet','Rare'],
+ ['Pet Chicken | Polish','pet-chicken-polish','Pet','Rare']
+]) {
+ items.push({id:1000000+items.length,name,category:'pet',subType:type,weaponClass:'',rarity:type==='Pet'?'milspec':'consumer',rarityScore:type==='Pet'?3:1,rarityLabel,image:'https://img.clash.gg/stash/pets-'+slug,source:'https://stash.clash.gg/pets'});
 }
-await writeFile('catalog_extra.js','// Source: ByMykel/CSGO-API; Pet overview supplied by site owner.\nwindow.CS2_SKIN_CATALOG.push(...'+JSON.stringify(items)+');\n');
+await writeFile('catalog_extra.js','// Sources: ByMykel/CSGO-API (Sprays, Crates); stash.clash.gg/pets (Pets).\nwindow.CS2_SKIN_CATALOG.push(...'+JSON.stringify(items)+');\n');
 console.log(JSON.stringify(Object.fromEntries(['sprays','crates','pet'].map(c=>[c,items.filter(i=>i.category===c).length]))));
