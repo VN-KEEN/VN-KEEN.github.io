@@ -531,7 +531,7 @@
 
   <!-- LOAD THE CATALOG DATASET (With Cache-Busting Version) -->
   <script src="catalog_data.js?v=2.2"></script>
-  <script src="catalog_extra.js?v=1"></script>
+  <script src="catalog_extra.js?v=2"></script>
 
   <!-- CATALOG LOGIC ENGINE -->
   <script>
@@ -548,7 +548,7 @@
       { id: 'collectibles', name: 'Kỷ Niệm (Coins)', icon: 'fa-medal' },
       { id: 'sprays', name: 'Sprays (Graffiti)', icon: 'fa-spray-can' },
       { id: 'crates', name: 'Crates (Hòm)', icon: 'fa-box-open' },
-      { id: 'pet', name: 'Pet (Ảnh tổng quan)', icon: 'fa-dove' },
+      { id: 'pet', name: 'Pet (Thú Cưng)', icon: 'fa-dove' },
       { id: 'all', name: 'Tất Cả 14,000+ Assets', icon: 'fa-fire' }
     ];
 
@@ -1043,13 +1043,13 @@
 
             <!-- Image Container -->
             <div class="relative py-4 flex items-center justify-center min-h-[105px] overflow-hidden">
-              <img 
+              ${item.petCrop ? petPreview(item) : `<img
                 src="${item.image}" 
                 alt="${item.name}"
                 loading="lazy"
                 class="max-h-[85px] max-w-full object-contain transition-transform duration-300 group-hover:scale-115 ${rc.glow}"
                 onerror="this.onerror=null; this.src='images/VN-KEEN.jpg'; this.style.opacity='0.35';"
-              >
+              >`}
             </div>
 
             <!-- Name Info -->
@@ -1074,6 +1074,10 @@
     let isStatTrakActive = false;
     let statTrakKills = 1337;
     let currentModalItem = null;
+    function petPreview(item) {
+      const [x,y,w,h] = item.petCrop;
+      return `<div role="img" aria-label="${item.name}" style="width:100%;max-width:420px;aspect-ratio:${w}/${h};border-radius:12px;background-color:#1e2025;background-image:url('images/features/pet.png');background-repeat:no-repeat;background-size:${1920/w*100}% ${1080/h*100}%;background-position:${x/(1920-w)*100}% ${y/(1080-h)*100}%"></div>`;
+    }
 
     // Modal Details Logic
     function openSkinModal(safeItemStr) {
@@ -1087,9 +1091,20 @@
         updateStatTrakUI();
 
         document.getElementById('modalImage').src = item.image;
+        document.getElementById('modalPetPreview')?.remove();
+        const modalImage = document.getElementById('modalImage');
+        modalImage.style.display = item.petCrop ? 'none' : '';
+        document.getElementById('modalStatTrakToggle').style.display = item.petCrop ? 'none' : '';
+        if (item.petCrop) {
+          const preview = document.createElement('div');
+          preview.id = 'modalPetPreview';
+          preview.style.cssText = 'width:100%;display:flex;justify-content:center';
+          preview.innerHTML = petPreview(item);
+          modalImage.insertAdjacentElement('afterend', preview);
+        }
         document.getElementById('modalSkinName').textContent = item.name;
         document.getElementById('modalRarityBadge').className = `text-[11px] font-bold px-2.5 py-0.5 rounded uppercase font-mono ${rc.badge}`;
-        document.getElementById('modalRarityBadge').textContent = rc.text;
+        document.getElementById('modalRarityBadge').textContent = item.petCrop ? 'PET' : rc.text;
         document.getElementById('modalCategoryBadge').textContent = item.subType || item.category;
 
         modal.classList.remove('hidden');

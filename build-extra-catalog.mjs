@@ -11,6 +11,8 @@ for(const [source,category] of [['graffiti','sprays'],['crates','crates']]){
   items.push({id:1000000+items.length,name:item.name,category,subType:category==='sprays'?'Graffiti':item.type||'Container',weaponClass:'',rarity,rarityScore,image:item.image});
  }
 }
-items.push({id:1000000+items.length,name:'Pet — Chicken Egg, Chick, Catalana và Silkie (ảnh tổng quan)',category:'pet',subType:'Ảnh tổng quan Pet',weaponClass:'',rarity:'mythical',rarityScore:4,image:'images/features/pet.png'});
+for(const [name,x,y] of [['Chicken Egg',554,314],['Chicken Chick',876,314],['Chicken Catalana',554,575],['Chicken Silkie',876,575]]) {
+ items.push({id:1000000+items.length,name,category:'pet',subType:'Pet',weaponClass:'',rarity:'restricted',rarityScore:4,image:'images/features/pet.png',petCrop:[x,y,289,214]});
+}
 await writeFile('catalog_extra.js','// Source: ByMykel/CSGO-API; Pet overview supplied by site owner.\nwindow.CS2_SKIN_CATALOG.push(...'+JSON.stringify(items)+');\n');
 console.log(JSON.stringify(Object.fromEntries(['sprays','crates','pet'].map(c=>[c,items.filter(i=>i.category===c).length]))));
