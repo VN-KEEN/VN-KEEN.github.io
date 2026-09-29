@@ -41,7 +41,7 @@ async function readBody(request) {
 }
 async function provider(env, path, options = {}) {
   return fetch('https://api.licensegate.io' + path, {
-    ...options, headers: { Authorization: 'Bearer ' + env.LICENSEGATE_API_KEY, 'Content-Type': 'application/json' },
+    ...options, headers: { Authorization: env.LICENSEGATE_API_KEY, 'Content-Type': 'application/json' },
     signal: AbortSignal.timeout(8000)
   });
 }
@@ -50,11 +50,14 @@ export async function fulfill(env, order) {
   if (order.status !== 'PAID') fail(409, 'NOT_PAID');
   // Persist the randomly generated key before any provider call. Retrying after
   // a timeout always uses this same key; duplicate webhooks cannot mint more keys.
+  const expirationDate = order.expires_at === null
+    ? '2099-12-31T23:59:59.000Z'
+    : new Date(order.expires_at * 1000).toISOString();
   const input = {
     active: true, name: order.id, notes: 'VN-KEEN website / ' + order.product + ' / ' + order.plan,
     licenseKey: order.license_key, licenseScope: SCOPES[order.product],
-    expirationDate: order.expires_at === null ? null : new Date(order.expires_at * 1000).toISOString(),
-    ipLimit: 1, validationLimit: null
+    expirationDate: expirationDate,
+    ipLimit: 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY'
   };
   let response = await provider(env, '/admin/licenses', { method: 'POST', body: JSON.stringify(input) });
   if (response.status === 400) {
@@ -63,9 +66,10 @@ export async function fulfill(env, order) {
   if (!response.ok) fail(503, 'LICENSE_PROVIDER_UNAVAILABLE');
   const license = await response.json();
   const expiry = license.expirationDate == null ? null : Date.parse(license.expirationDate);
+  const expectedExpiry = order.expires_at === null ? Date.parse('2099-12-31T23:59:59.000Z') : order.expires_at * 1000;
   if (license.licenseKey !== input.licenseKey || license.licenseScope !== input.licenseScope ||
       license.active !== true || license.ipLimit !== 1 || license.name !== order.id || !Number.isInteger(license.id) ||
-      expiry !== (order.expires_at === null ? null : order.expires_at * 1000)) fail(503, 'LICENSE_PROVIDER_MISMATCH');
+      Math.abs((expiry || 0) - (expectedExpiry || 0)) > 1000) fail(503, 'LICENSE_PROVIDER_MISMATCH');
   await env.LICENSE_DB.prepare("UPDATE lg_orders SET status='FULFILLED', provider_id=? WHERE id=? AND status='PAID'")
     .bind(license.id, order.id).run();
 }

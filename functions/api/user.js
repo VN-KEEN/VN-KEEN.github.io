@@ -18,11 +18,11 @@ async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
   const licenseKey = generateLicenseGateKey('VN-KEEN-SKIN');
   if (env?.LICENSEGATE_API_KEY) {
     try {
-      const expirationDate = days >= 9999 ? null : new Date(Date.now() + days * 86400 * 1000).toISOString();
+      const expirationDate = days >= 9999 ? '2099-12-31T23:59:59.000Z' : new Date(Date.now() + days * 86400 * 1000).toISOString();
       const res = await fetch('https://api.licensegate.io/admin/licenses', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer ' + env.LICENSEGATE_API_KEY,
+          'Authorization': env.LICENSEGATE_API_KEY,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -33,7 +33,10 @@ async function createLicenseGateLicense(env, planId = 'monthly', days = 30) {
           licenseScope: 'VN-KEEN-SKIN',
           expirationDate: expirationDate,
           ipLimit: 1,
-          validationLimit: null
+          validationPoints: 1000,
+          validationLimit: 1000,
+          replenishAmount: 1000,
+          replenishInterval: 'DAY'
         })
       });
       if (res.ok) {
