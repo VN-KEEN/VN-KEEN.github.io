@@ -22,3 +22,6 @@ Set the SePay webhook URL to:
 The browser only receives an order token. It never receives the LicenseGate or
 SePay secrets, and it shows a key only after the authenticated order status is
 `FULFILLED`.
+
+Production configuration is managed in the Cloudflare Pages project settings;
+environment changes take effect on the next deployment.
