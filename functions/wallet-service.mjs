@@ -13,6 +13,11 @@ export const PLANS = Object.freeze({
   lifetime: Object.freeze({ id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 2000000, days: null })
 });
 
+export const PRODUCTS = Object.freeze({
+  skin: Object.freeze({ id: 'skin', name: 'VN-KEEN-SKIN-VANTIX', scope: 'VN-KEEN-SKIN', prefix: 'VN-KEEN-SKIN' }),
+  aim: Object.freeze({ id: 'aim', name: 'VN-KEEN-AIM-ESSENTIALS', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
+});
+
 const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev']);
 
 function fail(status, code, message, details = {}) {
@@ -54,6 +59,10 @@ function validateRequestId(value) {
     fail(400, 'INVALID_REQUEST_ID', 'Mã yêu cầu mua không hợp lệ.');
   }
   return value;
+}
+
+function normalizeProduct(value) {
+  return typeof value === 'string' && Object.hasOwn(PRODUCTS, value) ? value : null;
 }
 
 function rows(result) {
@@ -154,11 +163,11 @@ export async function accountForUser(env, username) {
 export async function userData(env, account, now = Math.floor(Date.now() / 1000)) {
   const db = getDb(env);
   const [keyResult, ledgerResult, pendingResult] = await Promise.all([
-    db.prepare(`SELECT request_id AS id,plan,amount AS price,days,license_key AS key,created_at AS purchasedAt
+    db.prepare(`SELECT request_id AS id,product,plan,amount AS price,days,license_key AS key,created_at AS purchasedAt
       FROM wallet_orders WHERE username=? AND status='FULFILLED' ORDER BY created_at DESC`).bind(account.username).all(),
     db.prepare(`SELECT type,amount,description,reference_id AS referenceId,created_at AS createdAt
       FROM wallet_ledger WHERE username=? ORDER BY created_at DESC LIMIT 100`).bind(account.username).all(),
-    db.prepare(`SELECT request_id AS requestId,plan,status,created_at AS createdAt
+    db.prepare(`SELECT request_id AS requestId,product,plan,status,created_at AS createdAt
       FROM wallet_orders WHERE username=? AND status='PROCESSING' ORDER BY created_at DESC`).bind(account.username).all()
   ]);
   const total = Number(account.balance || 0);
@@ -171,7 +180,7 @@ export async function userData(env, account, now = Math.floor(Date.now() / 1000)
     depositCode: account.deposit_code || '',
     bank: { account: env.SEPAY_ACCOUNT_NUMBER || '', bank: env.SEPAY_BANK_CODE || 'MB', name: env.SEPAY_ACCOUNT_NAME || 'NGUYEN PHU QUY' },
     contact: account.contact || '',
-    keys: rows(keyResult).map(item => ({ ...item, planId: item.plan, plan: PLANS[item.plan]?.name || item.plan })),
+    keys: rows(keyResult).map(item => ({ ...item, productId: item.product, product: PRODUCTS[item.product]?.name || item.product, planId: item.plan, plan: PLANS[item.plan]?.name || item.plan })),
     transactions: rows(ledgerResult),
     pendingOrders: rows(pendingResult),
     asOf: now
@@ -249,17 +258,21 @@ async function logout(request, env, now) {
   return { success: true, message: 'Đã đăng xuất.' };
 }
 
-function makeLicenseKey() {
+function makeLicenseKey(product = 'skin') {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.getRandomValues(new Uint8Array(16));
   const block = start => Array.from({ length: 4 }, (_, index) => chars[bytes[start + index] % chars.length]).join('');
-  return `VN-KEEN-SKIN-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
+  const meta = PRODUCTS[product];
+  if (!meta) fail(400, 'INVALID_PRODUCT');
+  return `${meta.prefix}-${block(0)}-${block(4)}-${block(8)}-${block(12)}`;
 }
 
 async function createProviderLicense(env, order) {
   if (!env.LICENSEGATE_API_KEY) fail(202, 'LICENSE_PENDING', 'LicenseGate chưa được cấu hình. Số dư vẫn được giữ nguyên.');
   const expirationDate = order.days == null ? '2099-12-31T23:59:59.000Z' : new Date(Date.parse(order.created_at) + order.days * 86400 * 1000).toISOString();
-  const input = { active: true, name: 'WALLET-' + order.request_id, notes: 'VN-KEEN Wallet / ' + order.plan, licenseKey: order.license_key, licenseScope: 'VN-KEEN-SKIN', expirationDate, ipLimit: 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY' };
+  const product = PRODUCTS[order.product];
+  if (!product || !order.license_key?.startsWith(product.prefix + '-')) fail(202, 'LICENSE_PENDING', 'Sản phẩm của key không khớp. Liên hệ quản trị viên.');
+  const input = { active: true, name: 'WALLET-' + order.request_id, notes: 'VN-KEEN Wallet / ' + product.id + ' / ' + order.plan, licenseKey: order.license_key, licenseScope: product.scope, expirationDate, ipLimit: 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY' };
   let response;
   try {
     response = await fetch('https://api.licensegate.io/admin/licenses', { method: 'POST', headers: { Authorization: env.LICENSEGATE_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal: AbortSignal.timeout(8000) });
@@ -282,14 +295,18 @@ async function createProviderLicense(env, order) {
   return { providerId: Number.isInteger(data.id) ? data.id : null };
 }
 
-async function reserveOrder(env, username, plan, requestId, now) {
+async function reserveOrder(env, username, product, plan, requestId, now) {
   const db = getDb(env);
   const existing = await db.prepare('SELECT * FROM wallet_orders WHERE request_id=?').bind(requestId).first();
   if (existing) {
     if (existing.username !== username) fail(409, 'REQUEST_ID_REUSED', 'Mã yêu cầu mua đã thuộc về tài khoản khác.');
+    if (existing.product !== product) fail(409, 'REQUEST_ID_PRODUCT_MISMATCH', 'Mã yêu cầu đang chờ cho bản khác. Hãy tiếp tục đúng bản ban đầu.', {
+      requestId: existing.request_id, product: existing.product, plan: existing.plan,
+      pendingOrder: { requestId: existing.request_id, product: existing.product, plan: existing.plan, status: existing.status, createdAt: existing.created_at }
+    });
     if (existing.plan !== plan.id) fail(409, 'REQUEST_ID_PLAN_MISMATCH', 'Mã yêu cầu đang chờ cho gói khác. Hãy tiếp tục đúng gói ban đầu.', {
-      requestId: existing.request_id, plan: existing.plan,
-      pendingOrder: { requestId: existing.request_id, plan: existing.plan, status: existing.status, createdAt: existing.created_at }
+      requestId: existing.request_id, product: existing.product, plan: existing.plan,
+      pendingOrder: { requestId: existing.request_id, product: existing.product, plan: existing.plan, status: existing.status, createdAt: existing.created_at }
     });
     return { order: existing, claimed: false };
   }
@@ -297,9 +314,9 @@ async function reserveOrder(env, username, plan, requestId, now) {
   const stamp = new Date(now * 1000).toISOString();
   const leaseToken = newLeaseToken();
   const orderInsert = db.prepare(`INSERT INTO wallet_orders
-      (request_id,username,plan,amount,days,status,license_key,lease_token,lease_expires_at,created_at,updated_at)
-      VALUES (?,?,?,?,?,'PROCESSING',?,?,?,?,?)`)
-    .bind(requestId, username, plan.id, plan.amount, plan.days, makeLicenseKey(), leaseToken, now + PROCESSING_LEASE_SECONDS, stamp, stamp);
+      (request_id,username,product,plan,amount,days,status,license_key,lease_token,lease_expires_at,created_at,updated_at)
+      VALUES (?,?,?,?,?,?,'PROCESSING',?,?,?,?,?)`)
+    .bind(requestId, username, product, plan.id, plan.amount, plan.days, makeLicenseKey(product), leaseToken, now + PROCESSING_LEASE_SECONDS, stamp, stamp);
   // The order-insert trigger reserves funds or aborts this same statement.
   // No separate cleanup can be lost if the worker crashes after commit.
   try { await orderInsert.run(); }
@@ -307,15 +324,19 @@ async function reserveOrder(env, username, plan, requestId, now) {
     const duplicate = await db.prepare('SELECT * FROM wallet_orders WHERE request_id=?').bind(requestId).first();
     if (duplicate) {
       if (duplicate.username !== username) fail(409, 'REQUEST_ID_REUSED', 'Mã yêu cầu mua đã thuộc về tài khoản khác.');
+      if (duplicate.product !== product) fail(409, 'REQUEST_ID_PRODUCT_MISMATCH', 'Mã yêu cầu đang chờ cho bản khác.', {
+        requestId: duplicate.request_id, product: duplicate.product, plan: duplicate.plan,
+        pendingOrder: { requestId: duplicate.request_id, product: duplicate.product, plan: duplicate.plan, status: duplicate.status, createdAt: duplicate.created_at }
+      });
       if (duplicate.plan !== plan.id) fail(409, 'REQUEST_ID_PLAN_MISMATCH', 'Mã yêu cầu đang chờ cho gói khác.', {
-        requestId: duplicate.request_id, plan: duplicate.plan,
-        pendingOrder: { requestId: duplicate.request_id, plan: duplicate.plan, status: duplicate.status, createdAt: duplicate.created_at }
+        requestId: duplicate.request_id, product: duplicate.product, plan: duplicate.plan,
+        pendingOrder: { requestId: duplicate.request_id, product: duplicate.product, plan: duplicate.plan, status: duplicate.status, createdAt: duplicate.created_at }
       });
       return { order: duplicate, claimed: false };
     }
-    const pending = await db.prepare("SELECT request_id AS requestId,plan,status,created_at AS createdAt FROM wallet_orders WHERE username=? AND status='PROCESSING' ORDER BY created_at DESC LIMIT 1")
+    const pending = await db.prepare("SELECT request_id AS requestId,product,plan,status,created_at AS createdAt FROM wallet_orders WHERE username=? AND status='PROCESSING' ORDER BY created_at DESC LIMIT 1")
       .bind(username).first();
-    if (pending) fail(409, 'PURCHASE_PENDING', 'Đã có một yêu cầu mua đang chờ. Hãy tiếp tục bằng đúng mã yêu cầu đó.', { requestId: pending.requestId, plan: pending.plan, pendingOrder: pending });
+    if (pending) fail(409, 'PURCHASE_PENDING', 'Đã có một yêu cầu mua đang chờ. Hãy tiếp tục bằng đúng mã yêu cầu đó.', { requestId: pending.requestId, product: pending.product, plan: pending.plan, pendingOrder: pending });
     if (String(error?.message || '').includes('INSUFFICIENT_BALANCE')) fail(409, 'INSUFFICIENT_BALANCE', 'Số dư khả dụng không đủ cho gói này.');
     throw error;
   }
@@ -337,7 +358,7 @@ async function finalizeOrder(env, order, providerId, leaseToken) {
       db.prepare(`INSERT INTO wallet_ledger (id,username,type,amount,description,reference_id,created_at)
         SELECT ?,username,'BUY_KEY',?,?,?,? FROM wallet_orders
         WHERE request_id=? AND username=? AND status='PROCESSING' AND lease_token=?`)
-        .bind('BUY-' + order.request_id, -order.amount, `Mua ${PLANS[order.plan].name}`, 'BUY:' + order.request_id, stamp,
+        .bind('BUY-' + order.request_id, -order.amount, `Mua ${PRODUCTS[order.product].name} / ${PLANS[order.plan].name}`, 'BUY:' + order.request_id, stamp,
           order.request_id, order.username, leaseToken)
     ]);
     // A stale worker may have lost its lease between provider confirmation and
@@ -354,18 +375,20 @@ async function finalizeOrder(env, order, providerId, leaseToken) {
 
 async function pendingResponse(env, session, order, now, message) {
   const account = await accountForUser(env, session.username);
-  return { success: false, status: 'PENDING', code: 'LICENSE_PENDING', requestId: order.request_id, message: message || 'Đã nhận yêu cầu; hãy thử lại bằng đúng yêu cầu này.', user: await userData(env, account, now) };
+  return { success: false, status: 'PENDING', code: 'LICENSE_PENDING', requestId: order.request_id, product: order.product, plan: order.plan, message: message || 'Đã nhận yêu cầu; hãy thử lại bằng đúng yêu cầu này.', user: await userData(env, account, now) };
 }
 
 async function purchase(request, env, now) {
   const session = await sessionUser(request, env, now);
   const body = await readJson(request);
+  const product = normalizeProduct(body.product === undefined ? 'skin' : body.product);
+  if (!product) fail(400, 'INVALID_PRODUCT', 'Bản sản phẩm không hợp lệ.');
   const plan = typeof body.plan === 'string' && Object.hasOwn(PLANS, body.plan) ? PLANS[body.plan] : null;
   if (!plan) fail(400, 'INVALID_PLAN', 'Gói bản quyền không hợp lệ.');
   const requestId = validateRequestId(body.requestId);
   const db = getDb(env);
-  let { order, claimed, leaseToken } = await reserveOrder(env, session.username, plan, requestId, now);
-  if (order.status === 'FULFILLED') return { success: true, status: 'FULFILLED', key: order.license_key, requestId, user: await userData(env, await accountForUser(env, session.username), now) };
+  let { order, claimed, leaseToken } = await reserveOrder(env, session.username, product, plan, requestId, now);
+  if (order.status === 'FULFILLED') return { success: true, status: 'FULFILLED', key: order.license_key, requestId, product: order.product, plan: order.plan, user: await userData(env, await accountForUser(env, session.username), now) };
   if (order.status === 'FAILED') fail(409, order.error_code || 'PURCHASE_FAILED', 'Yêu cầu mua trước đó đã thất bại. Hãy tạo yêu cầu mới.');
   if (!claimed) {
     const leaseExpiry = Number(order.lease_expires_at || 0);
@@ -378,7 +401,7 @@ async function purchase(request, env, now) {
       .bind(leaseToken, now + PROCESSING_LEASE_SECONDS, stamp, requestId, now).run();
     if (Number(claimedLease?.meta?.changes ?? 0) !== 1) {
       order = await db.prepare('SELECT * FROM wallet_orders WHERE request_id=?').bind(requestId).first();
-      if (order?.status === 'FULFILLED') return { success: true, status: 'FULFILLED', key: order.license_key, requestId, user: await userData(env, await accountForUser(env, session.username), now) };
+      if (order?.status === 'FULFILLED') return { success: true, status: 'FULFILLED', key: order.license_key, requestId, product: order.product, plan: order.plan, user: await userData(env, await accountForUser(env, session.username), now) };
       return pendingResponse(env, session, order, now);
     }
     order = await db.prepare('SELECT * FROM wallet_orders WHERE request_id=?').bind(requestId).first();
@@ -404,7 +427,7 @@ async function purchase(request, env, now) {
   const fulfilled = await db.prepare('SELECT * FROM wallet_orders WHERE request_id=?').bind(requestId).first();
   if (fulfilled?.status !== 'FULFILLED') return pendingResponse(env, session, order, now);
   const account = await accountForUser(env, session.username);
-  return { success: true, status: 'FULFILLED', key: fulfilled.license_key, requestId, user: await userData(env, account, now) };
+  return { success: true, status: 'FULFILLED', key: fulfilled.license_key, requestId, product: fulfilled.product, plan: fulfilled.plan, user: await userData(env, account, now) };
 }
 
 export async function handleUser(request, env, forcedAction) {
@@ -433,6 +456,7 @@ export async function handleUser(request, env, forcedAction) {
     const status = Number(error.status) || 503;
     const body = { success: false, code: error.code || 'SERVICE_UNAVAILABLE', message: error.code ? error.message : 'Máy chủ tạm thời không khả dụng. Vui lòng thử lại.' };
     if (error.requestId) body.requestId = error.requestId;
+    if (error.product) body.product = error.product;
     if (error.plan) body.plan = error.plan;
     if (error.pendingOrder) body.pendingOrder = error.pendingOrder;
     return responseBody(body, status, request);

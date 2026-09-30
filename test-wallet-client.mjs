@@ -12,6 +12,10 @@ const walletStart = mainScript.indexOf('    // The server owns identity');
 const walletEnd = mainScript.indexOf("    window.addEventListener('DOMContentLoaded'", walletStart);
 assert(walletStart >= 0 && walletEnd > walletStart, 'wallet client section not found');
 const walletSource = mainScript.slice(walletStart, walletEnd);
+const productStart = mainScript.indexOf('    const PRODUCT_META =');
+const productEnd = mainScript.indexOf('    const PLAN_META =', productStart);
+const productSource = mainScript.slice(productStart, productEnd);
+assert(productStart >= 0 && productEnd > productStart, 'product picker source missing');
 
 function element(initial = {}) {
   const classes = new Set(initial.classes || []);
@@ -42,7 +46,7 @@ function makeHarness(hostname = 'vn-keen.github.io') {
     'nav-guest-zone', 'nav-user-zone', 'nav-user-name', 'nav-user-balance', 'nav-key-badge',
     'auth-alert', 'topup-qr-img', 'topup-bank-display', 'topup-amount-display',
     'topup-content-display', 'topup-copy-code', 'topup-listen-status', 'topupModal',
-    'buy-confirm-alert', 'buy-confirm-plan', 'buy-confirm-price', 'buy-confirm-balance',
+    'buy-confirm-alert', 'buy-confirm-plan', 'buy-confirm-product', 'buy-confirm-price', 'buy-confirm-balance',
     'buy-confirm-remaining', 'btn-execute-buy', 'buyConfirmModal', 'my-keys-list',
     'my-keys-empty', 'my-keys-pending', 'myKeysModal', 'authModal', 'tab-login',
     'tab-register', 'form-login', 'form-register', 'login-password', 'reg-password',
@@ -100,7 +104,8 @@ function makeHarness(hostname = 'vn-keen.github.io') {
   const expose = `
     globalThis.__wallet = {
       get base() { return USER_API_BASE; },
-      get state() { return { currentUser, sessionToken, pendingBuyPlan, sessionGeneration, topupCurrentContent, topupPollingInterval }; },
+      get state() { return { currentUser, currentProduct, sessionToken, pendingBuyPlan, pendingBuyProduct, sessionGeneration, topupCurrentContent, topupPollingInterval }; },
+      selectProduct,
       get elementMap() { return undefined; },
       setFetcher(fn) { globalThis.__setFetcher(fn); },
       setUser: setServerUser,
@@ -119,7 +124,7 @@ function makeHarness(hostname = 'vn-keen.github.io') {
     };
   `;
   context.__setFetcher = fn => { fetchImpl = fn; };
-  vm.runInNewContext(`${preamble}\n${walletSource}\n${expose}`, context, { filename: 'wallet-client.vm.js' });
+  vm.runInNewContext(`${preamble}\n${productSource}\n${walletSource}\n${expose}`, context, { filename: 'wallet-client.vm.js' });
   return { context, api: context.__wallet, storage, elements, intervals, setFetcher: fn => { fetchImpl = fn; } };
 }
 
@@ -159,7 +164,7 @@ function user(username, extra = {}) {
     pendingOrder: { requestId: first.requestId, plan: 'monthly', status: 'PENDING' }
   }));
   await h.api.execute();
-  assert.equal(JSON.stringify(h.api.readRequest()), JSON.stringify({ requestId: first.requestId, plan: 'monthly', status: 'PENDING' }));
+  assert.equal(JSON.stringify(h.api.readRequest()), JSON.stringify({ requestId: first.requestId, product: 'skin', plan: 'monthly', status: 'PENDING' }));
 }
 
 // A pending order returned by /me is recovered after a reload, even with no local id.
@@ -171,7 +176,7 @@ function user(username, extra = {}) {
     user: user('bob_2', { pendingOrders: [{ requestId: 'srv-req-1234', plan: 'daily', status: 'PENDING' }] })
   }));
   await h.api.restore();
-  assert.equal(JSON.stringify(h.api.readRequest()), JSON.stringify({ requestId: 'srv-req-1234', plan: 'daily', status: 'PENDING' }));
+  assert.equal(JSON.stringify(h.api.readRequest()), JSON.stringify({ requestId: 'srv-req-1234', product: 'skin', plan: 'daily', status: 'PENDING' }));
   assert.equal(h.api.state.pendingBuyPlan, 'daily');
 }
 
@@ -188,6 +193,7 @@ function user(username, extra = {}) {
   await h.api.restore();
   assert.equal(h.storage.get('vnkeen_wallet_request:legacy_6'), 'legacy-req-1234');
   assert.equal(h.api.readRequest().plan, null);
+  assert.equal(h.api.readRequest().product, 'skin');
 
   h.setFetcher(async () => response(200, {
     success: true,
@@ -274,6 +280,87 @@ function user(username, extra = {}) {
   h.api.clear();
   assert.equal(h.api.state.topupPollingInterval, null);
   assert.equal(h.api.state.topupCurrentContent, '');
+}
+
+// AIM selection is sent to the API and survives a timeout/reload with the same id.
+{
+  const h = makeHarness();
+  h.api.setToken('token-aim');
+  h.api.setUser(user('aim_buyer'));
+  h.api.selectProduct('essentials');
+  h.setFetcher(async () => response(200, { success: true, user: user('aim_buyer') }));
+  await h.api.prepare('daily');
+  assert.equal(h.api.state.pendingBuyProduct, 'aim');
+  assert.match(h.elements.get('buy-confirm-product').textContent, /AIM/);
+  let sent;
+  let resolvePurchase;
+  h.setFetcher((_url, options) => {
+    sent = JSON.parse(options.body);
+    return new Promise(resolve => { resolvePurchase = resolve; });
+  });
+  const purchase = h.api.execute();
+  h.api.selectProduct('vantix');
+  assert.equal(h.api.state.pendingBuyProduct, 'aim', 'picker must not change confirmed order');
+  resolvePurchase(response(202, { success: false, code: 'LICENSE_PENDING', ...sent }));
+  await purchase;
+  assert.equal(sent.product, 'aim');
+  assert.equal(sent.plan, 'daily');
+  assert.equal(h.api.readRequest().product, 'aim');
+
+  const reloaded = makeHarness();
+  for (const [key, value] of h.storage) reloaded.storage.set(key, value);
+  reloaded.setFetcher(async () => response(200, { success: true, user: user('aim_buyer', {
+    pendingOrders: [{ ...sent, status: 'PENDING' }]
+  }) }));
+  await reloaded.api.restore();
+  assert.equal(reloaded.api.state.currentProduct, 'essentials');
+  assert.equal(reloaded.api.state.pendingBuyProduct, 'aim');
+  reloaded.setFetcher(async (_url, options) => {
+    const retry = JSON.parse(options.body);
+    assert.deepEqual(retry, sent);
+    return response(202, { success: false, code: 'LICENSE_PENDING', ...retry });
+  });
+  await reloaded.api.execute();
+}
+
+// Switching to AIM must first recover a legacy SKIN attempt, never relabel it.
+{
+  const h = makeHarness();
+  h.api.setToken('token-old-skin');
+  h.storage.set('vnkeen_wallet_request:old_skin', JSON.stringify({ requestId: 'old-skin-1234', plan: 'daily' }));
+  h.api.setUser(user('old_skin'));
+  h.api.selectProduct('essentials');
+  h.setFetcher(async () => response(200, { success: true, user: user('old_skin') }));
+  await h.api.prepare('monthly');
+  assert.equal(h.api.state.pendingBuyProduct, 'skin');
+  assert.equal(h.api.state.pendingBuyPlan, 'daily');
+  assert.equal(h.api.state.currentProduct, 'vantix');
+  h.setFetcher(async (_url, options) => {
+    const sent = JSON.parse(options.body);
+    assert.deepEqual(sent, { product: 'skin', plan: 'daily', requestId: 'old-skin-1234' });
+    return response(202, { success: false, code: 'LICENSE_PENDING', ...sent });
+  });
+  await h.api.execute();
+}
+
+// A cross-tab pending conflict must display and retry the server's actual product.
+{
+  const h = makeHarness();
+  h.api.setToken('token-conflict');
+  h.api.setUser(user('conflict_buyer'));
+  h.setFetcher(async () => response(409, { success: false, code: 'PURCHASE_PENDING',
+    pendingOrder: { requestId: 'server-aim-1234', product: 'aim', plan: 'daily', status: 'PENDING' }
+  }));
+  await h.api.execute();
+  assert.equal(h.api.readRequest().product, 'aim');
+  assert.equal(h.api.state.pendingBuyProduct, 'aim');
+  assert.match(h.elements.get('buy-confirm-product').textContent, /AIM/);
+  h.setFetcher(async (_url, options) => {
+    const sent = JSON.parse(options.body);
+    assert.deepEqual(sent, { product: 'aim', plan: 'daily', requestId: 'server-aim-1234' });
+    return response(202, { success: false, code: 'LICENSE_PENDING', ...sent });
+  });
+  await h.api.execute();
 }
 
 console.log('wallet client tests passed');
