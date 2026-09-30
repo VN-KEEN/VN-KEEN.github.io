@@ -320,7 +320,7 @@
       <input type="file" id="vnkVisionInput" accept="image/png,image/jpeg,image/webp" hidden>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener">liên hệ Admin qua Telegram</a>. Không gửi mật khẩu, mã OTP hoặc key tại đây.
+          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="#contact">liên hệ Zalo trực tiếp bằng mã QR ở cuối trang</a>; Telegram là kênh dự phòng. Không gửi mật khẩu, mã OTP hoặc key tại đây.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
             <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
@@ -525,14 +525,14 @@
       '3. Chờ máy chủ xác nhận để số dư được cộng vào ví.\n' +
       '4. Vào **Bảng giá**, chọn đúng bản **VN-KEEN-SKIN-VANTIX** hoặc **VN-KEEN-AIM · ESSENTIALS**, rồi chọn gói và xác nhận mua bằng số dư.\n' +
       '5. Key được cấp trong **Kho License Key** của tài khoản.\n\n' +
-      'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Admin: https://t.me/VN_KEEN và không thanh toán lại.';
+      'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang (mục Liên hệ). Nếu cần, bạn cũng có thể nhắn Telegram: https://t.me/VN_KEEN. Không thanh toán lại.';
   }
 
 
   function supportFallback(text, hasVision = false) {
     const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     let answer;
-    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn đúng VANTIX/SKIN hoặc Essentials/AIM cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Key SKIN và AIM là hai loại riêng, không dùng chéo. Chỉ khi ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi thì liên hệ Admin qua Telegram để hỗ trợ; không thanh toán lại.';
+    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn đúng VANTIX/SKIN hoặc Essentials/AIM cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Key SKIN và AIM là hai loại riêng, không dùng chéo. Nếu ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang; Telegram là kênh dự phòng: https://t.me/VN_KEEN. Không thanh toán lại.';
     else if (/vac|\bban\b|an toan|den bu|hoan tien/.test(q)) answer = 'Theo trải nghiệm của chúng tôi qua nhiều phiên bản, chưa ghi nhận trường hợp bị ban. VN-KEEN cam kết đền tài khoản tương đương và hoàn tiền gói key nếu bị ban do sử dụng VN-KEEN. Liên hệ Admin qua Telegram để được xử lý.';
     else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
     else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
