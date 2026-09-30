@@ -31,6 +31,7 @@ function element(initial = {}) {
     appendChild() {},
     removeAttribute(name) { delete this[name]; },
     setAttribute(name, value) { this[name] = value; },
+    insertAdjacentHTML() {},
     addEventListener() {}
   };
 }
@@ -50,7 +51,9 @@ function makeHarness(hostname = 'vn-keen.github.io') {
     'buy-confirm-remaining', 'btn-execute-buy', 'buyConfirmModal', 'my-keys-list',
     'my-keys-empty', 'my-keys-pending', 'myKeysModal', 'authModal', 'tab-login',
     'tab-register', 'form-login', 'form-register', 'login-password', 'reg-password',
-    'btn-login-submit', 'btn-reg-submit'
+    'btn-login-submit', 'btn-reg-submit', 'selected-product-label', 'selected-product-scope',
+    'selected-product-note', 'selected-product-download', 'pricing-product-context',
+    'pricing-scope-context', 'pricing-scope-note', 'pricing-selection-summary'
   ];
   for (const id of ids) elements.set(id, element({ id, textContent: '', value: '', classes: ['hidden'] }));
   elements.get('topup-qr-img').src = 'stale-previous-user-qr';
@@ -147,6 +150,23 @@ function user(username, extra = {}) {
   assert.equal(hosted.api.base, 'https://vn-keen.pages.dev/api/user?action=');
   const local = makeHarness('localhost');
   assert.equal(local.api.base, '/api/user?action=');
+}
+
+// Product selection updates the displayed scope and download together. The
+// price tiers are shared, but the selected product is never implied to share
+// a key or LicenseGate scope.
+{
+  const h = makeHarness();
+  h.api.selectProduct('essentials');
+  assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-AIM-ESSENTIALS');
+  assert.equal(h.elements.get('selected-product-scope').textContent, 'SCOPE VN-KEEN-AIM');
+  assert.match(h.elements.get('selected-product-note').textContent, /không mở được VANTIX\/SKIN/);
+  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-SKIN-ESSENTIALS.zip');
+  assert.match(h.elements.get('pricing-scope-note').innerHTML, /VN-KEEN-AIM/);
+  h.api.selectProduct('vantix');
+  assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-SKIN-VANTIX');
+  assert.equal(h.elements.get('selected-product-scope').textContent, 'SCOPE VN-KEEN-SKIN');
+  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-SKIN-VANTIX.zip');
 }
 
 // A timeout followed by PURCHASE_PENDING must retain the exact id and old plan.
