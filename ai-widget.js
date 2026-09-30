@@ -144,6 +144,15 @@
       background: rgba(239, 68, 68, 0.2);
       color: #ef4444;
     }
+    .vnk-act-btn.vnk-vision-btn {
+      color: #67e8f9;
+      background: rgba(6, 182, 212, 0.14);
+    }
+    .vnk-act-btn.vnk-vision-btn:hover,
+    .vnk-act-btn.vnk-vision-btn.has-image {
+      background: rgba(34, 211, 238, 0.28);
+      color: #cffafe;
+    }
     .vnk-messages {
       flex: 1;
       overflow-y: auto;
@@ -217,6 +226,14 @@
       gap: 8px;
       align-items: center;
     }
+    .vnk-vision-status {
+      padding: 7px 14px 0;
+      background: rgba(15, 23, 42, 0.9);
+      color: #a5f3fc;
+      font-size: 10px;
+      font-family: monospace;
+    }
+    .vnk-vision-status[hidden] { display: none; }
     .vnk-input {
       flex: 1;
       background: rgba(2, 6, 23, 0.7);
@@ -282,10 +299,13 @@
           <img src="images/VN-KEEN.jpg" alt="VN-KEEN AI" onerror="this.src='favicon.jpg'">
           <div>
             <h4>CHĂM SÓC KHÁCH HÀNG</h4>
-            <p>Trả lời tự động · Liên hệ Admin khi cần</p>
+            <p>Trả lời tự động · Nạp ví & mua key trên website</p>
           </div>
         </div>
         <div class="vnk-chat-actions">
+          <button class="vnk-act-btn vnk-vision-btn" id="vnkVisionBtn" title="Gửi ảnh để AI nhìn và phân tích" aria-label="Gửi ảnh để AI nhìn và phân tích">
+            <i class="fa-solid fa-eye"></i>
+          </button>
           <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="vnk-act-btn" title="Liên hệ Admin qua Telegram" style="text-decoration:none;">
             <i class="fa-solid fa-up-right-from-square"></i>
           </a>
@@ -297,9 +317,10 @@
           </button>
         </div>
       </div>
+      <input type="file" id="vnkVisionInput" accept="image/png,image/jpeg,image/webp" hidden>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Trợ lý AI hỗ trợ câu hỏi thường gặp; câu trả lời có thể cần kiểm tra lại. Với lỗi key hoặc thanh toán, hãy <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener">liên hệ Admin qua Telegram</a>. Không gửi mật khẩu, mã OTP hoặc key tại đây.
+          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener">liên hệ Admin qua Telegram</a>. Không gửi mật khẩu, mã OTP hoặc key tại đây.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
             <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
@@ -308,6 +329,7 @@
           </div>
         </div>
       </div>
+      <div class="vnk-vision-status" id="vnkVisionStatus" role="status" aria-live="polite" hidden></div>
       <div class="vnk-input-zone">
         <input type="text" class="vnk-input" id="vnkInput" placeholder="Nhập câu hỏi về cài đặt, key hoặc hỗ trợ..." autocomplete="off">
         <button class="vnk-send-btn" id="vnkSendBtn" title="Gửi câu hỏi">
@@ -330,12 +352,16 @@
   const toggleBtn = document.getElementById('vnkToggleBtn');
   const closeBtn = document.getElementById('vnkCloseBtn');
   const clearBtn = document.getElementById('vnkClearBtn');
+  const visionBtn = document.getElementById('vnkVisionBtn');
+  const visionInput = document.getElementById('vnkVisionInput');
+  const visionStatus = document.getElementById('vnkVisionStatus');
   const sendBtn = document.getElementById('vnkSendBtn');
   const input = document.getElementById('vnkInput');
   const messagesContainer = document.getElementById('vnkMessages');
 
   let history = [];
   let isThinking = false;
+  let pendingVision = null;
 
   function toggleBox() {
     box.classList.toggle('open');
@@ -347,8 +373,89 @@
   toggleBtn.addEventListener('click', toggleBox);
   closeBtn.addEventListener('click', () => box.classList.remove('open'));
 
+  function clearVisionAttachment() {
+    pendingVision = null;
+    visionInput.value = '';
+    visionBtn.classList.remove('has-image');
+    visionStatus.hidden = true;
+    visionStatus.textContent = '';
+  }
+
+  function setVisionStatus(text) {
+    visionStatus.textContent = text;
+    visionStatus.hidden = !text;
+  }
+
+  function prepareVisionImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !/^image\/(png|jpe?g|webp)$/i.test(file.type)) {
+        reject(new Error('Chỉ nhận ảnh PNG, JPG hoặc WebP.'));
+        return;
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        reject(new Error('Ảnh tối đa 12 MB.'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Không đọc được ảnh.'));
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => reject(new Error('Ảnh không hợp lệ.'));
+        image.onload = () => {
+          const maxSide = 1600;
+          const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const context = canvas.getContext('2d');
+          if (!context) {
+            reject(new Error('Trình duyệt không hỗ trợ đọc ảnh.'));
+            return;
+          }
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(blob => {
+            if (!blob) {
+              reject(new Error('Không chuẩn bị được ảnh.'));
+              return;
+            }
+            const encoded = new FileReader();
+            encoded.onerror = () => reject(new Error('Không mã hóa được ảnh.'));
+            encoded.onload = () => {
+              const value = String(encoded.result || '');
+              const comma = value.indexOf(',');
+              if (comma < 0) {
+                reject(new Error('Dữ liệu ảnh không hợp lệ.'));
+                return;
+              }
+              resolve({ mimeType: 'image/jpeg', data: value.slice(comma + 1) });
+            };
+            encoded.readAsDataURL(blob);
+          }, 'image/jpeg', 0.86);
+        };
+        image.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  visionBtn.addEventListener('click', () => visionInput.click());
+  visionInput.addEventListener('change', async () => {
+    const file = visionInput.files?.[0];
+    if (!file) return;
+    setVisionStatus('Đang chuẩn bị ảnh cho AI…');
+    try {
+      pendingVision = await prepareVisionImage(file);
+      visionBtn.classList.add('has-image');
+      setVisionStatus(`👁 Đã chọn ảnh “${file.name.slice(0, 48)}”. Nhập câu hỏi hoặc bấm gửi để AI phân tích.`);
+    } catch (error) {
+      clearVisionAttachment();
+      setVisionStatus(`Không thể dùng ảnh: ${error.message}`);
+    }
+  });
+
   clearBtn.addEventListener('click', () => {
     history = [];
+    clearVisionAttachment();
     messagesContainer.innerHTML = `
       <div class="vnk-msg ai">
         Đã làm mới đoạn chat! Bạn cần trợ lý tự động hỗ trợ điều gì?
@@ -390,18 +497,50 @@
     return div;
   }
 
+  function getPageContext() {
+    const hash = window.location.hash || '#top';
+    let sectionTitle = '';
+    try {
+      const section = document.querySelector(hash);
+      sectionTitle = section?.querySelector('h1,h2,h3')?.textContent?.trim() || '';
+    } catch {}
+    const selectedProduct = document.querySelector('#selected-product-label')?.textContent?.trim() || '';
+    return [
+      `Trang: ${window.location.pathname}${hash}`,
+      `Tiêu đề: ${document.title}`,
+      sectionTitle ? `Mục đang xem: ${sectionTitle}` : '',
+      selectedProduct ? `Sản phẩm đang chọn: ${selectedProduct}` : ''
+    ].filter(Boolean).join('\n').slice(0, 1400);
+  }
 
-  function supportFallback(text) {
+  function getDirectSupportAnswer(text) {
+    const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    if (!/(nap( tien| vi)?|thanh toan|mua key|mua.*nhu the nao|vietqr|chuyen khoan|so du)/.test(q)) {
+      return '';
+    }
+
+    return 'Có, bạn thanh toán trực tiếp ngay trên website nhé.\n\n' +
+      '1. Đăng nhập hoặc đăng ký tài khoản.\n' +
+      '2. Bấm **Nạp** trên thanh menu, chọn số tiền và quét VietQR.\n' +
+      '3. Chờ máy chủ xác nhận để số dư được cộng vào ví.\n' +
+      '4. Vào **Bảng giá**, chọn đúng bản **VN-KEEN-SKIN-VANTIX** hoặc **VN-KEEN-AIM · ESSENTIALS**, rồi chọn gói và xác nhận mua bằng số dư.\n' +
+      '5. Key được cấp trong **Kho License Key** của tài khoản.\n\n' +
+      'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Admin: https://t.me/VN_KEEN và không thanh toán lại.';
+  }
+
+
+  function supportFallback(text, hasVision = false) {
     const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     let answer;
-    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Xem Bảng giá trên trang chủ. Nếu đã thanh toán mà chưa nhận key, liên hệ Admin để kiểm tra giao dịch.';
+    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn đúng VANTIX/SKIN hoặc Essentials/AIM cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Key SKIN và AIM là hai loại riêng, không dùng chéo. Chỉ khi ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi thì liên hệ Admin qua Telegram để hỗ trợ; không thanh toán lại.';
     else if (/vac|\bban\b|an toan|den bu|hoan tien/.test(q)) answer = 'Theo trải nghiệm của chúng tôi qua nhiều phiên bản, chưa ghi nhận trường hợp bị ban. VN-KEEN cam kết đền tài khoản tương đương và hoàn tiền gói key nếu bị ban do sử dụng VN-KEEN. Liên hệ Admin qua Telegram để được xử lý.';
     else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
     else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
     else if (/cai|tai|khoi chay/.test(q)) answer = 'Bấm TẢI VN-KEEN-SKIN trên trang chủ, giải nén, mở VN-KEEN-SKIN.exe và nhập key còn hạn. Nếu có lỗi, gửi ảnh thông báo cho Admin; không gửi mật khẩu hoặc mã OTP.';
     else if (/key|hwid|het han/.test(q)) answer = 'Với lỗi key, hết hạn hoặc đổi máy/HWID, hãy liên hệ Admin để kiểm tra. Khung trả lời tự động không thể xác nhận hay thay đổi thông tin key của bạn.';
     else answer = 'Hiện chưa thể xử lý câu hỏi này tự động. Bạn vui lòng liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ.';
-    return 'AI hiện không khả dụng. Thông tin FAQ dự phòng:\n\n' + answer + '\n\nAdmin: https://t.me/VN_KEEN';
+    const visionNote = hasVision ? '\n\nẢnh đã được nhận nhưng máy chủ AI hiện chưa phân tích được; bạn có thể thử gửi lại ảnh rõ hơn.' : '';
+    return 'AI hiện không khả dụng. Thông tin FAQ dự phòng:\n\n' + answer + visionNote + '\n\nKênh Telegram chỉ dành cho hỗ trợ giao dịch hoặc kỹ thuật khi gặp lỗi: https://t.me/VN_KEEN';
   }
 
   async function requestWithRetry(url, options) {
@@ -424,12 +563,22 @@
   }
 
   async function handleSend(userText) {
-    const text = (userText || input.value || '').trim();
+    const attachedImage = pendingVision;
+    const typedText = (userText || input.value || '').trim();
+    const text = typedText || (attachedImage ? 'Hãy nhìn ảnh đính kèm và cho tôi biết tình trạng, nguyên nhân có thể có và cách xử lý.' : '');
     if (!text || isThinking) return;
 
     input.value = '';
-    appendMessage('user', text);
+    appendMessage('user', attachedImage ? `${text}\n📷 Đã đính kèm ảnh để AI phân tích.` : text);
     history.push({ role: 'user', text });
+    clearVisionAttachment();
+
+    const directReply = attachedImage ? '' : getDirectSupportAnswer(text);
+    if (directReply) {
+      appendMessage('ai', directReply);
+      history.push({ role: 'assistant', text: directReply });
+      return;
+    }
 
     isThinking = true;
     const typingNode = showTyping();
@@ -445,23 +594,32 @@
       try {
         res = await fetch(apiUrl, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history: history.slice(0, -1).slice(-6) }),
+          body: JSON.stringify({
+            message: text,
+            history: history.slice(0, -1).slice(-6),
+            pageContext: getPageContext(),
+            image: attachedImage || undefined
+          }),
           signal: controller.signal
         });
         data = await res.json();
       } finally { clearTimeout(timer); }
       if (data.geo_blocked && data.direct_key) {
         const { routeChat } = await import('./ai-router.mjs?v=rotation-1');
-        data = await routeChat(data.direct_key, history.slice(-7).map(item => ({
-          role: item.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: item.text }]
-        })), data.system_instruction || '');
+        const geoContents = history.slice(-7).map((item, index, items) => {
+          const parts = [{ text: item.text }];
+          if (attachedImage && index === items.length - 1 && item.role === 'user') {
+            parts.push({ inlineData: attachedImage });
+          }
+          return { role: item.role === 'assistant' ? 'model' : 'user', parts };
+        });
+        data = await routeChat(data.direct_key, geoContents, data.system_instruction || '');
       }
 
       typingNode.remove();
 
       if (!res.ok || data.ok === false || data.geo_blocked) {
-        appendMessage('ai', supportFallback(text));
+        appendMessage('ai', supportFallback(text, Boolean(attachedImage)));
         return;
       }
 
@@ -471,7 +629,7 @@
 
     } catch (err) {
       typingNode.remove();
-      appendMessage('ai', supportFallback(text));
+      appendMessage('ai', supportFallback(text, Boolean(attachedImage)));
     } finally {
       isThinking = false;
     }
