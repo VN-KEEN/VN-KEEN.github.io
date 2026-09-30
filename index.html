@@ -489,7 +489,12 @@
 
         <a href="VN-KEEN-SKIN-VANTIX.zip" download onclick="playSfx('gold')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-all">
           <div class="px-3.5 py-1.5 rounded-xl bg-slate-950/90 group-hover:bg-slate-950/40 transition-all flex items-center gap-1.5 text-xs font-cyber font-black tracking-wider text-emerald-300">
-            <i class="fa-brands fa-telegram text-emerald-400 text-sm group-hover:text-black"></i> TẢI VN-KEEN-SKIN VANTIX
+            <i class="fa-brands fa-telegram text-emerald-400 text-sm group-hover:text-black"></i> TẢI VANTIX
+          </div>
+        </a>
+        <a href="VN-KEEN-SKIN-ESSENTIALS.zip" download onclick="playSfx('gold')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 p-[1px] shadow-[0_0_20px_rgba(34,211,238,0.35)] hover:scale-105 transition-all">
+          <div class="px-3.5 py-1.5 rounded-xl bg-slate-950/90 group-hover:bg-slate-950/40 transition-all flex items-center gap-1.5 text-xs font-cyber font-black tracking-wider text-cyan-300">
+            <i class="fa-solid fa-crosshairs text-cyan-400 text-sm group-hover:text-black"></i> TẢI ESSENTIALS
           </div>
         </a>
 
@@ -537,7 +542,11 @@
       <div class="hero-actions mt-10 flex w-full max-w-md flex-col items-center gap-4 sm:max-w-none sm:flex-row sm:justify-center">
         <a href="VN-KEEN-SKIN-VANTIX.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 font-sans text-lg font-black text-slate-950 shadow-[0_0_35px_rgba(16,185,129,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(16,185,129,0.9)] transition-all flex items-center justify-center gap-2.5 border-2 border-emerald-300">
           <i class="fa-solid fa-download text-2xl text-slate-950"></i>
-          <span>TẢI VN-KEEN-SKIN VANTIX</span>
+          <span>TẢI VANTIX</span>
+        </a>
+        <a href="VN-KEEN-SKIN-ESSENTIALS.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 font-sans text-lg font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,0.45)] hover:scale-105 hover:shadow-[0_0_50px_rgba(34,211,238,0.75)] transition-all flex items-center justify-center gap-2.5 border-2 border-cyan-300">
+          <i class="fa-solid fa-crosshairs text-2xl text-slate-950"></i>
+          <span>TẢI ESSENTIALS</span>
         </a>
         <a href="#pricing" onclick="playSfx('click')" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-display text-base font-black text-black shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 transition-all flex items-center justify-center gap-2">
           <i class="fa-solid fa-key text-black"></i> MUA KEY BẢN QUYỀN
@@ -707,12 +716,44 @@
           BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
         <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Hệ thống cấp License Key LicenseGate sau khi giao dịch VietQR được xác nhận. Kích hoạt bảo mật (1 IP Lock), định dạng VN-KEEN-SKIN-XXXX-XXXX-XXXX-XXXX, trải nghiệm trọn vẹn 14,000+ skins CS2!
+           Hệ thống cấp License Key LicenseGate sau khi giao dịch VietQR được xác nhận. Chọn đúng bản VANTIX hoặc ESSENTIALS trước khi mua; cả hai dùng cùng key scope VN-KEEN-SKIN và bảng giá bên dưới.
         </p>
       </div>
 
-      <!-- 3 Pricing Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+       <!-- PRODUCT PICKER: two separate download/key destinations using the same price tiers -->
+       <div class="max-w-5xl mx-auto mb-10">
+         <p class="text-center text-xs font-cyber font-bold tracking-[0.22em] text-cyan-300 uppercase mb-4">CHỌN BẢN DÙNG VÀ MỤC MUA KEY RIÊNG</p>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+           <button type="button" data-product-option="vantix" onclick="selectProduct('vantix'); playSfx('click')" class="product-option group text-left rounded-2xl p-5 border-2 border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(16,185,129,0.18)] transition-all hover:-translate-y-1">
+             <div class="flex items-center justify-between gap-3">
+               <div>
+                 <span class="text-[10px] font-mono font-bold tracking-widest text-emerald-300">MỤC 01 · SKIN</span>
+                 <h3 class="mt-1 font-cyber text-xl font-black text-white">VN-KEEN-SKIN-VANTIX</h3>
+               </div>
+               <i class="fa-solid fa-paintbrush text-emerald-300 text-xl"></i>
+             </div>
+             <p class="mt-2 text-xs text-muted">Bản Vantix 2.1.2 cho bộ tính năng skin.</p>
+             <span class="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-3 py-2 text-[11px] font-cyber font-black text-slate-950">CHỌN GÓI VANTIX <i class="fa-solid fa-arrow-down"></i></span>
+           </button>
+           <button type="button" data-product-option="essentials" onclick="selectProduct('essentials'); playSfx('click')" class="product-option group text-left rounded-2xl p-5 border-2 border-white/15 bg-cyan-500/5 transition-all hover:-translate-y-1 hover:border-cyan-300/80">
+             <div class="flex items-center justify-between gap-3">
+               <div>
+                 <span class="text-[10px] font-mono font-bold tracking-widest text-cyan-300">MỤC 02 · ESSENTIALS</span>
+                 <h3 class="mt-1 font-cyber text-xl font-black text-white">VN-KEEN-ESSENTIALS</h3>
+               </div>
+               <i class="fa-solid fa-crosshairs text-cyan-300 text-xl"></i>
+             </div>
+             <p class="mt-2 text-xs text-muted">Bản Essentials external, box đã tắt sẵn trong gói tải.</p>
+             <span class="mt-4 inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-3 py-2 text-[11px] font-cyber font-black text-slate-950">CHỌN GÓI ESSENTIALS <i class="fa-solid fa-arrow-down"></i></span>
+           </button>
+         </div>
+         <p class="mt-4 text-center text-xs font-mono text-muted">Đang chọn: <strong id="selected-product-label" class="text-emerald-300">VN-KEEN-SKIN-VANTIX</strong> · sau đó chọn thời hạn bên dưới để mua bằng số dư ví.</p>
+       </div>
+
+       <!-- 3 Pricing Cards Grid -->
+       <div id="pricing-tiers" class="max-w-6xl mx-auto">
+         <p class="mb-5 text-center text-xs font-mono text-muted">Mua key cho: <strong id="pricing-product-context" class="text-emerald-300">VN-KEEN-SKIN-VANTIX</strong></p>
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
         
         <!-- PLAN 1: 1 NGÀY (20.000đ) -->
         <div class="glass-panel rounded-3xl p-7 border border-white/10 hover:border-cyan-400/50 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
@@ -814,9 +855,10 @@
               <i class="fa-solid fa-infinity"></i> MUA VĨNH VIỄN (2.000.000đ)
             </button>
           </div>
-        </div>
+         </div>
+       </div>
 
-      </div>
+    </div>
 
     </div>
   </section>
@@ -851,7 +893,7 @@
             <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
           </summary>
           <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
-            Bấm <strong>TẢI VN-KEEN-SKIN VANTIX</strong>, giải nén và mở <strong>VN-KEEN-SKIN-VANTIX.exe</strong>. Nhập key LicenseGate còn hạn để đăng nhập và khởi chạy Vantix. Nếu chưa có key, chọn gói phù hợp và liên hệ Admin qua Telegram để được hỗ trợ. File tải về miễn phí; key sử dụng theo bảng giá bên trên.
+            Chọn đúng mục <strong>VANTIX</strong> hoặc <strong>ESSENTIALS</strong>, tải ZIP tương ứng rồi giải nén. Mở file chạy trong gói và nhập key LicenseGate còn hạn; cả hai bản dùng chung key scope <strong>VN-KEEN-SKIN</strong> và bảng giá bên trên.
           </p>
         </details>
 
@@ -1064,9 +1106,14 @@
 
         <!-- Action Buttons -->
         <div class="space-y-2.5 pt-2">
-          <a href="VN-KEEN-SKIN-VANTIX.zip" download class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 font-cyber font-black text-black text-sm tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:scale-[1.02] transition-all">
-            <i class="fa-solid fa-download mr-1.5"></i> TẢI VN-KEEN-SKIN VANTIX
-          </a>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <a href="VN-KEEN-SKIN-VANTIX.zip" download class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 font-cyber font-black text-black text-xs tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:scale-[1.02] transition-all text-center">
+              <i class="fa-solid fa-download mr-1.5"></i> TẢI VANTIX
+            </a>
+            <a href="VN-KEEN-SKIN-ESSENTIALS.zip" download class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-300 to-blue-400 font-cyber font-black text-slate-950 text-xs tracking-wider shadow-[0_0_25px_rgba(34,211,238,0.35)] hover:scale-[1.02] transition-all text-center">
+              <i class="fa-solid fa-crosshairs mr-1.5"></i> TẢI ESSENTIALS
+            </a>
+          </div>
           <button type="button" onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-muted hover:text-fg transition-all">
             Đóng Cửa Sổ
           </button>
@@ -1302,9 +1349,14 @@
 
       <!-- Footer Buttons -->
       <div class="mt-4 pt-4 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <a href="VN-KEEN-SKIN-VANTIX.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
-          <i class="fa-brands fa-telegram text-sm"></i> TẢI VN-KEEN-SKIN VANTIX
-        </a>
+        <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+          <a href="VN-KEEN-SKIN-VANTIX.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
+            <i class="fa-solid fa-download text-sm"></i> TẢI VANTIX
+          </a>
+          <a href="VN-KEEN-SKIN-ESSENTIALS.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
+            <i class="fa-solid fa-crosshairs text-sm"></i> TẢI ESSENTIALS
+          </a>
+        </div>
         <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 font-sans text-xs flex items-center justify-center gap-1.5 transition">
           <i class="fa-brands fa-discord text-indigo-400"></i> Hướng Dẫn Kích Hoạt
         </a>
@@ -1337,6 +1389,10 @@
           <span class="text-muted uppercase">Gói Bản Quyền:</span>
           <span id="buy-confirm-plan" class="font-bold text-white font-cyber text-sm">Gói 30 Ngày</span>
         </div>
+         <div class="flex items-center justify-between pb-2 border-b border-white/10">
+           <span class="text-muted uppercase">Bản sử dụng:</span>
+           <span id="buy-confirm-product" class="font-bold text-cyan-300 font-cyber text-sm">VN-KEEN-SKIN-VANTIX</span>
+         </div>
         <div class="flex items-center justify-between pb-2 border-b border-white/10">
           <span class="text-muted uppercase">Giá Gói:</span>
           <span id="buy-confirm-price" class="font-bold text-amber-400 text-sm">300.000đ</span>
@@ -1993,6 +2049,39 @@
     /* ============================================================
        7. PLAN DISPLAY & SERVER WALLET CHECKOUT
        ============================================================ */
+    const PRODUCT_META = {
+      vantix: { id: 'vantix', name: 'VN-KEEN-SKIN-VANTIX', file: 'VN-KEEN-SKIN-VANTIX.zip' },
+      essentials: { id: 'essentials', name: 'VN-KEEN-ESSENTIALS', file: 'VN-KEEN-SKIN-ESSENTIALS.zip' }
+    };
+
+    let currentProduct = 'vantix';
+
+    function selectProduct(id) {
+      currentProduct = PRODUCT_META[id] ? id : 'vantix';
+      const product = PRODUCT_META[currentProduct];
+      const label = document.getElementById('selected-product-label');
+      if (label) {
+        label.textContent = product.name;
+        label.className = currentProduct === 'essentials' ? 'text-cyan-300' : 'text-emerald-300';
+      }
+      const pricingContext = document.getElementById('pricing-product-context');
+      if (pricingContext) {
+        pricingContext.textContent = product.name;
+        pricingContext.className = currentProduct === 'essentials' ? 'text-cyan-300' : 'text-emerald-300';
+      }
+      const confirm = document.getElementById('buy-confirm-product');
+      if (confirm) confirm.textContent = product.name;
+      document.querySelectorAll('[data-product-option]').forEach((option) => {
+        const selected = option.dataset.productOption === currentProduct;
+        option.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        option.classList.toggle('border-white/15', !selected);
+        option.classList.toggle('border-emerald-400/80', selected && currentProduct === 'vantix');
+        option.classList.toggle('border-cyan-300/80', selected && currentProduct === 'essentials');
+        option.classList.toggle('bg-emerald-500/10', selected && currentProduct === 'vantix');
+        option.classList.toggle('bg-cyan-500/10', selected && currentProduct === 'essentials');
+      });
+    }
+
     const PLAN_META = {
       daily: { id: 'daily', name: 'Gói Thuê 1 Ngày (24H)', amount: 20000, price: '20.000đ', period: '/ 1 Ngày', days: 1 },
       monthly: { id: 'monthly', name: 'Gói Thuê 30 Ngày (1 Tháng)', amount: 300000, price: '300.000đ', period: '/ 30 Ngày', days: 30 },
@@ -2589,8 +2678,10 @@
       const hasExistingRequest = Boolean(existingRequest);
       if (existingRequest?.plan && existingRequest.plan !== pendingBuyPlan) pendingBuyPlan = existingRequest.plan;
       const meta = PLAN_META[pendingBuyPlan] || PLAN_META.monthly;
+      const productMeta = PRODUCT_META[currentProduct] || PRODUCT_META.vantix;
       const available = Number(currentUser.availableBalance ?? currentUser.balance ?? 0);
       document.getElementById('buy-confirm-plan').textContent = meta.name;
+      document.getElementById('buy-confirm-product').textContent = productMeta.name;
       document.getElementById('buy-confirm-price').textContent = meta.price;
       document.getElementById('buy-confirm-balance').textContent = formatVnd(available);
       document.getElementById('buy-confirm-remaining').textContent = formatVnd(Math.max(0, available - meta.amount));
@@ -2609,7 +2700,10 @@
       playSfx('click');
     }
 
-    function openCheckoutSmart(planId) { void prepareWalletPurchase(planId); }
+    function openCheckoutSmart(planId, productId) {
+      if (productId) selectProduct(productId);
+      void prepareWalletPurchase(planId);
+    }
 
     function closeBuyConfirmModal() {
       const modal = document.getElementById('buyConfirmModal');
@@ -2785,6 +2879,7 @@
       initPlexusNetwork();
       buildCaseCarousel();
 
+      selectProduct('vantix');
       selectPlan('monthly');
       updateUserHeaderUI();
 
