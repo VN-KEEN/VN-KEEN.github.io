@@ -323,7 +323,7 @@
           Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="#contact">liên hệ Zalo trực tiếp bằng mã QR ở cuối trang</a>; Telegram là kênh dự phòng. Không gửi mật khẩu, mã OTP hoặc key tại đây.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-            <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
+            <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
             <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
             <span class="vnk-chip" data-q="Skin AK-47 và AWP nào xịn nhất?">⚡ AK-47 & AWP xịn</span>
           </div>
@@ -461,7 +461,7 @@
         Đã làm mới đoạn chat! Bạn cần trợ lý tự động hỗ trợ điều gì?
         <div class="vnk-chips">
           <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-          <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
+          <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
           <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
         </div>
       </div>
@@ -533,10 +533,10 @@
     const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     let answer;
     if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn đúng VANTIX/SKIN hoặc Essentials/AIM cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Key SKIN và AIM là hai loại riêng, không dùng chéo. Nếu ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang; Telegram là kênh dự phòng: https://t.me/VN_KEEN. Không thanh toán lại.';
-    else if (/vac|\bban\b|an toan|den bu|hoan tien/.test(q)) answer = 'Theo trải nghiệm của chúng tôi qua nhiều phiên bản, chưa ghi nhận trường hợp bị ban. VN-KEEN cam kết đền tài khoản tương đương và hoàn tiền gói key nếu bị ban do sử dụng VN-KEEN. Liên hệ Admin qua Telegram để được xử lý.';
+    else if (/vac|\bban\b|an toan|den bu|hoan tien|rui ro|nha phat hanh/.test(q)) answer = 'Không thể dự đoán hoặc bảo đảm kết quả đối với tài khoản. Phần mềm bên thứ ba có thể vi phạm điều khoản của nhà phát hành và dẫn đến hạn chế hoặc khóa tài khoản. Hãy đọc hướng dẫn, chỉ thử offline với bot khi phù hợp và tự đánh giá rủi ro. Nếu cần hỗ trợ giao dịch hoặc kỹ thuật, liên hệ Zalo ở cuối trang hoặc Telegram: https://t.me/VN_KEEN.';
     else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
     else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
-    else if (/cai|tai|khoi chay/.test(q)) answer = 'Bấm TẢI VN-KEEN-SKIN trên trang chủ, giải nén, mở VN-KEEN-SKIN.exe và nhập key còn hạn. Nếu có lỗi, gửi ảnh thông báo cho Admin; không gửi mật khẩu hoặc mã OTP.';
+    else if (/cai|tai|khoi chay/.test(q)) answer = 'Bấm TẢI VN-KEEN-SKIN trên trang chủ, giải nén, mở ứng dụng đã tải và nhập key còn hạn. Nếu có lỗi, gửi ảnh thông báo cho Admin; không gửi mật khẩu hoặc mã OTP.';
     else if (/key|hwid|het han/.test(q)) answer = 'Với lỗi key, hết hạn hoặc đổi máy/HWID, hãy liên hệ Admin để kiểm tra. Khung trả lời tự động không thể xác nhận hay thay đổi thông tin key của bạn.';
     else answer = 'Hiện chưa thể xử lý câu hỏi này tự động. Bạn vui lòng liên hệ Admin qua nút Telegram ở đầu khung để được hỗ trợ.';
     const visionNote = hasVision ? '\n\nẢnh đã được nhận nhưng máy chủ AI hiện chưa phân tích được; bạn có thể thử gửi lại ảnh rõ hơn.' : '';

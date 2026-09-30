@@ -299,10 +299,10 @@
       </div>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖. Tôi có thể tư vấn <strong>14,000+ Skin CS2</strong>, cách mua key VIP KeyAuth hoặc giải đáp mọi câu hỏi cho bạn.
+          Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖. Tôi có thể tư vấn <strong>14,000+ skin CS2</strong>, hướng dẫn cài đặt, thanh toán và giải đáp các câu hỏi về website.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-            <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
+            <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
             <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
             <span class="vnk-chip" data-q="Skin AK-47 và AWP nào xịn nhất?">⚡ AK-47 & AWP xịn</span>
           </div>
@@ -354,7 +354,7 @@
         Đã làm mới đoạn chat! Bạn cần VN-KEEN AI hỗ trợ điều gì?
         <div class="vnk-chips">
           <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-          <span class="vnk-chip" data-q="Mod Skin tại VN-KEEN có bị VAC Ban không?">🛡️ Có bị VAC Ban không?</span>
+          <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
           <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
         </div>
       </div>
