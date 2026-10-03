@@ -523,7 +523,7 @@
       '1. Đăng nhập hoặc đăng ký tài khoản.\n' +
       '2. Bấm **Nạp** trên thanh menu, chọn số tiền và quét VietQR.\n' +
       '3. Chờ máy chủ xác nhận để số dư được cộng vào ví.\n' +
-      '4. Vào **Bảng giá**, chọn đúng bản **VN-KEEN-SKIN-VANTIX** hoặc **VN-KEEN-AIM · ESSENTIALS**, rồi chọn gói và xác nhận mua bằng số dư.\n' +
+      '4. Vào **Bảng giá**, chọn đúng bản **VN-KEEN-SKIN-VANTIX** hoặc **VN-KEEN-ESSENTIALS**, rồi chọn gói và xác nhận mua bằng số dư.\n' +
       '5. Key được cấp trong **Kho License Key** của tài khoản.\n\n' +
       'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang (mục Liên hệ). Nếu cần, bạn cũng có thể nhắn Telegram: https://t.me/VN_KEEN. Không thanh toán lại.';
   }

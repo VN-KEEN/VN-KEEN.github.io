@@ -158,10 +158,10 @@ function user(username, extra = {}) {
 {
   const h = makeHarness();
   h.api.selectProduct('essentials');
-  assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-AIM-ESSENTIALS');
+  assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-ESSENTIALS');
   assert.equal(h.elements.get('selected-product-scope').textContent, 'SCOPE VN-KEEN-AIM');
   assert.match(h.elements.get('selected-product-note').textContent, /không mở được VANTIX\/SKIN/);
-  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-SKIN-ESSENTIALS.zip');
+  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-ESSENTIALS.zip');
   assert.match(h.elements.get('pricing-scope-note').innerHTML, /VN-KEEN-AIM/);
   h.api.selectProduct('vantix');
   assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-SKIN-VANTIX');
@@ -311,7 +311,7 @@ function user(username, extra = {}) {
   h.setFetcher(async () => response(200, { success: true, user: user('aim_buyer') }));
   await h.api.prepare('daily');
   assert.equal(h.api.state.pendingBuyProduct, 'aim');
-  assert.match(h.elements.get('buy-confirm-product').textContent, /AIM/);
+  assert.match(h.elements.get('buy-confirm-product').textContent, /ESSENTIALS/);
   let sent;
   let resolvePurchase;
   h.setFetcher((_url, options) => {
@@ -374,7 +374,7 @@ function user(username, extra = {}) {
   await h.api.execute();
   assert.equal(h.api.readRequest().product, 'aim');
   assert.equal(h.api.state.pendingBuyProduct, 'aim');
-  assert.match(h.elements.get('buy-confirm-product').textContent, /AIM/);
+  assert.match(h.elements.get('buy-confirm-product').textContent, /ESSENTIALS/);
   h.setFetcher(async (_url, options) => {
     const sent = JSON.parse(options.body);
     assert.deepEqual(sent, { product: 'aim', plan: 'daily', requestId: 'server-aim-1234' });

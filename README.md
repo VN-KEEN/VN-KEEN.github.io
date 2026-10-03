@@ -39,15 +39,15 @@ environment changes take effect on the next deployment.
 ## Separate wallet products
 
 - `product: "skin"`: VN-KEEN-SKIN-VANTIX, LicenseGate scope/key prefix `VN-KEEN-SKIN`.
-- `product: "aim"`: VN-KEEN-AIM-ESSENTIALS, LicenseGate scope/key prefix `VN-KEEN-AIM`.
+- `product: "aim"`: VN-KEEN-ESSENTIALS, LicenseGate scope/key prefix `VN-KEEN-AIM`.
 - Both use daily 20,000 VND, monthly 300,000 VND, lifetime 2,000,000 VND.
 - Missing product is accepted as SKIN for legacy clients. Unknown products are rejected.
 - A request ID is bound to both product and plan. Retrying cannot change either,
   charge twice, or reuse a SKIN key as an AIM license. The UI keeps one retry
   marker per account with its product, matching the single active-order rule.
 - My Keys labels each product and links to its corresponding download. The
-  historical Essentials ZIP URL retains `SKIN` in the filename for link
-  compatibility only; its launcher verifies the AIM scope.
+  Essentials is distributed as the single-file `VN-KEEN-ESSENTIALS.zip` download;
+  its launcher verifies the AIM scope.
 
 Apply migration 0004 **before deploying this code**. It only adds a product
 column/index; all historical wallet orders stay SKIN, and no balances, existing

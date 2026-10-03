@@ -15,7 +15,7 @@ export const PLANS = Object.freeze({
 
 export const PRODUCTS = Object.freeze({
   skin: Object.freeze({ id: 'skin', name: 'VN-KEEN-SKIN-VANTIX', scope: 'VN-KEEN-SKIN', prefix: 'VN-KEEN-SKIN' }),
-  aim: Object.freeze({ id: 'aim', name: 'VN-KEEN-AIM-ESSENTIALS', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
+  aim: Object.freeze({ id: 'aim', name: 'VN-KEEN-ESSENTIALS', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
 });
 
 const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev']);
