@@ -428,9 +428,6 @@
         <a href="catalog.html" target="_blank" rel="noopener" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('click')">
           <i class="fa-solid fa-images text-xs text-accent"></i> Kho Skin ↗
         </a>
-        <a href="essentials.html" target="_blank" rel="noopener" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('click')">
-          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-cyan-300"></i> Essentials
-        </a>
         <a href="#contact" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('click')">
           <i class="fa-solid fa-headset text-xs text-accent"></i> Hỗ trợ
         </a>
@@ -534,13 +531,6 @@
         </a>
         <a href="catalog.html" target="_blank" onclick="playSfx('click')" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel font-display text-base font-bold text-fg hover:text-accent hover:border-accent/50 transition-all flex items-center justify-center gap-2">
           <i class="fa-solid fa-images text-accent"></i> KHÁM PHÁ KHO SKIN ↗
-        </a>
-      </div>
-
-      <div class="hero-product-link" aria-label="Sản phẩm khác">
-        <span>Đang tìm bản AIM external?</span>
-        <a href="essentials.html" target="_blank" rel="noopener" onclick="playSfx('click')">
-          Xem trang Essentials riêng <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -710,14 +700,14 @@
           BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
         <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-           Nạp ví qua VietQR, sau đó chọn bản và mua key bằng số dư. <strong>SKIN / VANTIX</strong> và <strong>AIM / Essentials</strong> cấp hai loại key riêng, không dùng chéo; giá các gói bằng nhau.
+           Nạp ví qua VietQR, sau đó chọn gói VANTIX / SKIN và mua key bằng số dư.
         </p>
       </div>
 
-       <!-- PRODUCT PICKER: the two products share price tiers, never keys/scopes -->
+       <!-- PRODUCT PICKER: VANTIX / SKIN is the active product -->
        <div class="max-w-5xl mx-auto mb-10">
-         <p class="text-center text-xs font-cyber font-bold tracking-[0.22em] text-cyan-300 uppercase mb-4">1. CHỌN BẢN DÙNG · 2. MUA KEY ĐÚNG SCOPE</p>
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+         <p class="text-center text-xs font-cyber font-bold tracking-[0.22em] text-cyan-300 uppercase mb-4">MUA KEY ĐÚNG SCOPE</p>
+         <div class="grid grid-cols-1 gap-5">
            <button type="button" data-product-option="vantix" aria-pressed="true" onclick="selectProduct('vantix'); playSfx('click')" class="product-option group text-left rounded-2xl p-5 border-2 border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(16,185,129,0.18)] transition-all hover:-translate-y-1">
              <div class="flex items-center justify-between gap-3">
                <div>
@@ -729,17 +719,6 @@
              <p class="mt-2 text-xs text-muted">Bản Vantix 2.1.2 cho bộ tính năng skin.</p>
              <span class="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-3 py-2 text-[11px] font-cyber font-black text-slate-950">CHỌN GÓI VANTIX <i class="fa-solid fa-arrow-down"></i></span>
            </button>
-           <button type="button" data-product-option="essentials" aria-pressed="false" onclick="selectProduct('essentials'); playSfx('click')" class="product-option group text-left rounded-2xl p-5 border-2 border-white/15 bg-cyan-500/5 transition-all hover:-translate-y-1 hover:border-cyan-300/80">
-             <div class="flex items-center justify-between gap-3">
-               <div>
-                 <span class="text-[10px] font-mono font-bold tracking-widest text-cyan-300">MỤC 02 · AIM / ESSENTIALS</span>
-                 <h3 class="mt-1 font-cyber text-xl font-black text-white">VN-KEEN-ESSENTIALS</h3>
-               </div>
-               <i class="fa-solid fa-crosshairs text-cyan-300 text-xl"></i>
-             </div>
-             <p class="mt-2 text-xs text-muted">Bản AIM Essentials external, box đã tắt sẵn trong gói tải và cấp key riêng.</p>
-             <span class="mt-4 inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-3 py-2 text-[11px] font-cyber font-black text-slate-950">CHỌN GÓI ESSENTIALS <i class="fa-solid fa-arrow-down"></i></span>
-           </button>
          </div>
          <div id="pricing-selection-summary" aria-live="polite" class="mt-5 flex flex-col gap-4 rounded-2xl border border-emerald-400/25 bg-emerald-500/[.06] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
            <div class="min-w-0">
@@ -747,7 +726,7 @@
                <span>ĐANG CHỌN</span><span class="text-white/30">·</span><span id="selected-product-scope" class="text-emerald-300">SCOPE VN-KEEN-SKIN</span>
              </div>
              <p class="mt-1 truncate text-sm font-cyber font-black text-white" id="selected-product-label">VN-KEEN-SKIN-VANTIX</p>
-             <p id="selected-product-note" class="mt-1 text-xs leading-relaxed text-muted">Key SKIN riêng cho VANTIX; không mở được Essentials/AIM.</p>
+              <p id="selected-product-note" class="mt-1 text-xs leading-relaxed text-muted">Key SKIN riêng cho VANTIX.</p>
            </div>
            <a id="selected-product-download" href="VN-KEEN-SKIN-VANTIX.zip" download class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-emerald-300/40 bg-emerald-300/10 px-4 py-2.5 text-xs font-cyber font-black text-emerald-200 transition hover:bg-emerald-300 hover:text-slate-950">
              <i class="fa-solid fa-download"></i> TẢI BẢN ĐANG CHỌN
@@ -760,7 +739,7 @@
          <div class="mb-5 flex flex-col items-center justify-center gap-1 text-center text-xs font-mono text-muted sm:flex-row sm:gap-2">
            <span>MUA KEY CHO</span><span class="text-white/30">·</span><strong id="pricing-product-context" class="text-emerald-300">VN-KEEN-SKIN-VANTIX</strong><span id="pricing-scope-context" class="text-[10px] text-emerald-300/80">(VN-KEEN-SKIN)</span>
          </div>
-         <p id="pricing-scope-note" class="mx-auto mb-6 max-w-2xl text-center text-xs leading-relaxed text-muted">Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">VN-KEEN-SKIN</strong> riêng cho VANTIX. Key không dùng chéo với Essentials/AIM.</p>
+         <p id="pricing-scope-note" class="mx-auto mb-6 max-w-2xl text-center text-xs leading-relaxed text-muted">Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">VN-KEEN-SKIN</strong> riêng cho VANTIX.</p>
          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
         
         <!-- PLAN 1: 1 NGÀY (20.000đ) -->
@@ -783,7 +762,7 @@
             <ul class="space-y-3 text-xs font-sans text-gray-300">
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Cấp 1 License Key (Thời hạn 24h)</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Dành riêng cho bản sản phẩm đang chọn</li>
-              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Key AIM và SKIN không dùng chéo</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> License Key dành riêng cho VANTIX / SKIN</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-cyan-400"></i> Hỗ trợ cài đặt qua Telegram</li>
             </ul>
@@ -852,7 +831,7 @@
             <ul class="space-y-3 text-xs font-sans text-gray-300">
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Cấp 1 License Key (Thời hạn Vĩnh Viễn)</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Dành riêng cho bản sản phẩm đang chọn</li>
-              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Key AIM và SKIN không dùng chéo</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> License Key dành riêng cho VANTIX / SKIN</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Hỗ trợ reset đổi HWID khi nâng cấp máy tính</li>
               <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-purple-400"></i> Hỗ trợ kỹ thuật 1-1 ưu tiên cao nhất</li>
             </ul>
@@ -891,7 +870,7 @@
             <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
           </summary>
           <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
-            VANTIX/SKIN là luồng sản phẩm riêng cho các mục skin. Essentials/AIM là luồng riêng khác; hãy dùng đúng file và key theo scope hiển thị ở bảng giá.
+            VANTIX/SKIN dùng key <strong>VN-KEEN-SKIN</strong>. Hãy tải đúng file và nhập key còn hạn để kích hoạt.
           </p>
         </details>
 
@@ -901,7 +880,7 @@
             <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
           </summary>
           <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
-            Chọn đúng mục <strong>VANTIX/SKIN</strong> hoặc <strong>ESSENTIALS/AIM</strong>, tải ZIP tương ứng rồi giải nén. Mỗi bản có key LicenseGate riêng: VANTIX dùng <strong>VN-KEEN-SKIN</strong>, Essentials dùng <strong>VN-KEEN-AIM</strong>.
+            Tải gói <strong>VANTIX/SKIN</strong>, giải nén rồi mở <strong>VN-KEEN-SKIN-VANTIX.exe</strong>. Nhập key <strong>VN-KEEN-SKIN</strong> còn hạn để kích hoạt.
           </p>
         </details>
 
@@ -940,7 +919,7 @@
       <div id="terms" class="mt-12 glass-panel rounded-2xl p-6 border border-cyan-500/20 text-xs text-muted space-y-2">
         <p class="font-cyber text-sm font-bold text-fg uppercase"><i class="fa-solid fa-scale-balanced mr-1 text-accent"></i> Điều Khoản Dịch Vụ</p>
         <ul class="space-y-1.5 list-disc list-inside font-mono">
-          <li>Mỗi sản phẩm có key và scope riêng; không dùng chéo AIM/SKIN.</li>
+          <li>Key <strong>VN-KEEN-SKIN</strong> chỉ dùng cho bản VANTIX / SKIN.</li>
           <li>Được hỗ trợ kỹ thuật cài đặt 1-1 trực tiếp qua Telegram & Discord Server.</li>
           <li>Chỉ thử nghiệm offline với bot; phần mềm bên thứ ba có thể vi phạm điều khoản CS2 và gây rủi ro tài khoản.</li>
         </ul>
@@ -958,7 +937,7 @@
             <span class="font-cyber text-2xl font-black text-fg">VN<span class="text-accent">-KEEN</span></span>
           </div>
           <p class="mt-4 max-w-md text-xs leading-relaxed text-muted">
-            VN-KEEN có hai luồng riêng: VANTIX 2.1.2 / SKIN và Essentials / AIM. Chọn đúng sản phẩm, scope và file tải trước khi kích hoạt.
+            VN-KEEN cung cấp VANTIX 2.1.2 / SKIN. Khách hàng đã có key cũ có thể tiếp tục xem key trong Kho License Key.
           </p>
         </div>
         <div>
@@ -988,7 +967,6 @@
           <span class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent text-accent font-bold">VN-KEEN</span>
           <a href="catalog.html" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Thư viện skin CS2</a>
           <a href="catalog.html" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Xem trước mẫu</a>
-          <a href="essentials.html" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Essentials / AIM</a>
           <a href="index.html#pricing" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Bảng giá và nạp ví</a>
           <a href="index.html#faq" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Hướng dẫn sử dụng</a>
           <a href="ai.html" class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-accent">Trợ lý hỗ trợ</a>
@@ -1111,9 +1089,6 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <a href="VN-KEEN-SKIN-VANTIX.zip" download class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 font-cyber font-black text-black text-xs tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:scale-[1.02] transition-all text-center">
               <i class="fa-solid fa-download mr-1.5"></i> TẢI VANTIX
-            </a>
-            <a href="VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip" download class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-300 to-blue-400 font-cyber font-black text-slate-950 text-xs tracking-wider shadow-[0_0_25px_rgba(34,211,238,0.35)] hover:scale-[1.02] transition-all text-center">
-              <i class="fa-solid fa-crosshairs mr-1.5"></i> TẢI ESSENTIALS
             </a>
           </div>
           <button type="button" onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-muted hover:text-fg transition-all">
@@ -1354,9 +1329,6 @@
         <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
           <a href="VN-KEEN-SKIN-VANTIX.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
             <i class="fa-solid fa-download text-sm"></i> TẢI VANTIX
-          </a>
-          <a href="VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-sans font-black text-xs flex items-center justify-center gap-2 hover:scale-105 transition shadow-md">
-            <i class="fa-solid fa-crosshairs text-sm"></i> TẢI ESSENTIALS
           </a>
         </div>
         <a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 font-sans text-xs flex items-center justify-center gap-1.5 transition">
@@ -2055,7 +2027,7 @@
       vantix: {
         id: 'vantix', product: 'skin', name: 'VN-KEEN-SKIN-VANTIX', scope: 'VN-KEEN-SKIN',
         file: 'VN-KEEN-SKIN-VANTIX.zip', downloadLabel: 'TẢI VANTIX / SKIN',
-        note: 'Key SKIN riêng cho VANTIX; không mở được Essentials/AIM.'
+        note: 'Key SKIN riêng cho VANTIX.'
       },
       essentials: {
         id: 'essentials', product: 'aim', name: 'VN-KEEN-ESSENTIALS', scope: 'VN-KEEN-AIM',
@@ -2093,7 +2065,9 @@
       if (productNote) productNote.textContent = product.note;
       const scopeNote = document.getElementById('pricing-scope-note');
       if (scopeNote) {
-        scopeNote.innerHTML = `Mỗi gói bên dưới cấp một key <strong class="${currentProduct === 'essentials' ? 'text-cyan-300' : 'text-emerald-300'}">${product.scope}</strong> riêng cho ${product.name}. Key không dùng chéo với ${currentProduct === 'essentials' ? 'VANTIX/SKIN' : 'Essentials/AIM'}.`;
+        scopeNote.innerHTML = currentProduct === 'essentials'
+          ? `Mỗi gói bên dưới cấp một key <strong class="text-cyan-300">${product.scope}</strong> riêng cho ${product.name}. Key dành riêng cho Essentials / AIM.`
+          : `Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">${product.scope}</strong> riêng cho ${product.name}.`;
       }
       const selectionSummary = document.getElementById('pricing-selection-summary');
       if (selectionSummary) {
@@ -2972,8 +2946,7 @@
       initPlexusNetwork();
       buildCaseCarousel();
 
-      const requestedProduct = new URLSearchParams(location.search).get('product');
-      selectProduct(requestedProduct === 'essentials' ? 'essentials' : 'vantix');
+      selectProduct('vantix');
       selectPlan('monthly');
       updateUserHeaderUI();
 
@@ -2983,5 +2956,6 @@
   <!-- VN-KEEN AI Assistant Floating Widget -->
   <script src="ai-widget.js?v=policy-5"></script>
   <script type="module" src="download-integrity.mjs?v=20261003-LicenseGate-14188"></script>
+  <script src="vantix-site-controls.js?v=20261003"></script>
 </body>
 </html>

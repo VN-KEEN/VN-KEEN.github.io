@@ -523,7 +523,7 @@
       '1. Đăng nhập hoặc đăng ký tài khoản.\n' +
       '2. Bấm **Nạp** trên thanh menu, chọn số tiền và quét VietQR.\n' +
       '3. Chờ máy chủ xác nhận để số dư được cộng vào ví.\n' +
-      '4. Vào **Bảng giá**, chọn đúng bản **VN-KEEN-SKIN-VANTIX** hoặc **VN-KEEN-ESSENTIALS**, rồi chọn gói và xác nhận mua bằng số dư.\n' +
+      '4. Vào **Bảng giá**, chọn gói **VN-KEEN-SKIN-VANTIX** rồi xác nhận mua bằng số dư.\n' +
       '5. Key được cấp trong **Kho License Key** của tài khoản.\n\n' +
       'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang (mục Liên hệ). Nếu cần, bạn cũng có thể nhắn Telegram: https://t.me/VN_KEEN. Không thanh toán lại.';
   }
@@ -532,7 +532,7 @@
   function supportFallback(text, hasVision = false) {
     const q = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     let answer;
-    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn đúng VANTIX/SKIN hoặc Essentials/AIM cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Key SKIN và AIM là hai loại riêng, không dùng chéo. Nếu ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang; Telegram là kênh dự phòng: https://t.me/VN_KEEN. Không thanh toán lại.';
+    if (/gia|nap|thanh toan|mua key/.test(q)) answer = 'Giá hiện tại: 20.000đ / 1 ngày, 300.000đ / 30 ngày, 2.000.000đ / vĩnh viễn. Mua trực tiếp trên website: (1) đăng nhập/đăng ký, (2) bấm Nạp và quét VietQR, (3) chờ số dư cập nhật, (4) ở Bảng giá chọn gói VANTIX/SKIN cùng thời hạn, (5) xác nhận mua bằng số dư. Key xuất hiện trong Kho License Key. Nếu ngân hàng đã trừ tiền nhưng số dư chưa cập nhật, đơn đang chờ hoặc mua lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang; Telegram là kênh dự phòng: https://t.me/VN_KEEN. Không thanh toán lại.';
     else if (/vac|\bban\b|an toan|den bu|hoan tien|rui ro|nha phat hanh/.test(q)) answer = 'Không thể dự đoán hoặc bảo đảm kết quả đối với tài khoản. Phần mềm bên thứ ba có thể vi phạm điều khoản của nhà phát hành và dẫn đến hạn chế hoặc khóa tài khoản. Hãy đọc hướng dẫn, chỉ thử offline với bot khi phù hợp và tự đánh giá rủi ro. Nếu cần hỗ trợ giao dịch hoặc kỹ thuật, liên hệ Zalo ở cuối trang hoặc Telegram: https://t.me/VN_KEEN.';
     else if (/ak-47|awp|skin.*dep|skin.*xin/.test(q)) answer = 'Một vài lựa chọn theo phong cách: AK-47 Asiimov (trắng/cam), Wild Lotus (hoa lá); AWP Dragon Lore (vàng) hoặc Gungnir (xanh). Bạn có thể xem ảnh ở Kho Skin để chọn theo sở thích.';
     else if (/combo|dao|gang/.test(q)) answer = 'Gợi ý phối màu: dao Doppler với găng Vice, hoặc dao Gamma Doppler với găng Hedge Maze. Xem hình trong Kho Skin để chọn combo theo sở thích.';
