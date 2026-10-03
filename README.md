@@ -45,9 +45,29 @@ environment changes take effect on the next deployment.
 - A request ID is bound to both product and plan. Retrying cannot change either,
   charge twice, or reuse a SKIN key as an AIM license. The UI keeps one retry
   marker per account with its product, matching the single active-order rule.
-- My Keys labels each product and links to its corresponding download. The
-  Essentials is distributed as the single-file `VN-KEEN-ESSENTIALS.zip` download;
-  its launcher verifies the AIM scope.
+- My Keys labels each product and links to its corresponding download. Essentials
+  uses the versioned `VN-KEEN-ESSENTIALS-20261003-LicenseGate.zip` download with one
+  launcher EXE; its launcher verifies the LicenseGate AIM scope.
+
+## Download release integrity
+
+`downloads.json` records release file names, byte lengths and SHA-256 digests.
+The Essentials page links to this metadata for an independent hash comparison.
+Ordinary Essentials download clicks on the homepage and Essentials page fetch the
+metadata and verify the ZIP's size and SHA-256 before offering a Blob download.
+The verifier fails closed on missing metadata, oversized/truncated files, unsupported
+Web Crypto, or a hash mismatch; SKIN downloads are unchanged. Direct URLs and
+JavaScript-disabled browsers do not run this client-side verification.
+A matching hash establishes that a download matches the published release; it is
+not an antivirus verdict or an Authenticode signature. Do not disable the launcher
+payload hash checks or antivirus protection to work around a mismatch.
+
+Essentials links use a versioned file name so existing CDN or browser caches cannot
+reuse a differently packaged release. `_redirects` routes both historic Essentials
+ZIP URLs to this release with a temporary redirect. `_headers` makes the versioned
+release immutable and revalidates metadata and stable aliases. Verify redirects
+and the remote ZIP hash after deploying; old CDN objects may require a scoped
+cache purge. `VN-KEEN-ESSENTIALS.zip` remains a byte-identical compatibility alias.
 
 Apply migration 0004 **before deploying this code**. It only adds a product
 column/index; all historical wallet orders stay SKIN, and no balances, existing
@@ -56,5 +76,5 @@ before applying; do not run its `ALTER TABLE` twice. The older direct checkout
 service still uses its separate `AIM_PRICE_*` environment settings.
 
 Regression checks: `node test-wallet-service.mjs`, `node test-wallet-client.mjs`,
-and `node test-wallet-webhook.mjs`. These use mocks/local databases, not paid
-production purchases.
+`node test-wallet-webhook.mjs`, and `node test-download-release.mjs`. These use
+mocks/local files and databases, not paid production purchases.
