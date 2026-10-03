@@ -16,7 +16,7 @@ for (const [name, html] of [['index.html', home], ['essentials.html', essentials
   for (const oldFile of oldFiles) {
     assert(!downloadLinks.includes(oldFile), `${name} must not link to an old Essentials cache key`);
   }
-  assert(html.includes('type="module" src="download-integrity.mjs?v=20261003-LicenseGate"'), `${name} must load the download verifier`);
+  assert(html.includes('type="module" src="download-integrity.mjs?v=20261003-LicenseGate-14188"'), `${name} must load the download verifier`);
 }
 
 assert(home.includes(`file: '${release}'`), 'Product picker and My Keys must use the same versioned release');

@@ -46,7 +46,7 @@ environment changes take effect on the next deployment.
   charge twice, or reuse a SKIN key as an AIM license. The UI keeps one retry
   marker per account with its product, matching the single active-order rule.
 - My Keys labels each product and links to its corresponding download. Essentials
-  uses the versioned `VN-KEEN-ESSENTIALS-20261003-LicenseGate.zip` download with one
+  uses the versioned `VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip` download with one
   launcher EXE; its launcher verifies the LicenseGate AIM scope.
 
 ## Download release integrity

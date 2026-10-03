@@ -161,7 +161,7 @@ function user(username, extra = {}) {
   assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-ESSENTIALS');
   assert.equal(h.elements.get('selected-product-scope').textContent, 'SCOPE VN-KEEN-AIM');
   assert.match(h.elements.get('selected-product-note').textContent, /không mở được VANTIX\/SKIN/);
-  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-ESSENTIALS-20261003-LicenseGate.zip');
+  assert.equal(h.elements.get('selected-product-download').href, 'VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip');
   assert.match(h.elements.get('pricing-scope-note').innerHTML, /VN-KEEN-AIM/);
   h.api.selectProduct('vantix');
   assert.equal(h.elements.get('selected-product-label').textContent, 'VN-KEEN-SKIN-VANTIX');

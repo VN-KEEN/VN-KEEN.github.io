@@ -1,4 +1,4 @@
-export const ESSENTIALS_RELEASE = 'VN-KEEN-ESSENTIALS-20261003-LicenseGate.zip';
+export const ESSENTIALS_RELEASE = 'VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip';
 export const MAX_DOWNLOAD_BYTES = 20 * 1024 * 1024;
 
 export function validateRelease(manifest) {

@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "products": {
     "aim": {
-      "file": "VN-KEEN-ESSENTIALS-20261003-LicenseGate.zip",
+      "file": "VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip",
       "scope": "VN-KEEN-AIM",
-      "sizeBytes": 3187546,
-      "sha256": "e760d8240ddfc311d1fda4f0bcb3e5abba37b674f11ed7e4740d1f400edbda47"
+      "sizeBytes": 3187870,
+      "sha256": "d00f48fc64d6c6df667e9c14a99d33728e0f02ad1ad19bac460d218ccdcdf8fd"
     }
   }
 }
