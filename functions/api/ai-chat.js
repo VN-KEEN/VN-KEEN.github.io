@@ -1,4 +1,18 @@
 import { MODELS, routeChat } from '../../ai-router.mjs';
+const AI_WINDOW_SECONDS=600;
+const AI_MAX_REQUESTS=20;
+async function digest(value){const data=new TextEncoder().encode(value);const hash=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function checkRateLimit(request,env){
+  const db=env.LICENSE_DB;
+  if(!db) return {ok:false,retryAfter:60};
+  const ip=(request.headers.get('CF-Connecting-IP')||'unknown').trim();
+  const now=Math.floor(Date.now()/1000);
+  const bucket=`ai:${await digest(ip)}`;
+  try{
+    const row=await db.prepare(`INSERT INTO wallet_auth_limits (bucket, attempts, expires_at) VALUES (?1, 1, ?2) ON CONFLICT(bucket) DO UPDATE SET attempts = CASE WHEN expires_at <= ?3 THEN 1 ELSE attempts + 1 END, expires_at = CASE WHEN expires_at <= ?3 THEN ?2 ELSE expires_at END RETURNING attempts, expires_at`).bind(bucket,now+AI_WINDOW_SECONDS,now).first();
+    return {ok:Number(row?.attempts||0)<=AI_MAX_REQUESTS,retryAfter:Math.max(1,Number(row?.expires_at||now+60)-now)};
+  }catch{return {ok:false,retryAfter:60};}
+}
 const SYSTEM_INSTRUCTION = `
 Bạn là trợ lý chăm sóc khách hàng VN-KEEN. Trả lời tiếng Việt ngắn gọn, chính xác và bám theo quy trình hiện tại của website.
 
@@ -18,6 +32,14 @@ export async function onRequest({request,env}) {
   if(request.method==='GET') return json({ok:true,routing:'rotation-v1',availableModels:MODELS});
   if(request.method!=='POST') return json({ok:false},405);
   try {
+    const size=Number(request.headers.get('content-length')||0);
+    if(size>4800000) return json({ok:false,error:'Dữ liệu gửi lên vượt giới hạn cho phép.'},413);
+    const limit=await checkRateLimit(request,env);
+    if(!limit.ok){
+      const response=json({ok:false,error:'Bạn gửi yêu cầu quá nhanh. Vui lòng thử lại sau.'},429);
+      response.headers.set('Retry-After',String(limit.retryAfter));
+      return response;
+    }
     const body=await request.json();
     const rawImage=body && body.image;
     let imagePart=null;
@@ -41,8 +63,7 @@ export async function onRequest({request,env}) {
     if(imagePart) currentParts.push(imagePart);
     contents.push({role:'user',parts:currentParts});
     const result=await routeChat(key,contents,SYSTEM_INSTRUCTION);
-    // Browser compatibility path previously approved by the site owner.
-    if(result.geo_blocked) return json({...result,direct_key:key,system_instruction:SYSTEM_INSTRUCTION});
+    if(result.geo_blocked) return json({ok:false,error:'Dịch vụ AI tạm thời không khả dụng tại khu vực này.'},503);
     return json(result,result.ok?200:result.status||503);
   } catch {return json({ok:false,error:'Không xử lý được yêu cầu AI.'},503);}
 }
