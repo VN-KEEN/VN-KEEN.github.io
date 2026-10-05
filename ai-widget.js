@@ -306,8 +306,8 @@
           <button class="vnk-act-btn vnk-vision-btn" id="vnkVisionBtn" title="Gửi ảnh để AI nhìn và phân tích" aria-label="Gửi ảnh để AI nhìn và phân tích">
             <i class="fa-solid fa-eye"></i>
           </button>
-          <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="vnk-act-btn" title="Liên hệ Admin qua Telegram" style="text-decoration:none;">
-            <i class="fa-solid fa-up-right-from-square"></i>
+          <a href="#contact" class="vnk-act-btn" title="Mở mã QR Zalo hỗ trợ" style="text-decoration:none;">
+            <i class="fa-solid fa-qrcode"></i>
           </a>
           <button class="vnk-act-btn" id="vnkClearBtn" title="Xóa lịch sử trò chuyện">
             <i class="fa-solid fa-rotate-right"></i>
@@ -320,7 +320,7 @@
       <input type="file" id="vnkVisionInput" accept="image/png,image/jpeg,image/webp" hidden>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="#contact">liên hệ Zalo trực tiếp bằng mã QR ở cuối trang</a>; Telegram là kênh dự phòng. Không gửi mật khẩu, mã OTP hoặc key tại đây.
+          Chào bạn! Đây là kênh <strong>chăm sóc khách hàng VN-KEEN</strong>. Bạn có thể đăng nhập/đăng ký ngay trên website, bấm <strong>Nạp</strong> để quét VietQR, rồi chọn đúng bản ở <strong>Bảng giá</strong> và mua key trực tiếp bằng số dư. Nếu giao dịch bị treo hoặc lỗi, hãy <a href="#contact">liên hệ Zalo trực tiếp bằng mã QR ở cuối trang</a>. Không gửi mật khẩu, mã OTP hoặc key tại đây.
           <div class="vnk-chips">
             <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
             <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
@@ -525,7 +525,7 @@
       '3. Chờ máy chủ xác nhận để số dư được cộng vào ví.\n' +
       '4. Vào **Bảng giá**, chọn gói **VN-KEEN-SKIN-VANTIX** rồi xác nhận mua bằng số dư.\n' +
       '5. Key được cấp trong **Kho License Key** của tài khoản.\n\n' +
-      'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang (mục Liên hệ). Nếu cần, bạn cũng có thể nhắn Telegram: https://t.me/VN_KEEN. Không thanh toán lại.';
+      'Nếu ngân hàng đã báo thành công nhưng số dư chưa cập nhật hoặc mua key bị lỗi, hãy liên hệ Zalo trực tiếp bằng cách quét mã QR Zalo ở chân trang (mục Liên hệ). Không thanh toán lại.';
   }
 
 
