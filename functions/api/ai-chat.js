@@ -2,6 +2,15 @@ import { MODELS, routeChat } from '../../ai-router.mjs';
 const AI_WINDOW_SECONDS=600;
 const AI_MAX_REQUESTS=20;
 async function digest(value){const data=new TextEncoder().encode(value);const hash=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function cloudflareChat(ai,contents,instruction){
+  if(!ai?.run) return null;
+  const messages=[{role:'system',content:instruction},...contents.map(item=>({role:item.role==='model'?'assistant':'user',content:item.parts.map(part=>part.text||'').join('\n').trim()})).filter(item=>item.content)];
+  try{
+    const result=await ai.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast',{messages,max_tokens:700,temperature:0.45});
+    const text=String(result?.response||'').trim();
+    return text?{ok:true,model:'cloudflare-llama-3.3-70b',message:{role:'assistant',text}}:null;
+  }catch{return null;}
+}
 async function checkRateLimit(request,env){
   const db=env.LICENSE_DB;
   if(!db) return {ok:false,retryAfter:60};
@@ -54,7 +63,7 @@ export async function onRequest({request,env}) {
     const message=typeof body.message==='string'?body.message.trim():(imagePart?'Hãy phân tích ảnh đính kèm và hướng dẫn tôi xử lý.':'');
     if(!message || message.length>4000) return json({ok:false,error:'Nhập câu hỏi tối đa 4.000 ký tự.'},400);
     const key=(env.GEMINI_API_KEY||'').trim();
-    if(!key) return json({ok:false,error:'Chưa cấu hình API key.'},503);
+    if(!key&&!env.AI) return json({ok:false,error:'Chưa cấu hình dịch vụ AI.'},503);
     const history=Array.isArray(body.history)?body.history:[];
     const pageContext=typeof body.pageContext==='string'?body.pageContext.trim().slice(0,1400):'';
     const prompt=pageContext?`${message}\n\n[Ngữ cảnh giao diện hiện tại]\n${pageContext}`:message;
@@ -62,8 +71,9 @@ export async function onRequest({request,env}) {
     const currentParts=[{text:prompt}];
     if(imagePart) currentParts.push(imagePart);
     contents.push({role:'user',parts:currentParts});
-    const result=await routeChat(key,contents,SYSTEM_INSTRUCTION);
-    if(result.geo_blocked) return json({ok:false,error:'Dịch vụ AI tạm thời không khả dụng tại khu vực này.'},503);
+    let result=await cloudflareChat(env.AI,contents,SYSTEM_INSTRUCTION);
+    if(!result&&key) result=await routeChat(key,contents,SYSTEM_INSTRUCTION);
+    if(!result||result.geo_blocked) return json({ok:false,error:'Dịch vụ AI tạm thời không khả dụng.'},503);
     return json(result,result.ok?200:result.status||503);
   } catch {return json({ok:false,error:'Không xử lý được yêu cầu AI.'},503);}
 }
