@@ -1350,7 +1350,7 @@
       </div>
 
       <!-- QR Container -->
-      <div class="flex justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[220px] mx-auto border border-blue-900/30 mb-4">
+      <div id="topup-qr-box" class="hidden justify-center p-2.5 rounded-2xl bg-white shadow-[0_0_35px_rgba(245,158,11,0.25)] max-w-[220px] mx-auto border border-blue-900/30 mb-4">
         <img id="topup-qr-img" alt="VietQR Nạp Tiền" class="hidden h-auto w-full max-w-[200px] aspect-square object-contain">
       </div>
 
@@ -1378,9 +1378,14 @@
         </div>
       </div>
 
-      <button type="button" id="topup-payos-button" onclick="createPayosTopup()" class="mb-4 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black hover:scale-[1.01] transition disabled:opacity-50">
-        <i class="fa-solid fa-qrcode mr-2"></i>TẠO MÃ THANH TOÁN PAYOS
-      </button>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+        <button type="button" id="topup-payos-button" onclick="createPayosTopup()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black hover:scale-[1.01] transition disabled:opacity-50">
+          <i class="fa-solid fa-qrcode mr-2"></i>TẠO MÃ THANH TOÁN PAYOS
+        </button>
+        <button type="button" id="topup-sepay-button" onclick="createSepayTopup()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black hover:scale-[1.01] transition disabled:opacity-50">
+          <i class="fa-solid fa-qrcode mr-2"></i>TẠO MÃ THANH TOÁN SEPAY
+        </button>
+      </div>
 
       <!-- Auto Balance Listener Radar -->
       <div class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-950 border border-cyan-500/40 text-[11px] font-mono text-cyan-300 mb-4 shadow-inner">
@@ -2305,6 +2310,7 @@
 
     let topupCurrentAmount = 200000;
     let topupCurrentContent = '';
+    let topupMethod = null;
     let topupPollingInterval = null;
     let pendingBuyPlan = 'monthly';
     let pendingBuyProduct = 'skin';
@@ -2555,28 +2561,31 @@
       playSfx('click');
     }
 
-    function setTopupAmount(amt) {
+    function setTopupAmount(amt, preserveMethod = false) {
       const numericAmount = Number(amt);
       topupCurrentAmount = Number.isFinite(numericAmount) ? Math.max(1000, Math.floor(numericAmount)) : 1000;
       const bank = currentUser?.bank || {};
       const code = String(currentUser?.depositCode || '');
-      topupCurrentContent = code;
+      if (!preserveMethod) topupMethod = null;
+      const showSepay = topupMethod === 'sepay';
+      topupCurrentContent = showSepay ? code : '';
       const display = document.getElementById('topup-amount-display');
       const contDisplay = document.getElementById('topup-content-display');
       const bankDisplay = document.getElementById('topup-bank-display');
       const copyCode = document.getElementById('topup-copy-code');
       if (display) display.textContent = formatVnd(topupCurrentAmount);
-      if (contDisplay) contDisplay.textContent = code || 'CHƯA SẴN SÀNG';
+      if (contDisplay) contDisplay.textContent = showSepay && code ? code : 'CHỌN PHƯƠNG THỨC THANH TOÁN';
       if (bankDisplay) {
-        bankDisplay.textContent = bank.account && bank.bank
+        bankDisplay.textContent = showSepay && bank.account && bank.bank
           ? `${bank.bank} · ${bank.account}${bank.name ? ` · ${bank.name}` : ''}`
-          : 'Thông tin ngân hàng chưa sẵn sàng. Mã QR đã bị tắt.';
+          : 'Chọn PAYOS hoặc SEPAY để tạo mã thanh toán.';
       }
-      if (copyCode) copyCode.disabled = !code;
+      if (copyCode) copyCode.disabled = !topupCurrentContent;
       const qr = document.getElementById('topup-qr-img');
+      const qrBox = document.getElementById('topup-qr-box');
       // Never retain a previous user's QR: only render after this response has
       // supplied both a bank destination and a server-issued deposit code.
-      const hasBank = Boolean(bank.account && bank.bank && code);
+      const hasBank = Boolean(showSepay && bank.account && bank.bank && code);
       if (qr && hasBank) {
         const bankName = bank.bank || 'MB';
         const accountName = bank.name || '';
@@ -2588,9 +2597,13 @@
           if (status) status.textContent = 'Không tải được mã QR ngân hàng; vui lòng thử lại sau.';
         };
         qr.classList.remove('hidden');
+        qrBox?.classList.remove('hidden');
+        qrBox?.classList.add('flex');
       } else if (qr) {
         qr.removeAttribute('src');
         qr.classList.add('hidden');
+        qrBox?.classList.add('hidden');
+        qrBox?.classList.remove('flex');
       }
       document.querySelectorAll('.topup-preset-btn').forEach(btn => {
         btn.className = btn.textContent.includes(topupCurrentAmount.toLocaleString('vi-VN'))
@@ -2601,6 +2614,19 @@
 
     function copyTopupCode() {
       if (topupCurrentContent) copyData(topupCurrentContent, 'Đã sao chép mã nạp!');
+    }
+
+    function createSepayTopup() {
+      if (!sessionToken || !currentUser) return;
+      if (!currentUser?.bank?.account || !currentUser?.bank?.bank || !currentUser?.depositCode) {
+        const status = document.getElementById('topup-listen-status');
+        if (status) status.textContent = 'Thông tin SePay chưa sẵn sàng. Vui lòng thử lại sau.';
+        return;
+      }
+      topupMethod = 'sepay';
+      setTopupAmount(topupCurrentAmount, true);
+      const status = document.getElementById('topup-listen-status');
+      if (status) status.textContent = 'Mã SePay đã được tạo. Quét QR hoặc sao chép đúng nội dung chuyển khoản.';
     }
 
     async function createPayosTopup() {
@@ -2639,7 +2665,7 @@
           if (typeof before === 'number' && fresh.balance !== before && status) {
             status.textContent = `Số dư đã được máy chủ cập nhật: ${formatVnd(fresh.balance)}`;
           }
-          setTopupAmount(topupCurrentAmount);
+          setTopupAmount(topupCurrentAmount, true);
         }
       } finally {
         topupRefreshBusy = false;
@@ -2656,6 +2682,7 @@
       const tokenAtStart = sessionToken;
       const fresh = await refreshCurrentUser();
       if (!fresh || generation !== sessionGeneration || tokenAtStart !== sessionToken) return;
+      topupMethod = null;
       setTopupAmount(200000);
       const modal = document.getElementById('topupModal');
       modal?.classList.remove('hidden');
@@ -2674,9 +2701,7 @@
     function startTopupPolling() {
       if (topupPollingInterval) clearInterval(topupPollingInterval);
       const status = document.getElementById('topup-listen-status');
-      if (status) status.textContent = currentUser?.bank?.account && currentUser?.bank?.bank && currentUser?.depositCode
-        ? 'Đang chờ máy chủ xác nhận giao dịch nạp tiền...'
-        : 'Thông tin ngân hàng chưa sẵn sàng; không thể tạo mã QR.';
+      if (status) status.textContent = 'Chọn PAYOS hoặc SEPAY để tạo mã thanh toán.';
       topupPollingInterval = setInterval(async () => {
         if (!sessionToken) return closeTopupModal();
         await syncBankDepositBackground();
