@@ -42,3 +42,44 @@ footer{background:#0d1216!important;border-top:1px solid var(--studio-line)!impo
 #nav .hero-product-link{display:none}
 @media(max-width:900px){#top .hero-actions{max-width:680px}.hero-proof{justify-content:flex-start!important}.hero-product-link{justify-content:flex-start!important}}
 @media(max-width:600px){#top .hero-actions{grid-template-columns:1fr;max-width:420px}.hero-product-link{align-items:flex-start!important;flex-direction:column;gap:3px!important}.hero-proof{margin-top:22px!important;padding-top:16px!important;gap:6px!important}.hero-proof span{font-size:9px;padding:6px 8px}}
+
+/* Balanced desktop hero: keep the left copy, CTA row and studio preview on a shared visual axis. */
+@media (min-width: 901px) {
+  #top > div.relative {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    column-gap: 64px;
+    align-items: center;
+  }
+
+  #top .hero-eyebrow,
+  #top h1,
+  #top h1 + p,
+  #top .hero-actions,
+  #top .hero-proof,
+  #top .hero-product-link {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  #top .hero-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #top .hero-actions a,
+  #top .hero-actions a:last-child {
+    width: 100%;
+    height: 60px;
+    min-height: 60px;
+    padding: 10px 12px;
+  }
+
+  #top .studio-product {
+    grid-row: 1 / 6;
+    width: 100%;
+    max-width: 680px;
+    justify-self: end;
+    align-self: center;
+    transform: rotate(.6deg);
+  }
+}
