@@ -46,7 +46,7 @@ footer{background:#0d1216!important;border-top:1px solid var(--studio-line)!impo
 /* Balanced desktop hero: keep the left copy, CTA row and studio preview on a shared visual axis. */
 @media (min-width: 901px) {
   #top > div.relative {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 64px;
     align-items: center;
   }
@@ -81,5 +81,37 @@ footer{background:#0d1216!important;border-top:1px solid var(--studio-line)!impo
     justify-self: end;
     align-self: center;
     transform: rotate(.6deg);
+  }
+}
+
+/* Keep every account and purchase control on the navigation bar on one baseline. */
+@media (min-width: 601px) {
+  #nav #nav-user-zone {
+    align-items:stretch;
+  }
+
+  #nav #nav-user-zone > div:first-child,
+  #nav #nav-user-zone > button,
+  #nav #nav-user-zone > div:last-child {
+    box-sizing:border-box;
+    height:44px;
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+
+  #nav #nav-user-zone > div:first-child {
+    padding-top:0;
+    padding-bottom:0;
+  }
+
+  #nav #nav-user-zone > div:last-child {
+    padding-top:4px;
+    padding-bottom:4px;
+  }
+
+  #nav #nav-user-zone > div:last-child button {
+    height:34px;
+    width:34px;
   }
 }
