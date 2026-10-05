@@ -1,3 +1,4 @@
+import { createPayosLink } from './payos-service.mjs';
 const encoder = new TextEncoder();
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
 const PROCESSING_LEASE_SECONDS = 60;
@@ -258,6 +259,12 @@ async function logout(request, env, now) {
   return { success: true, message: 'Đã đăng xuất.' };
 }
 
+async function createTopup(request, env, now) {
+  const session = await sessionUser(request, env, now);
+  const body = await readJson(request);
+  return createPayosLink(env, await accountForUser(env, session.username), Number(body.amount), now);
+}
+
 function makeLicenseKey(product = 'skin') {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.getRandomValues(new Uint8Array(16));
@@ -437,7 +444,7 @@ export async function handleUser(request, env, forcedAction) {
   if (origin && !ORIGINS.has(origin)) return responseBody({ success: false, code: 'ORIGIN_NOT_ALLOWED' }, 403, request);
   if (request.method === 'OPTIONS') return responseBody({}, 204, request);
   try {
-    const methods = { register: 'POST', login: 'POST', me: 'GET', logout: 'POST', buy_with_balance: 'POST' };
+    const methods = { register: 'POST', login: 'POST', me: 'GET', logout: 'POST', create_topup: 'POST', buy_with_balance: 'POST' };
     if (!Object.hasOwn(methods, action)) fail(404, 'NOT_FOUND', 'API không tồn tại.');
     if (request.method !== methods[action]) fail(405, 'METHOD_NOT_ALLOWED', 'Phương thức không được hỗ trợ.');
     if (action === 'register' && request.method === 'POST') return responseBody(await register(request, env, now), 200, request);
@@ -447,6 +454,7 @@ export async function handleUser(request, env, forcedAction) {
       return responseBody({ success: true, user: await userData(env, session, now) }, 200, request);
     }
     if (action === 'logout' && request.method === 'POST') return responseBody(await logout(request, env, now), 200, request);
+    if (action === 'create_topup' && request.method === 'POST') return responseBody(await createTopup(request, env, now), 200, request);
     if (action === 'buy_with_balance' && request.method === 'POST') {
       const result = await purchase(request, env, now);
       return responseBody(result, result?.code === 'LICENSE_PENDING' || result?.status === 'PENDING' ? 202 : 200, request);

@@ -1378,6 +1378,10 @@
         </div>
       </div>
 
+      <button type="button" id="topup-payos-button" onclick="createPayosTopup()" class="mb-4 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black hover:scale-[1.01] transition disabled:opacity-50">
+        <i class="fa-solid fa-qrcode mr-2"></i>TẠO MÃ THANH TOÁN PAYOS
+      </button>
+
       <!-- Auto Balance Listener Radar -->
       <div class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-950 border border-cyan-500/40 text-[11px] font-mono text-cyan-300 mb-4 shadow-inner">
         <span class="size-2 rounded-full bg-cyan-400 animate-ping"></span>
@@ -2597,6 +2601,26 @@
 
     function copyTopupCode() {
       if (topupCurrentContent) copyData(topupCurrentContent, 'Đã sao chép mã nạp!');
+    }
+
+    async function createPayosTopup() {
+      const button = document.getElementById('topup-payos-button');
+      const status = document.getElementById('topup-listen-status');
+      if (!sessionToken || !currentUser || !button) return;
+      button.disabled = true;
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>ĐANG TẠO THANH TOÁN...';
+      try {
+        const { response, data } = await userApi('create_topup', { method: 'POST', body: { amount: topupCurrentAmount } });
+        if (!response.ok || !data.success || !data.checkoutUrl) throw new Error(data.message || 'Không tạo được yêu cầu payOS.');
+        if (status) status.textContent = 'Đã tạo yêu cầu payOS. Hãy thanh toán trong trang vừa mở.';
+        window.open(data.checkoutUrl, '_blank', 'noopener,noreferrer');
+      } catch (error) {
+        if (status) status.textContent = error.message || 'Không kết nối được payOS. Vui lòng thử lại.';
+        playSfx('error');
+      } finally {
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-qrcode mr-2"></i>TẠO MÃ THANH TOÁN PAYOS';
+      }
     }
 
     function handleCustomTopupInput(val) {

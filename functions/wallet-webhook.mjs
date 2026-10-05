@@ -18,7 +18,7 @@ async function readBody(request) {
 
 const review = (reason) => ({ success: true, reviewRequired: true, reason });
 
-async function creditDeposit(env, { depositCode, amount, referenceId }, now) {
+export async function creditDeposit(env, { depositCode, amount, referenceId }, now) {
   const db = env.LICENSE_DB;
   const account = await db.prepare('SELECT username FROM wallet_accounts WHERE deposit_code=?')
     .bind(depositCode).first();
