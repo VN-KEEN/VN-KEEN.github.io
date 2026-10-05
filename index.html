@@ -2577,7 +2577,7 @@
       if (contDisplay) contDisplay.textContent = showSepay && code ? code : 'CHỌN PHƯƠNG THỨC THANH TOÁN';
       if (bankDisplay) {
         bankDisplay.textContent = showSepay && bank.account && bank.bank
-          ? `${bank.bank} · ${bank.account}${bank.name ? ` · ${bank.name}` : ''}`
+          ? 'Mã SePay đã sẵn sàng. Quét QR để thanh toán.'
           : 'Chọn PAYOS hoặc SEPAY để tạo mã thanh toán.';
       }
       if (copyCode) copyCode.disabled = !topupCurrentContent;
