@@ -40,6 +40,19 @@ class TestD1 {
 function request(url, options = {}) { return new Request(url, options); }
 async function json(response) { return response.json(); }
 
+for (const origin of ['https://vn-keen.skin', 'https://www.vn-keen.skin']) {
+  const preflight = await handleUser(request('https://vn-keen.pages.dev/api/user?action=login', {
+    method: 'OPTIONS',
+    headers: { Origin: origin, 'Access-Control-Request-Method': 'POST' }
+  }), {});
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get('Access-Control-Allow-Origin'), origin);
+}
+const rejectedOrigin = await handleUser(request('https://vn-keen.pages.dev/api/user?action=login', {
+  method: 'OPTIONS', headers: { Origin: 'https://untrusted.example' }
+}), {});
+assert.equal(rejectedOrigin.status, 403);
+
 const db = new TestD1();
 db.migrate();
 const env = { LICENSE_DB: db, SEPAY_ACCOUNT_NUMBER: '123456789', LICENSEGATE_API_KEY: 'test-provider' };

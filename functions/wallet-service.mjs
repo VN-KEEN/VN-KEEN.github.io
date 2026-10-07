@@ -19,7 +19,7 @@ export const PRODUCTS = Object.freeze({
   aim: Object.freeze({ id: 'aim', name: 'VN-KEEN-ESSENTIALS', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
 });
 
-const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev']);
+const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev', 'https://vn-keen.skin', 'https://www.vn-keen.skin']);
 
 function fail(status, code, message, details = {}) {
   throw Object.assign(new Error(message || code), { status, code, ...details });

@@ -148,6 +148,10 @@ function user(username, extra = {}) {
 {
   const hosted = makeHarness('vn-keen.github.io');
   assert.equal(hosted.api.base, 'https://vn-keen.pages.dev/api/user?action=');
+  for (const hostname of ['vn-keen.skin', 'www.vn-keen.skin']) {
+    assert.equal(makeHarness(hostname).api.base, hosted.api.base);
+  }
+  assert.equal(makeHarness('vn-keen.pages.dev').api.base, '/api/user?action=');
   const local = makeHarness('localhost');
   assert.equal(local.api.base, '/api/user?action=');
 }

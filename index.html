@@ -2303,7 +2303,7 @@
     // the session token and request id/product/plan needed to safely retry an order.
     let currentUser = null;
     let sessionToken = null;
-    const USER_API_BASE = location.hostname === 'vn-keen.github.io'
+    const USER_API_BASE = ['vn-keen.github.io', 'vn-keen.skin', 'www.vn-keen.skin'].includes(location.hostname)
       ? 'https://vn-keen.pages.dev/api/user?action=' : '/api/user?action=';
     const SESSION_TOKEN_KEY = 'vnkeen_session_token';
     const REQUEST_ID_PREFIX = 'vnkeen_wallet_request:';
