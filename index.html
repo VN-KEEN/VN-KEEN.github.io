@@ -535,9 +535,9 @@
 
       <!-- Main Title -->
       <h1 class="font-cyber max-w-5xl text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-none">
-        MOD SKIN CS2.
-        <span class="mt-2 block uppercase bg-gradient-to-r from-yellow-400 via-amber-300 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(245,158,11,0.5)]">
-          ĐÚNG CHẤT RIÊNG.
+        <span class="hero-title-main">Mod Skin Counter-Strike 2.</span>
+        <span class="hero-title-accent mt-2 block uppercase">
+          MỖI TRẬN ĐẤU, MỘT PHONG CÁCH.
         </span>
       </h1>
 
@@ -561,7 +561,7 @@
       </div>
 
       <div class="hero-proof" aria-label="Thông tin nhanh">
-        <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> 12 mục SKINS</span>
+        <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> 13 mục tính năng</span>
         <span><i class="fa-solid fa-key" aria-hidden="true"></i> Key riêng theo bản</span>
         <span><i class="fa-brands fa-telegram" aria-hidden="true"></i> Hỗ trợ Telegram</span>
       </div>
@@ -770,9 +770,6 @@
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
           MINI-GAME <span class="case-title-gradient bg-gradient-to-r from-yellow-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">MỞ HÒM CS2 MIỄN PHÍ</span>
         </h2>
-        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-          Đây là mô phỏng giao diện mở hòm để giải trí; không cấp vật phẩm thật và không thay đổi inventory CS2.
-        </p>
       </div>
 
       <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-6 border-2 border-yellow-500/40 shadow-[0_0_50px_rgba(234,179,8,0.2)] relative">
@@ -814,7 +811,7 @@
             </div>
           </div>
           <button type="button" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'}); playSfx('click')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 font-cyber font-black text-black text-sm hover:scale-105 transition-all whitespace-nowrap shadow-lg">
-            <i class="fa-solid fa-gift mr-1"></i> XEM GÓI SẢN PHẨM (KHÔNG CẤP SKIN)
+            <i class="fa-solid fa-gift mr-1"></i> XEM GÓI SẢN PHẨM (CẤP SKIN VÀO KHO)
           </button>
         </div>
 
@@ -841,8 +838,8 @@
          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
         
         <!-- PLAN 1: 1 NGÀY (20.000đ) -->
-        <div class="glass-panel rounded-3xl p-7 border border-white/10 hover:border-cyan-400/50 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
-          <div>
+        <div class="plan-card glass-panel rounded-3xl p-7 border border-white/10 hover:border-cyan-400/50 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div class="plan-card__body">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 rounded-full bg-slate-800 text-cyan-300 font-mono text-xs font-bold border border-cyan-500/30">
                 THỬ NGHIỆM 24H
@@ -865,29 +862,29 @@
           </div>
 
           <div class="mt-8 pt-4">
-            <button type="button" data-plan-button="daily" data-plan-label="Thuê 1 ngày" onclick="openCheckoutSmart('daily'); playSfx('click')" class="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-black font-cyber text-xs font-black text-white border border-white/10 hover:border-cyan-400 transition-all shadow-md flex items-center justify-center gap-2">
+            <button type="button" data-plan-button="daily" data-plan-label="Thuê 1 ngày" onclick="openCheckoutSmart('daily'); playSfx('click')" class="plan-button plan-button--cyan">
               <i class="fa-solid fa-key"></i> THUÊ 1 NGÀY (20.000đ)
             </button>
           </div>
         </div>
 
         <!-- PLAN 2: 7 NGÀY (100.000đ) -->
-        <div class="glass-panel rounded-3xl p-7 border border-sky-500/30 hover:border-sky-400/70 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
-          <div>
+        <div class="plan-card glass-panel rounded-3xl p-7 border border-sky-500/30 hover:border-sky-400/70 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div class="plan-card__body">
             <div class="flex items-center justify-between mb-4"><span class="px-3 py-1 rounded-full bg-sky-500/15 text-sky-300 font-mono text-xs font-bold border border-sky-500/30">LINH HOẠT 7 NGÀY</span><i class="fa-solid fa-calendar-week text-sky-400 text-lg"></i></div>
             <h3 class="font-cyber text-2xl font-black text-white">GÓI 7 NGÀY</h3><p class="text-xs text-muted font-sans mt-1">Dành cho nhu cầu sử dụng ngắn hạn.</p>
             <div class="my-6 pb-6 border-b border-white/10"><span class="font-cyber text-4xl font-black text-sky-300">100.000đ</span><span class="text-xs font-mono text-muted">/ 7 Ngày</span></div>
             <ul class="space-y-3 text-xs font-sans text-gray-300"><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Cấp 1 License Key (Thời hạn 7 ngày)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Hỗ trợ cài đặt qua Telegram</li></ul>
           </div>
-          <div class="mt-8 pt-4"><button type="button" data-plan-button="weekly" data-plan-label="Thuê 7 ngày" onclick="openCheckoutSmart('weekly'); playSfx('click')" class="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-sky-500 hover:text-black font-cyber text-xs font-black text-white border border-white/10 hover:border-sky-400 transition-all shadow-md flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i> THUÊ 7 NGÀY (100.000đ)</button></div>
+          <div class="mt-8 pt-4"><button type="button" data-plan-button="weekly" data-plan-label="Thuê 7 ngày" onclick="openCheckoutSmart('weekly'); playSfx('click')" class="plan-button plan-button--sky"><i class="fa-solid fa-key"></i> THUÊ 7 NGÀY (100.000đ)</button></div>
         </div>
 
         <!-- PLAN 3: 30 NGÀY (300.000đ) -->
-        <div class="glass-panel rounded-3xl p-7 border-2 border-amber-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative bg-slate-900/90">
+        <div class="plan-card glass-panel rounded-3xl p-7 border-2 border-amber-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative bg-slate-900/90">
           <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-[10px] font-black uppercase tracking-wider shadow-md">
             🔥 GÓI ĐỀ XUẤT
           </div>
-          <div>
+          <div class="plan-card__body">
             <div class="flex items-center justify-between mb-4 mt-2">
               <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono text-xs font-bold border border-amber-500/40">
                 PHỔ BIẾN 1 THÁNG
@@ -911,27 +908,27 @@
           </div>
 
           <div class="mt-8 pt-4">
-            <button type="button" data-plan-button="monthly" data-plan-label="Thuê 30 ngày" onclick="openCheckoutSmart('monthly'); playSfx('success')" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 font-cyber text-sm font-black text-black shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:scale-105 transition-all flex items-center justify-center gap-2">
+            <button type="button" data-plan-button="monthly" data-plan-label="Thuê 30 ngày" onclick="openCheckoutSmart('monthly'); playSfx('success')" class="plan-button plan-button--amber">
               <i class="fa-solid fa-bolt"></i> THUÊ 30 NGÀY (300.000đ)
             </button>
           </div>
         </div>
 
         <!-- PLAN 4: 90 NGÀY (800.000đ) -->
-        <div class="glass-panel rounded-3xl p-7 border border-emerald-500/35 hover:border-emerald-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
-          <div>
+        <div class="plan-card glass-panel rounded-3xl p-7 border border-emerald-500/35 hover:border-emerald-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div class="plan-card__body">
             <div class="flex items-center justify-between mb-4"><span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30">TIẾT KIỆM 3 THÁNG</span><i class="fa-solid fa-calendar-days text-emerald-400 text-lg"></i></div>
             <h3 class="font-cyber text-2xl font-black text-white">GÓI 90 NGÀY</h3><p class="text-xs text-muted font-sans mt-1">Dành cho khách dùng ổn định dài hạn.</p>
             <div class="my-6 pb-6 border-b border-white/10"><span class="font-cyber text-4xl font-black text-emerald-300">800.000đ</span><span class="text-xs font-mono text-muted">/ 90 Ngày</span></div>
             <ul class="space-y-3 text-xs font-sans text-gray-300"><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Cấp 1 License Key (Thời hạn 90 ngày)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Hỗ trợ kỹ thuật ưu tiên</li></ul>
           </div>
-          <div class="mt-8 pt-4"><button type="button" data-plan-button="quarterly" data-plan-label="Thuê 90 ngày" onclick="openCheckoutSmart('quarterly'); playSfx('success')" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 font-cyber text-xs font-black text-slate-950 transition-all shadow-md flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i> THUÊ 90 NGÀY (800.000đ)</button></div>
+          <div class="mt-8 pt-4"><button type="button" data-plan-button="quarterly" data-plan-label="Thuê 90 ngày" onclick="openCheckoutSmart('quarterly'); playSfx('success')" class="plan-button plan-button--emerald"><i class="fa-solid fa-key"></i> THUÊ 90 NGÀY (800.000đ)</button></div>
         </div>
         </div>
 
         <!-- GÓI VĨNH VIỄN: THẺ RIÊNG -->
-        <div class="mt-10 mx-auto max-w-md glass-panel rounded-3xl p-7 border border-purple-500/40 hover:border-purple-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
-          <div>
+        <div class="plan-card plan-card--lifetime mt-10 mx-auto max-w-md glass-panel rounded-3xl p-7 border border-purple-500/40 hover:border-purple-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div class="plan-card__body">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs font-bold border border-purple-500/40">
                 👑 VIP LIFETIME
@@ -942,8 +939,7 @@
             <p class="text-xs text-muted font-sans mt-1">Liên hệ admin để được báo giá và tư vấn chính sách hỗ trợ.</p>
             
             <div class="my-6 pb-6 border-b border-white/10">
-              <span class="font-cyber text-4xl font-black text-purple-400">Liên hệ</span>
-              <span class="text-xs font-mono text-muted">/ Vĩnh Viễn</span>
+              <span class="plan-lifetime-rgb font-cyber text-4xl font-black">VĨNH VIỄN</span>
             </div>
 
             <ul class="space-y-3 text-xs font-sans text-gray-300">
@@ -954,7 +950,7 @@
           </div>
 
           <div class="mt-8 pt-4">
-            <button type="button" data-feature-image="images/contact/zalo-consultation.png" data-feature-title="Quét mã Zalo để được tư vấn gói vĩnh viễn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 font-cyber text-xs font-black text-white transition-all shadow-md flex items-center justify-center gap-2">
+            <button type="button" data-feature-image="images/contact/zalo-consultation.png" data-feature-title="Quét mã Zalo để được tư vấn gói vĩnh viễn" class="plan-button plan-button--purple">
               <i class="fa-solid fa-qrcode"></i> LIÊN HỆ TƯ VẤN
             </button>
           </div>
