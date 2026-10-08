@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VN-KEEN.SKIN | Mod skin CS2 &amp; hướng dẫn sử dụng</title>
   <meta name="description" content="Khám phá VN-KEEN.SKIN dành cho CS2. Xem tính năng, bảng giá key, hướng dẫn cài đặt cùng giới hạn và rủi ro khi sử dụng.">
-  <meta name="author" content="VN-KEEN">8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VN-KEEN.SKIN | Mod skin CS2 &amp; hướng dẫn sử dụng</title>
-  <meta name="description" content="Khám phá VN-KEEN.SKIN dành cho CS2. Xem tính năng, bảng giá key, hướng dẫn cài đặt cùng giới hạn và rủi ro khi sử dụng.">
   <meta name="author" content="VN-KEEN">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://vn-keen.skin/">
@@ -827,14 +823,10 @@
         <h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">
           BẢNG GIÁ THUÊ & MUA <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600 bg-clip-text text-transparent">KEY BẢN QUYỀN CS2</span>
         </h2>
-        <p class="mt-4 max-w-2xl mx-auto text-muted text-base">
-           Nạp ví qua VietQR, sau đó chọn gói VN-KEEN.SKIN và mua key bằng số dư.
-        </p>
       </div>
 
               <!-- Gói thời hạn -->
        <div id="pricing-tiers" class="max-w-6xl mx-auto">
-         <p id="pricing-scope-note" class="mx-auto mb-6 max-w-2xl text-center text-xs leading-relaxed text-muted">Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">VN-KEEN-SKIN</strong> dành riêng cho VN-KEEN.SKIN.</p>
          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
         
         <!-- PLAN 1: 1 NGÀY (20.000đ) -->
@@ -981,7 +973,7 @@
             <i class="fa-solid fa-chevron-down text-sm group-open:rotate-180 transition-transform text-muted"></i>
           </summary>
           <p class="mt-4 text-sm leading-relaxed text-muted border-t border-white/10 pt-3">
-            VN-KEEN.SKIN dùng key <strong>VN-KEEN-SKIN</strong>. Hãy tải đúng file và nhập key còn hạn để kích hoạt.
+            Trong trận, skin chỉ hiển thị với người dùng VN-KEEN.SKIN. Ở sảnh, mọi người đều thấy skin thực tế.
           </p>
         </details>
 
@@ -2178,12 +2170,6 @@
       }
       const productNote = document.getElementById('selected-product-note');
       if (productNote) productNote.textContent = product.note;
-      const scopeNote = document.getElementById('pricing-scope-note');
-      if (scopeNote) {
-        scopeNote.innerHTML = currentProduct === 'essentials'
-          ? `Mỗi gói bên dưới cấp một key <strong class="text-cyan-300">${product.scope}</strong> riêng cho ${product.name}. Key dành riêng cho Essentials / AIM.`
-          : `Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">${product.scope}</strong> riêng cho ${product.name}.`;
-      }
       const selectionSummary = document.getElementById('pricing-selection-summary');
       if (selectionSummary) {
         selectionSummary.className = currentProduct === 'essentials'
