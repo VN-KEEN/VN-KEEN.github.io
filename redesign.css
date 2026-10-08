@@ -24,8 +24,8 @@ footer{background:#0d1216!important;border-top:1px solid var(--studio-line)!impo
 #top h1 span{display:block}
 #top h1{font-size:clamp(22px,2.2vw,32px)!important;line-height:1.3;letter-spacing:-.025em}
 #top h1 span.hero-title-main,#top h1 span.hero-title-accent{white-space:nowrap}
-#top h1 span.hero-title-main{display:block;width:max-content;max-width:100%;font-size:clamp(18px,2.9vw,34px);line-height:inherit;letter-spacing:inherit;background:linear-gradient(90deg,#ff5d5d 0%,#ffad4d 16.6%,#f8e65c 33.3%,#65dc8d 50%,#4acfe0 66.6%,#718cff 83.3%,#c477ed 100%);background-clip:text;-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(101,220,141,.24))}
-#top h1 span.hero-title-accent{margin-top:.4em!important;padding:.22em 0 .14em;line-height:inherit;letter-spacing:inherit;background:linear-gradient(to right,#facc15,#fcd34d,#ec4899);background-clip:text;-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(245,158,11,.3))}
+#top h1 span.hero-title-main{display:block;width:max-content;max-width:100%;font-size:clamp(18px,2.9vw,34px);line-height:inherit;letter-spacing:inherit;background:none;color:var(--studio-lime);filter:none}
+#top h1 span.hero-title-accent{margin-top:.4em!important;padding:.22em 0 .14em;line-height:inherit;letter-spacing:inherit;background:none;color:#eef2f4;filter:none}
 @media(max-width:600px){#top h1{font-size:clamp(14px,4.5vw,22px)!important}#top h1 span.hero-title-main{font-size:clamp(18px,5vw,25px)}}
 
 /* Keep the pricing section atmospheric without changing its layout. */
