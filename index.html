@@ -3065,8 +3065,8 @@
         const download = document.createElement('a');
         download.href = walletProductMeta(product).file;
         download.download = '';
-        download.textContent = product === 'aim' ? 'Tải Essentials / AIM' : 'Tải VANTIX / SKIN';
-        download.className = 'text-xs text-cyan-300 underline';
+        download.innerHTML = '<i class="fa-solid fa-download"></i> TẢI MODSKIN';
+        download.className = 'px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-cyber font-bold text-xs transition shadow flex items-center justify-center gap-1.5 shrink-0';
         const actions = document.createElement('div');
         actions.className = 'flex flex-col gap-2 shrink-0';
         actions.append(copy, download);
