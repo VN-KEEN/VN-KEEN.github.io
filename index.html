@@ -822,7 +822,7 @@
     </div>
   </section>
 
-  <!-- PRICING & PAYMENT (1 NGÀY, 30 NGÀY, VĨNH VIỄN) -->
+  <!-- PRICING & PAYMENT (1, 7, 30, 90 NGÀY; VĨNH VIỄN LIÊN HỆ) -->
   <section id="pricing" class="relative py-24 bg-bg/70">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
@@ -835,10 +835,10 @@
         </p>
       </div>
 
-              <!-- 3 Pricing Cards Grid -->
+              <!-- Gói thời hạn -->
        <div id="pricing-tiers" class="max-w-6xl mx-auto">
          <p id="pricing-scope-note" class="mx-auto mb-6 max-w-2xl text-center text-xs leading-relaxed text-muted">Mỗi gói bên dưới cấp một key <strong class="text-emerald-300">VN-KEEN-SKIN</strong> dành riêng cho VN-KEEN.SKIN.</p>
-         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
         
         <!-- PLAN 1: 1 NGÀY (20.000đ) -->
         <div class="glass-panel rounded-3xl p-7 border border-white/10 hover:border-cyan-400/50 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
@@ -871,10 +871,21 @@
           </div>
         </div>
 
-        <!-- PLAN 2: 30 NGÀY (300.000đ) -->
+        <!-- PLAN 2: 7 NGÀY (100.000đ) -->
+        <div class="glass-panel rounded-3xl p-7 border border-sky-500/30 hover:border-sky-400/70 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4"><span class="px-3 py-1 rounded-full bg-sky-500/15 text-sky-300 font-mono text-xs font-bold border border-sky-500/30">LINH HOẠT 7 NGÀY</span><i class="fa-solid fa-calendar-week text-sky-400 text-lg"></i></div>
+            <h3 class="font-cyber text-2xl font-black text-white">GÓI 7 NGÀY</h3><p class="text-xs text-muted font-sans mt-1">Dành cho nhu cầu sử dụng ngắn hạn.</p>
+            <div class="my-6 pb-6 border-b border-white/10"><span class="font-cyber text-4xl font-black text-sky-300">100.000đ</span><span class="text-xs font-mono text-muted">/ 7 Ngày</span></div>
+            <ul class="space-y-3 text-xs font-sans text-gray-300"><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Cấp 1 License Key (Thời hạn 7 ngày)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-sky-400"></i> Hỗ trợ cài đặt qua Telegram</li></ul>
+          </div>
+          <div class="mt-8 pt-4"><button type="button" data-plan-button="weekly" data-plan-label="Thuê 7 ngày" onclick="openCheckoutSmart('weekly'); playSfx('click')" class="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-sky-500 hover:text-black font-cyber text-xs font-black text-white border border-white/10 hover:border-sky-400 transition-all shadow-md flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i> THUÊ 7 NGÀY (100.000đ)</button></div>
+        </div>
+
+        <!-- PLAN 3: 30 NGÀY (300.000đ) -->
         <div class="glass-panel rounded-3xl p-7 border-2 border-amber-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative bg-slate-900/90">
           <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-cyber text-[10px] font-black uppercase tracking-wider shadow-md">
-            🔥 ĐƯỢC CHỌN NHIỀU NHẤT
+            🔥 GÓI ĐỀ XUẤT
           </div>
           <div>
             <div class="flex items-center justify-between mb-4 mt-2">
@@ -906,8 +917,20 @@
           </div>
         </div>
 
-        <!-- PLAN 3: VĨNH VIỄN (2.000.000đ) -->
-        <div class="glass-panel rounded-3xl p-7 border border-purple-500/40 hover:border-purple-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+        <!-- PLAN 4: 90 NGÀY (800.000đ) -->
+        <div class="glass-panel rounded-3xl p-7 border border-emerald-500/35 hover:border-emerald-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4"><span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30">TIẾT KIỆM 3 THÁNG</span><i class="fa-solid fa-calendar-days text-emerald-400 text-lg"></i></div>
+            <h3 class="font-cyber text-2xl font-black text-white">GÓI 90 NGÀY</h3><p class="text-xs text-muted font-sans mt-1">Dành cho khách dùng ổn định dài hạn.</p>
+            <div class="my-6 pb-6 border-b border-white/10"><span class="font-cyber text-4xl font-black text-emerald-300">800.000đ</span><span class="text-xs font-mono text-muted">/ 90 Ngày</span></div>
+            <ul class="space-y-3 text-xs font-sans text-gray-300"><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Cấp 1 License Key (Thời hạn 90 ngày)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Kích hoạt chuẩn 1 PC (HWID Lock)</li><li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-emerald-400"></i> Hỗ trợ kỹ thuật ưu tiên</li></ul>
+          </div>
+          <div class="mt-8 pt-4"><button type="button" data-plan-button="quarterly" data-plan-label="Thuê 90 ngày" onclick="openCheckoutSmart('quarterly'); playSfx('success')" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 font-cyber text-xs font-black text-slate-950 transition-all shadow-md flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i> THUÊ 90 NGÀY (800.000đ)</button></div>
+        </div>
+        </div>
+
+        <!-- GÓI VĨNH VIỄN: THẺ RIÊNG -->
+        <div class="mt-10 mx-auto max-w-md glass-panel rounded-3xl p-7 border border-purple-500/40 hover:border-purple-400/80 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative">
           <div>
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs font-bold border border-purple-500/40">
@@ -936,7 +959,6 @@
             </button>
           </div>
          </div>
-       </div>
 
     </div>
 
@@ -2198,7 +2220,9 @@
 
     const PLAN_META = {
       daily: { id: 'daily', name: 'Gói Thuê 1 Ngày (24H)', amount: 20000, price: '20.000đ', period: '/ 1 Ngày', days: 1 },
+      weekly: { id: 'weekly', name: 'Gói Thuê 7 Ngày', amount: 100000, price: '100.000đ', period: '/ 7 Ngày', days: 7 },
       monthly: { id: 'monthly', name: 'Gói Thuê 30 Ngày (1 Tháng)', amount: 300000, price: '300.000đ', period: '/ 30 Ngày', days: 30 },
+      quarterly: { id: 'quarterly', name: 'Gói Thuê 90 Ngày', amount: 800000, price: '800.000đ', period: '/ 90 Ngày', days: 90 },
       lifetime: { id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 2000000, price: '2.000.000đ', period: '/ Vĩnh Viễn', days: 9999 },
       vip: { id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 2000000, price: '2.000.000đ', period: '/ Vĩnh Viễn', days: 9999 }
     };
@@ -2707,7 +2731,7 @@
 
     function normalizePlan(plan) {
       if (plan === 'vip') return 'lifetime';
-      return ['daily', 'monthly', 'lifetime'].includes(plan) ? plan : null;
+      return ['daily', 'weekly', 'monthly', 'quarterly', 'lifetime'].includes(plan) ? plan : null;
     }
 
     function normalizeWalletProduct(product) {
