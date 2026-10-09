@@ -435,6 +435,9 @@
 
       <!-- User Account & Wallet Bar / Actions -->
       <div class="flex items-center gap-2 sm:gap-3">
+        <button type="button" id="language-toggle" onclick="toggleSiteLanguage(); playSfx('click')" class="shrink-0 px-2.5 py-2 rounded-xl bg-slate-900/90 hover:bg-white/10 text-white border border-white/15 text-[10px] sm:text-xs font-black font-cyber tracking-wider transition-all" aria-label="Switch language to English" title="Switch language to English">
+          <span id="language-toggle-label"><span class="text-amber-400">VI</span> / EN</span>
+        </button>
         
         <!-- Guest View (Not Logged In) -->
         <div id="nav-guest-zone" class="flex items-center gap-2">
@@ -3138,6 +3141,156 @@
 
       restoreServerSession();
     });
+  </script>
+  <script>
+    (() => {
+      const languageKey = 'vnkeen-language';
+      const originalText = new WeakMap();
+      const originalPlaceholders = new WeakMap();
+      const english = {
+        'Tính năng Skin': 'Skin Features',
+        'Kho Skin ↗': 'Skin Catalog ↗',
+        'Hỗ trợ': 'Support',
+        'Đăng Nhập': 'Log In',
+        'Đăng Ký': 'Sign Up',
+        'Ví:': 'Wallet:',
+        'Nạp': 'Top Up',
+        'Kho Key': 'My Keys',
+        'BẢNG GIÁ': 'PRICING',
+        'VN-KEEN.SKIN · PHIÊN BẢN 2.1.3': 'VN-KEEN.SKIN · VERSION 2.1.3',
+        'MOD SKIN CS2. ĐÚNG CHẤT RIÊNG.': 'CS2 SKIN MOD. YOUR STYLE.',
+        'Tùy chỉnh kho đồ CS2 với skin súng, dao, găng tay, sticker, keychain và nhiều lựa chọn cá nhân hóa trong một giao diện trực quan.': 'Customize your CS2 inventory with weapon skins, knives, gloves, stickers, keychains and more in one intuitive interface.',
+        'TẢI MODSKIN': 'DOWNLOAD MODSKIN',
+        'MUA KEY BẢN QUYỀN': 'BUY A LICENSE KEY',
+        'KHÁM PHÁ KHÔNG GIỚI HẠN ↗': 'EXPLORE THE CATALOG ↗',
+        'BẢNG GIÁ THUÊ & MUA': 'RENTAL & LICENSE',
+        'KEY BẢN QUYỀN CS2': 'KEY PRICING',
+        'Nạp ví qua VietQR, sau đó chọn gói VN-KEEN.SKIN và mua key bằng số dư.': 'Vietnamese customers can top up with VietQR, then choose a VN-KEEN.SKIN plan and buy a key with wallet balance.',
+        'Mỗi gói bên dưới cấp một key': 'Each plan below provides one',
+        'dành riêng cho VN-KEEN.SKIN.': 'key exclusively for VN-KEEN.SKIN.',
+        'THỬ NGHIỆM 24H': '24-HOUR TRIAL',
+        'GÓI 1 NGÀY': '1-DAY PLAN',
+        'Phù hợp chơi trải nghiệm cuối tuần / net': 'Ideal for a short trial or weekend use',
+        '/ 24 Giờ': '/ 24 Hours',
+        'Cấp 1 License Key (Thời hạn 24h)': 'Includes 1 license key (24 hours)',
+        'Kích hoạt chuẩn 1 PC (HWID Lock)': 'Activation for 1 PC (HWID lock)',
+        'Hỗ trợ cài đặt qua Telegram': 'Installation support via Telegram',
+        'THUÊ 1 NGÀY (30.000đ)': 'BUY 1 DAY (30,000 VND)',
+        'LINH HOẠT 7 NGÀY': 'FLEXIBLE 7 DAYS',
+        'GÓI 7 NGÀY': '7-DAY PLAN',
+        'Dành cho nhu cầu sử dụng ngắn hạn.': 'For short-term use.',
+        '/ 7 Ngày': '/ 7 Days',
+        'Cấp 1 License Key (Thời hạn 7 ngày)': 'Includes 1 license key (7 days)',
+        'THUÊ 7 NGÀY (120.000đ)': 'BUY 7 DAYS (120,000 VND)',
+        '🔥 GÓI ĐỀ XUẤT': '🔥 RECOMMENDED',
+        'PHỔ BIẾN 1 THÁNG': 'POPULAR 1 MONTH',
+        'GÓI 30 NGÀY': '30-DAY PLAN',
+        'Sử dụng liên tục trong 1 tháng cày rank': 'Continuous access for one month',
+        '/ 30 Ngày': '/ 30 Days',
+        'Cấp 1 License Key (Thời hạn 30 ngày)': 'Includes 1 license key (30 days)',
+        'Tự động cập nhật bản vá CS2 mới nhất': 'Updates for supported CS2 releases',
+        'Kích hoạt chuẩn 1 PC (HWID Lock an toàn)': 'Activation for 1 PC (HWID lock)',
+        'Tham gia kênh hỗ trợ Telegram VIP': 'VIP support through Telegram',
+        'THUÊ 30 NGÀY (300.000đ)': 'BUY 30 DAYS (300,000 VND)',
+        'TIẾT KIỆM 3 THÁNG': 'SAVE WITH 3 MONTHS',
+        'GÓI 90 NGÀY': '90-DAY PLAN',
+        'Dành cho khách dùng ổn định dài hạn.': 'For customers who need longer access.',
+        '/ 90 Ngày': '/ 90 Days',
+        'Cấp 1 License Key (Thời hạn 90 ngày)': 'Includes 1 license key (90 days)',
+        'Hỗ trợ kỹ thuật ưu tiên': 'Priority technical support',
+        'THUÊ 90 NGÀY (800.000đ)': 'BUY 90 DAYS (800,000 VND)',
+        'GÓI TRỌN ĐỜI': 'LIFETIME PLAN',
+        'Liên hệ admin để được báo giá và tư vấn chính sách hỗ trợ.': 'Contact the administrator for pricing and support terms.',
+        '/ Vĩnh Viễn': '/ Lifetime',
+        'Cấp 1 License Key (Thời hạn Vĩnh Viễn)': 'Includes 1 lifetime license key',
+        'Hỗ trợ reset đổi HWID khi nâng cấp máy tính': 'HWID reset support after a PC upgrade',
+        'Hỗ trợ kỹ thuật 1-1 ưu tiên cao nhất': 'Highest-priority one-to-one support',
+        'LIÊN HỆ TƯ VẤN': 'CONTACT SUPPORT',
+        'TÀI KHOẢN VN-KEEN': 'VN-KEEN ACCOUNT',
+        'Đăng nhập để nạp tiền vào ví và quản lý License Key': 'Log in to top up your wallet and manage license keys',
+        'ĐĂNG NHẬP': 'LOG IN',
+        'ĐĂNG KÝ MỚI': 'CREATE ACCOUNT',
+        'Tên Đăng Nhập': 'Username',
+        'Mật Khẩu': 'Password',
+        'ĐĂNG NHẬP NGAY': 'LOG IN NOW',
+        'Tên Đăng Nhập Mới': 'New Username',
+        'Telegram / Zalo (Tùy chọn để được hỗ trợ)': 'Telegram / Zalo (optional support contact)',
+        'TẠO TÀI KHOẢN MỚI': 'CREATE A NEW ACCOUNT',
+        'NẠP TIỀN VÀO VÍ': 'TOP UP WALLET',
+        'Khách hàng Việt Nam': 'Vietnamese Customers',
+        'Khách hàng quốc tế': 'International Customers',
+        'Đóng Cửa Sổ': 'Close',
+        'Hệ thống đang tự động lắng nghe nạp tiền VietQR 24/7...': 'The system is monitoring VietQR top-ups 24/7...',
+        'CÂU HỎI THƯỜNG GẶP': 'FREQUENTLY ASKED QUESTIONS',
+        'ĐIỀU KHOẢN DỊCH VỤ': 'TERMS OF SERVICE',
+        'LIÊN HỆ TRỰC TIẾP': 'DIRECT CONTACT',
+        'ZALO HỖ TRỢ': 'ZALO SUPPORT'
+      };
+      const placeholderEnglish = {
+        'Nhập tên tài khoản...': 'Enter your username...',
+        'Nhập mật khẩu...': 'Enter your password...',
+        '3–32 chữ cái, chữ số hoặc dấu _...': '3–32 letters, numbers, or _...',
+        'Từ 10–128 ký tự...': '10–128 characters...'
+      };
+      let currentLanguage = 'vi';
+
+      function translateTextNode(node, language) {
+        if (!originalText.has(node)) originalText.set(node, node.nodeValue);
+        const source = originalText.get(node);
+        if (language === 'vi') {
+          node.nodeValue = source;
+          return;
+        }
+        const trimmed = source.trim();
+        const translated = english[trimmed];
+        if (!translated) return;
+        const leading = source.match(/^\s*/)?.[0] || '';
+        const trailing = source.match(/\s*$/)?.[0] || '';
+        node.nodeValue = leading + translated + trailing;
+      }
+
+      function applySiteLanguage(language) {
+        currentLanguage = language === 'en' ? 'en' : 'vi';
+        document.documentElement.lang = currentLanguage;
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            const tag = node.parentElement?.tagName;
+            return tag === 'SCRIPT' || tag === 'STYLE' || !node.nodeValue.trim()
+              ? NodeFilter.FILTER_REJECT
+              : NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        let node;
+        while ((node = walker.nextNode())) translateTextNode(node, currentLanguage);
+        document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(input => {
+          if (!originalPlaceholders.has(input)) originalPlaceholders.set(input, input.placeholder);
+          const source = originalPlaceholders.get(input);
+          input.placeholder = currentLanguage === 'en' ? (placeholderEnglish[source] || source) : source;
+        });
+        const button = document.getElementById('language-toggle');
+        const label = document.getElementById('language-toggle-label');
+        if (label) label.innerHTML = currentLanguage === 'vi'
+          ? '<span class="text-amber-400">VI</span> / EN'
+          : 'VI / <span class="text-amber-400">EN</span>';
+        if (button) {
+          const nextName = currentLanguage === 'vi' ? 'English' : 'Tiếng Việt';
+          button.setAttribute('aria-label', `Switch language to ${nextName}`);
+          button.title = `Switch language to ${nextName}`;
+        }
+        document.title = currentLanguage === 'en'
+          ? 'VN-KEEN.SKIN | CS2 skin mod and user guide'
+          : 'VN-KEEN.SKIN | Mod skin CS2 & hướng dẫn sử dụng';
+        try { localStorage.setItem(languageKey, currentLanguage); } catch (error) {}
+      }
+
+      window.toggleSiteLanguage = () => applySiteLanguage(currentLanguage === 'vi' ? 'en' : 'vi');
+      window.applySiteLanguage = applySiteLanguage;
+      document.addEventListener('DOMContentLoaded', () => {
+        let saved = 'vi';
+        try { saved = localStorage.getItem(languageKey) || 'vi'; } catch (error) {}
+        applySiteLanguage(saved);
+      });
+    })();
   </script>
   <!-- VN-KEEN AI Assistant Floating Widget -->
   <script src="ai-widget.js?v=policy-5"></script>
