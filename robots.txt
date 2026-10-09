@@ -1,4 +1,4 @@
 ﻿User-agent: *
 Allow: /
 
-Sitemap: https://vn-keen.pages.dev/sitemap.xml
+Sitemap: https://vn-keen.skin/sitemap.xml

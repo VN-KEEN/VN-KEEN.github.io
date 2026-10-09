@@ -1,6 +1,6 @@
 # VN-KEEN
 
-Website: https://vn-keen.pages.dev/
+Website: https://vn-keen.skin/
 
 ## LicenseGate checkout deployment
 

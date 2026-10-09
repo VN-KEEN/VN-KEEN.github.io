@@ -6,20 +6,28 @@
   <title>VN-KEEN AI STUDIO | Trợ lý hỗ trợ CS2</title>
   <meta name="description" content="Trợ lý AI của VN-KEEN cho câu hỏi về CS2, thư viện skin, hướng dẫn cài đặt, thanh toán và hỗ trợ website.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://vn-keen.pages.dev/ai.html">
+  <link rel="canonical" href="https://vn-keen.skin/ai.html">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <meta name="theme-color" content="#070a12">
+  <meta name="language" content="vi">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <link rel="alternate" hreflang="vi" href="https://vn-keen.skin/ai.html">
+  <link rel="alternate" hreflang="en" href="https://vn-keen.skin/ai.html">
+  <link rel="alternate" hreflang="zh" href="https://vn-keen.skin/ai.html">
+  <link rel="alternate" hreflang="x-default" href="https://vn-keen.skin/ai.html">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://vn-keen.pages.dev/ai.html">
+  <meta property="og:url" content="https://vn-keen.skin/ai.html">
   <meta property="og:title" content="VN-KEEN AI STUDIO | Trợ lý AI CS2">
   <meta property="og:description" content="Trợ lý AI của VN-KEEN cho câu hỏi về CS2, catalog skin và hỗ trợ website.">
-  <meta property="og:image" content="https://vn-keen.pages.dev/images/VN-KEEN.jpg">
+  <meta property="og:image" content="https://vn-keen.skin/images/VN-KEEN.jpg">
   <meta property="og:image:alt" content="VN-KEEN AI STUDIO">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://vn-keen.pages.dev/ai.html">
+  <meta name="twitter:url" content="https://vn-keen.skin/ai.html">
   <meta name="twitter:title" content="VN-KEEN AI STUDIO | Trợ lý AI CS2">
   <meta name="twitter:description" content="Trợ lý AI của VN-KEEN cho câu hỏi về CS2 và website.">
-  <meta name="twitter:image" content="https://vn-keen.pages.dev/images/VN-KEEN.jpg">
+  <meta name="twitter:image" content="https://vn-keen.skin/images/VN-KEEN.jpg">
 
   <!-- Google Fonts & Font Awesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,6 +65,26 @@
     .neon-cyan {
       box-shadow: 0 0 20px rgba(0, 229, 238, 0.35);
     }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.4rem;
+      height: 2rem;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #dfe9f5;
+      font-size: 0.68rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      padding: 0 0.55rem;
+    }
+    .lang-toggle.active {
+      background: linear-gradient(135deg, rgba(0,229,238,0.25), rgba(168,85,247,0.18));
+      border-color: rgba(0,229,238,0.5);
+      color: white;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans">
@@ -72,18 +100,23 @@
     </a>
 
     <nav class="hidden md:flex items-center gap-6 font-cyber text-sm font-bold">
-      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-house mr-1"></i> Trang Chủ</a>
-      <a href="catalog.html" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid fa-images mr-1"></i> Kho 14K+ Skin ↗</a>
-      <a href="index.html#pricing" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-bolt mr-1"></i> Bảng Giá</a>
-      <a href="index.html#case-opening" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-box-open mr-1"></i> Mở Hòm CS2</a>
+      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-house mr-1"></i> <span data-i18n="navHome">Trang Chủ</span></a>
+      <a href="catalog.html" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid fa-images mr-1"></i> <span data-i18n="navCatalog">Kho 14K+ Skin</span> ↗</a>
+      <a href="index.html#pricing" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-bolt mr-1"></i> <span data-i18n="navPricing">Bảng Giá</span></a>
+      <a href="index.html#case-opening" class="text-gray-300 hover:text-cyan-400 transition"><i class="fa-solid fa-box-open mr-1"></i> <span data-i18n="navCase">Mở Hòm CS2</span></a>
     </nav>
 
     <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 p-1">
+        <button type="button" class="lang-toggle active" data-lang="vi" aria-label="Chuyển sang tiếng Việt">🇻🇳</button>
+        <button type="button" class="lang-toggle" data-lang="en" aria-label="Switch to English">🇺🇸</button>
+        <button type="button" class="lang-toggle" data-lang="zh" aria-label="切换到中文">🇨🇳</button>
+      </div>
       <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-        <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span> Gemini 3.8 Flash Online
+        <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span> <span data-i18n="statusOnline">Gemini 3.8 Flash Online</span>
       </div>
       <a href="https://t.me/+Z08LU6SphnllZmJl" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-cyber font-bold text-xs hover:opacity-90 transition">
-        <i class="fa-brands fa-telegram mr-1"></i> Kênh Telegram
+        <i class="fa-brands fa-telegram mr-1"></i> <span data-i18n="telegramChannel">Kênh Telegram</span>
       </a>
     </div>
   </header>
@@ -94,8 +127,8 @@
     <!-- Hero Banner -->
     <div class="glass-panel rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="space-y-1 text-center sm:text-left">
-        <h1 class="font-cyber font-black text-2xl sm:text-3xl text-white">TRỢ LÝ AI TOÀN NĂNG VN-KEEN</h1>
-        <p class="text-gray-400 text-xs sm:text-sm">Chuyên gia tư vấn vũ khí, mở khóa 14,000+ skins CS2, hỗ trợ kỹ thuật và hỏi đáp thông minh 24/7.</p>
+        <h1 class="font-cyber font-black text-2xl sm:text-3xl text-white" data-i18n="heroTitle">TRỢ LÝ AI TOÀN NĂNG VN-KEEN</h1>
+        <p class="text-gray-400 text-xs sm:text-sm" data-i18n="heroSubtitle">Chuyên gia tư vấn vũ khí, mở khóa 14,000+ skins CS2, hỗ trợ kỹ thuật và hỏi đáp thông minh 24/7.</p>
       </div>
       <div class="flex items-center gap-2">
         <select id="modelSelector" class="bg-slate-900 border border-cyan-500/40 text-cyan-300 text-xs font-mono rounded-xl px-3 py-2 outline-none">
@@ -105,7 +138,7 @@
           <option value="gemma-4-26b-a4b-it">Google Gemma 4-26B Instruct</option>
         </select>
         <button id="clearChatBtn" class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-cyber font-bold transition flex items-center gap-1.5" title="Xóa lịch sử trò chuyện">
-          <i class="fa-solid fa-trash-can"></i> Xóa Chat
+          <i class="fa-solid fa-trash-can"></i> <span data-i18n="clearChat">Xóa Chat</span>
         </button>
       </div>
     </div>
@@ -115,19 +148,19 @@
       <div class="flex items-start gap-3">
         <img src="images/VN-KEEN.jpg" alt="AI" class="size-9 rounded-xl border border-cyan-400/40 object-cover mt-1" onerror="this.src='favicon.jpg'">
         <div class="flex-1 bg-slate-900/90 border border-white/10 rounded-2xl rounded-tl-sm p-4 text-sm text-gray-200 space-y-3">
-          <p>Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖 — trợ lý hỗ trợ thư viện skin, hướng dẫn cài đặt, thanh toán và các câu hỏi về CS2.</p>
-          <p>Tôi có thể giải đáp toàn diện về:</p>
+          <p data-i18n="welcomeText">Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖 — trợ lý hỗ trợ thư viện skin, hướng dẫn cài đặt, thanh toán và các câu hỏi về CS2.</p>
+          <p data-i18n="coverText">Tôi có thể giải đáp toàn diện về:</p>
           <ul class="list-disc list-inside space-y-1 text-gray-300">
-            <li>Kho 14,000+ Skin súng, dao Karambit, Butterfly, găng tay, sticker Katowice.</li>
-            <li>Thông tin minh bạch về giới hạn, khả năng tương thích và rủi ro của phần mềm bên thứ ba.</li>
-            <li>Hướng dẫn quét mã QR thanh toán SePay và theo dõi trạng thái cấp key.</li>
-            <li>Cài đặt settings chuột, crosshair, mẹo ném smoke/flash các map CS2.</li>
+            <li data-i18n="coverItem1">Kho 14,000+ Skin súng, dao Karambit, Butterfly, găng tay, sticker Katowice.</li>
+            <li data-i18n="coverItem2">Thông tin minh bạch về giới hạn, khả năng tương thích và rủi ro của phần mềm bên thứ ba.</li>
+            <li data-i18n="coverItem3">Hướng dẫn quét mã QR thanh toán SePay và theo dõi trạng thái cấp key.</li>
+            <li data-i18n="coverItem4">Cài đặt settings chuột, crosshair, mẹo ném smoke/flash các map CS2.</li>
           </ul>
           <div class="pt-2 flex flex-wrap gap-2">
-            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Tư vấn combo dao và găng tay CS2 đẹp nhất phân khúc">🔪 Gợi ý Combo Dao + Găng</button>
-            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</button>
-            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Hướng dẫn các bước nạp tiền tự động qua SePay để nhận key VIP">💎 Cách nạp tiền SePay</button>
-            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Mẹo chỉnh độ nhạy chuột eDPI và tâm ngắm như s1mple và m0NESY">🎯 Cài đặt ngắm như Pro</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Tư vấn combo dao và găng tay CS2 đẹp nhất phân khúc" data-i18n="chipKnives">🔪 Gợi ý Combo Dao + Găng</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?" data-i18n="chipRisk">🛡️ Xem cảnh báo rủi ro</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Hướng dẫn các bước nạp tiền tự động qua SePay để nhận key VIP" data-i18n="chipTopup">💎 Cách nạp tiền SePay</button>
+            <button class="quick-chip text-xs px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition cursor-pointer" data-q="Mẹo chỉnh độ nhạy chuột eDPI và tâm ngắm như s1mple và m0NESY" data-i18n="chipAim">🎯 Cài đặt ngắm như Pro</button>
           </div>
         </div>
       </div>
@@ -149,6 +182,131 @@
     const sendBtn = document.getElementById('sendBtn');
     const clearBtn = document.getElementById('clearChatBtn');
     const modelSelector = document.getElementById('modelSelector');
+
+    const translations = {
+      vi: {
+        navHome: 'Trang Chủ',
+        navCatalog: 'Kho 14K+ Skin',
+        navPricing: 'Bảng Giá',
+        navCase: 'Mở Hòm CS2',
+        statusOnline: 'Gemini 3.8 Flash Online',
+        telegramChannel: 'Kênh Telegram',
+        heroTitle: 'TRỢ LÝ AI TOÀN NĂNG VN-KEEN',
+        heroSubtitle: 'Chuyên gia tư vấn vũ khí, mở khóa 14,000+ skins CS2, hỗ trợ kỹ thuật và hỏi đáp thông minh 24/7.',
+        clearChat: 'Xóa Chat',
+        welcomeText: 'Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖 — trợ lý hỗ trợ thư viện skin, hướng dẫn cài đặt, thanh toán và các câu hỏi về CS2.',
+        coverText: 'Tôi có thể giải đáp toàn diện về:',
+        coverItem1: 'Kho 14,000+ Skin súng, dao Karambit, Butterfly, găng tay, sticker Katowice.',
+        coverItem2: 'Thông tin minh bạch về giới hạn, khả năng tương thích và rủi ro của phần mềm bên thứ ba.',
+        coverItem3: 'Hướng dẫn quét mã QR thanh toán SePay và theo dõi trạng thái cấp key.',
+        coverItem4: 'Cài đặt settings chuột, crosshair, mẹo ném smoke/flash các map CS2.',
+        chipKnives: '🔪 Gợi ý Combo Dao + Găng',
+        chipRisk: '🛡️ Xem cảnh báo rủi ro',
+        chipTopup: '💎 Cách nạp tiền SePay',
+        chipAim: '🎯 Cài đặt ngắm như Pro',
+        inputPlaceholder: 'Nhập câu hỏi của bạn về CS2 hoặc bất cứ điều gì...',
+        sendLabel: 'GỬI',
+        clearHistory: 'Đã xóa toàn bộ lịch sử trò chuyện.',
+        networkError: '⚠️ Lỗi mạng hoặc máy chủ ngoại tuyến: ',
+        connectionError: '⚠️ Lỗi: ',
+        aiOffline: 'Không thể kết nối máy chủ AI. Hãy thử lại sau.',
+        noReply: 'Đã nhận được phản hồi.',
+        defaultAssistant: 'Đã nhận được phản hồi.'
+      },
+      en: {
+        navHome: 'Home',
+        navCatalog: '14K+ Skin Vault',
+        navPricing: 'Pricing',
+        navCase: 'Open Cases',
+        statusOnline: 'Gemini 3.8 Flash Online',
+        telegramChannel: 'Telegram Channel',
+        heroTitle: 'VN-KEEN AI ASSISTANT',
+        heroSubtitle: 'Expert guidance for weapons, unlocking 14,000+ CS2 skins, technical support, and intelligent Q&A 24/7.',
+        clearChat: 'Clear Chat',
+        welcomeText: 'Hello! I am <strong>VN-KEEN AI</strong> 🤖 — your assistant for skin library support, setup guidance, payments, and CS2 questions.',
+        coverText: 'I can answer questions about:',
+        coverItem1: '14,000+ weapon skins, Karambit knives, Butterfly knives, gloves, and Katowice stickers.',
+        coverItem2: 'Transparent info on limitations, compatibility, and risks of third-party software.',
+        coverItem3: 'Guidance for scanning SePay QR payment codes and tracking key activation status.',
+        coverItem4: 'Mouse settings, crosshair setup, smoke/flash line tips, and general CS2 map advice.',
+        chipKnives: '🔪 Best knife + glove combo ideas',
+        chipRisk: '🛡️ Check risk warnings',
+        chipTopup: '💎 SePay top-up guide',
+        chipAim: '🎯 Pro aim settings',
+        inputPlaceholder: 'Ask anything about CS2 or related topics...',
+        sendLabel: 'SEND',
+        clearHistory: 'The chat history has been cleared.',
+        networkError: '⚠️ Network or server error: ',
+        connectionError: '⚠️ Error: ',
+        aiOffline: 'Unable to connect to the AI server. Please try again later.',
+        noReply: 'A response was received.',
+        defaultAssistant: 'A response was received.'
+      },
+      zh: {
+        navHome: '首页',
+        navCatalog: '14K+ 皮肤库',
+        navPricing: '价格表',
+        navCase: '开箱',
+        statusOnline: 'Gemini 3.8 Flash 在线',
+        telegramChannel: '电报频道',
+        heroTitle: 'VN-KEEN AI 助手',
+        heroSubtitle: '专业武器建议、解锁 14,000+ CS2 皮肤、技术支持与 24/7 智能问答。',
+        clearChat: '清空聊天',
+        welcomeText: '你好！我是 <strong>VN-KEEN AI</strong> 🤖 — 提供皮肤库、安装指导、支付和 CS2 问题的助手。',
+        coverText: '我可以回答以下内容：',
+        coverItem1: '14,000+ 武器皮肤、Karambit 刀具、Butterfly 刀具、手套和 Katowice 贴纸。',
+        coverItem2: '关于第三方软件限制、兼容性和风险的透明信息。',
+        coverItem3: 'SePay 二维码支付步骤和 key 激活状态查询说明。',
+        coverItem4: '鼠标设置、准星配置、烟雾弹/闪光弹投掷建议以及 CS2 地图技巧。',
+        chipKnives: '🔪 最佳刀具 + 手套组合建议',
+        chipRisk: '🛡️ 查看风险警示',
+        chipTopup: '💎 SePay 充值指南',
+        chipAim: '🎯 Pro 级瞄准设置',
+        inputPlaceholder: '输入关于 CS2 或其他相关问题...',
+        sendLabel: '发送',
+        clearHistory: '聊天记录已清空。',
+        networkError: '⚠️ 网络或服务器错误：',
+        connectionError: '⚠️ 错误：',
+        aiOffline: '无法连接到 AI 服务器。请稍后再试。',
+        noReply: '已收到回复。',
+        defaultAssistant: '已收到回复。'
+      }
+    };
+
+    let currentLanguage = 'vi';
+
+    function getPreferredLanguage() {
+      const stored = localStorage.getItem('vnkeen-lang');
+      if (stored && translations[stored]) return stored;
+      const browserLang = (navigator.language || '').toLowerCase();
+      if (browserLang.startsWith('zh')) return 'zh';
+      if (browserLang.startsWith('en')) return 'en';
+      return 'vi';
+    }
+
+    function applyTranslations(lang) {
+      const dict = translations[lang] || translations.vi;
+      currentLanguage = lang;
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.dataset.i18n;
+        if (dict[key]) {
+          el.innerHTML = dict[key];
+        }
+      });
+      document.querySelectorAll('.lang-toggle').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      input.placeholder = dict.inputPlaceholder || input.placeholder;
+      sendBtn.innerHTML = '<span>' + (dict.sendLabel || 'GỬI') + '</span> <i class="fa-solid fa-paper-plane"></i>';
+      localStorage.setItem('vnkeen-lang', lang);
+      document.documentElement.lang = lang;
+    }
+
+    document.querySelectorAll('.lang-toggle').forEach((button) => {
+      button.addEventListener('click', () => applyTranslations(button.dataset.lang));
+    });
+
+    applyTranslations(getPreferredLanguage());
 
     let history = [];
     let isThinking = false;
@@ -227,18 +385,20 @@
 
         if (!res.ok) {
           const errData = await res.json().catch(() => ({}));
-          appendMessage('assistant', '⚠️ Lỗi: ' + (errData.error || 'Không thể kết nối máy chủ AI. Hãy thử lại sau.'));
+          const dict = translations[currentLanguage] || translations.vi;
+          appendMessage('assistant', dict.connectionError + (errData.error || dict.aiOffline));
           return;
         }
 
         const data = await res.json();
-        const reply = data.message?.text || data.text || 'Đã nhận được phản hồi.';
+        const reply = data.message?.text || data.text || (translations[currentLanguage] || translations.vi).defaultAssistant;
         appendMessage('assistant', reply);
         history.push({ role: 'assistant', text: reply });
 
       } catch (err) {
         typingNode.remove();
-        appendMessage('assistant', '⚠️ Lỗi mạng hoặc máy chủ ngoại tuyến: ' + err.message);
+        const dict = translations[currentLanguage] || translations.vi;
+        appendMessage('assistant', dict.networkError + err.message);
       } finally {
         isThinking = false;
       }
@@ -254,12 +414,54 @@
 
     clearBtn.addEventListener('click', () => {
       history = [];
-      chatContainer.innerHTML = '<div class="p-4 text-center text-xs text-gray-500 font-mono">Đã xóa toàn bộ lịch sử trò chuyện.</div>';
+      const dict = translations[currentLanguage] || translations.vi;
+      chatContainer.innerHTML = '<div class="p-4 text-center text-xs text-gray-500 font-mono">' + dict.clearHistory + '</div>';
     });
 
     document.querySelectorAll('.quick-chip').forEach(btn => {
       btn.onclick = () => sendMessage(btn.getAttribute('data-q'));
     });
   </script>
-</body>
+  <script>
+    (() => {
+      const STORAGE_KEY = 'vnkeen-lang';
+      const VALID_LANGS = new Set(['vi', 'en', 'zh']);
+      const readStoredLang = () => {
+        try { return localStorage.getItem(STORAGE_KEY) || ''; } catch (error) { return ''; }
+      };
+      const writeStoredLang = (lang) => {
+        try { localStorage.setItem(STORAGE_KEY, lang); } catch (error) { /* ignore private-mode limits */ }
+      };
+      const detectPreferredLang = () => {
+        const stored = readStoredLang();
+        if (VALID_LANGS.has(stored)) return stored;
+        const navLang = (navigator.language || '').toLowerCase();
+        if (navLang.startsWith('zh')) return 'zh';
+        if (navLang.startsWith('en')) return 'en';
+        return 'vi';
+      };
+      const applyLang = (lang) => {
+        const safeLang = VALID_LANGS.has(lang) ? lang : 'vi';
+        document.documentElement.lang = safeLang;
+        document.documentElement.setAttribute('data-lang', safeLang);
+        document.querySelectorAll('.lang-toggle').forEach((button) => {
+          const isActive = button.dataset.lang === safeLang;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        writeStoredLang(safeLang);
+      };
+      const run = () => {
+        applyLang(detectPreferredLang());
+        document.querySelectorAll('.lang-toggle').forEach((button) => {
+          button.addEventListener('click', () => applyLang(button.dataset.lang));
+        });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run, { once: true });
+      } else {
+        run();
+      }
+    })();
+  </script></body>
 </html>

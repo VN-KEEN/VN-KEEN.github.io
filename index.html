@@ -9,6 +9,14 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://vn-keen.skin/">
   <meta name="theme-color" content="#070a12">
+  <meta name="language" content="vi">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <link rel="alternate" hreflang="vi" href="https://vn-keen.skin/">
+  <link rel="alternate" hreflang="en" href="https://vn-keen.skin/">
+  <link rel="alternate" hreflang="zh" href="https://vn-keen.skin/">
+  <link rel="alternate" hreflang="x-default" href="https://vn-keen.skin/">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
 
   <!-- OpenGraph / Facebook / Zalo / Telegram -->
@@ -451,13 +459,13 @@
       <!-- Desktop Nav Menu -->
       <nav class="hidden items-center gap-6 font-display text-base font-semibold tracking-wider text-muted lg:flex">
         <a href="#features" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('hover')">
-          <i class="fa-solid fa-layer-group text-xs text-accent"></i> Tính năng Skin
+          <i class="fa-solid fa-layer-group text-xs text-accent"></i> <span data-i18n="navFeatures">Tính năng Skin</span>
         </a>
         <a href="catalog.html" target="_blank" rel="noopener" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('click')">
-          <i class="fa-solid fa-images text-xs text-accent"></i> Kho Skin ↗
+          <i class="fa-solid fa-images text-xs text-accent"></i> <span data-i18n="navCatalog">Kho Skin</span> ↗
         </a>
         <a href="#contact" class="hover:text-accent transition-colors flex items-center gap-1.5" onclick="playSfx('click')">
-          <i class="fa-solid fa-headset text-xs text-accent"></i> Hỗ trợ
+          <i class="fa-solid fa-headset text-xs text-accent"></i> <span data-i18n="navSupport">Hỗ trợ</span>
         </a>
       </nav>
 
@@ -465,14 +473,14 @@
       <div class="flex items-center gap-2 sm:gap-3">
         
         <!-- Guest View (Not Logged In) -->
-        <div id="nav-guest-zone" class="flex items-center gap-2">
+        <div id="nav-guest-zone" class="hidden sm:flex items-center gap-2">
           <button type="button" onclick="openAuthModal('login'); playSfx('click')" class="px-3 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 text-xs font-bold font-cyber transition-all flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-user text-amber-400"></i>
-            <span>Đăng Nhập</span>
+            <span data-i18n="loginBtn">Đăng Nhập</span>
           </button>
           <button type="button" onclick="openAuthModal('register'); playSfx('click')" class="hidden sm:inline-flex px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold font-cyber transition-all items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-user-plus text-amber-400"></i>
-            <span>Đăng Ký</span>
+            <span data-i18n="registerBtn">Đăng Ký</span>
           </button>
         </div>
 
@@ -502,11 +510,33 @@
             </button>
           </div>
         </div>
-        <a href="#pricing" onclick="playSfx('click')" class="relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all">
+        <div class="hidden lg:flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5 shadow-inner shadow-black/20">
+          <button type="button" class="lang-toggle active" data-lang="vi" aria-label="Chuyển sang tiếng Việt">🇻🇳 VI</button>
+          <button type="button" class="lang-toggle" data-lang="en" aria-label="Switch to English">🇺🇸 EN</button>
+          <button type="button" class="lang-toggle" data-lang="zh" aria-label="切换到中文">🇨🇳 ZH</button>
+        </div>
+        <a href="#pricing" onclick="playSfx('click')" class="hidden sm:inline-flex relative group overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-[1px] shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all">
           <span class="block px-3.5 sm:px-4 py-2 rounded-[11px] bg-bg font-cyber text-xs font-bold tracking-wider text-amber-300 group-hover:bg-transparent group-hover:text-black transition-all">
-            <i class="fa-solid fa-bolt mr-1 text-amber-400"></i> BẢNG GIÁ
+            <i class="fa-solid fa-bolt mr-1 text-amber-400"></i> <span data-i18n="pricingCTA">BẢNG GIÁ</span>
           </span>
         </a>
+        <button id="mobile-menu-toggle" type="button" class="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition hover:border-cyan-400/60 hover:text-cyan-300" aria-expanded="false" aria-label="Mở menu di động">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-nav-panel" class="hidden border-t border-white/10 bg-slate-950/95 lg:hidden">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-3 sm:px-6">
+        <div class="mb-1 flex items-center justify-end gap-2 self-end rounded-xl border border-white/10 bg-white/5 p-1">
+          <button type="button" class="lang-toggle active" data-lang="vi" aria-label="Chuyển sang tiếng Việt">🇻🇳</button>
+          <button type="button" class="lang-toggle" data-lang="en" aria-label="Switch to English">🇺🇸</button>
+          <button type="button" class="lang-toggle" data-lang="zh" aria-label="切换到中文">🇨🇳</button>
+        </div>
+        <a href="#features" class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200" data-i18n="navFeatures">Tính năng Skin</a>
+        <a href="catalog.html" target="_blank" rel="noopener" class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200" data-i18n="navCatalog">Kho Skin</a>
+        <a href="#pricing" class="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-300" data-i18n="pricingCTA">Mua key</a>
+        <a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200" data-i18n="proofSupport">Hỗ trợ Telegram</a>
+        <button type="button" onclick="openAuthModal('login'); playSfx('click'); document.getElementById('mobile-nav-panel').classList.add('hidden');" class="rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm font-semibold text-cyan-300" data-i18n="loginBtn">Đăng nhập</button>
       </div>
     </div>
   </header>
@@ -524,21 +554,21 @@
           <span class="relative inline-flex rounded-full size-2.5 bg-amber-400"></span>
         </span>
         <span class="font-cyber text-xs font-bold tracking-[0.2em] text-amber-300 uppercase">
-          VN-KEEN.SKIN · PHIÊN BẢN 2.1.3
+          VN-KEEN.SKIN · <span data-i18n="versionBadge">PHIÊN BẢN 2.1.3</span>
         </span>
         <span class="bg-amber-500/20 text-amber-300 font-mono text-[10px] px-2 py-0.5 rounded-full font-semibold">CS2</span>
       </div>
 
       <!-- Main Title -->
       <h1 class="font-cyber max-w-5xl text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-none">
-        <span class="hero-title-main">Mod Skin Counter-Strike 2.</span>
-        <span class="hero-title-accent mt-2 block uppercase">
+        <span class="hero-title-main" data-i18n="heroTitleMain">Mod Skin Counter-Strike 2.</span>
+        <span class="hero-title-accent mt-2 block uppercase" data-i18n="heroTitleAccent">
           MỖI TRẬN ĐẤU, MỘT PHONG CÁCH.
         </span>
       </h1>
 
       <!-- Description Subtitle -->
-      <p class="mt-6 max-w-3xl text-lg sm:text-xl font-normal leading-relaxed text-muted">
+      <p class="mt-6 max-w-3xl text-lg sm:text-xl font-normal leading-relaxed text-muted" data-i18n="heroSubtitle">
         Tùy chỉnh kho đồ CS2 với skin súng, dao, găng tay, sticker, keychain và nhiều lựa chọn cá nhân hóa trong một giao diện trực quan.
       </p>
 
@@ -546,20 +576,20 @@
       <div class="hero-actions mt-10 flex w-full max-w-md flex-col items-center gap-4 sm:max-w-none sm:flex-row sm:justify-center">
         <a href="VN-KEEN.SKIN.V2.1.3.zip" download onclick="playSfx('gold')" class="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 font-sans text-lg font-black text-slate-950 shadow-[0_0_35px_rgba(16,185,129,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(16,185,129,0.9)] transition-all flex items-center justify-center gap-2.5 border-2 border-emerald-300">
           <i class="fa-solid fa-download text-2xl text-slate-950"></i>
-          <span>TẢI MODSKIN</span>
+          <span data-i18n="downloadBtn">TẢI MODSKIN</span>
         </a>
         <a href="#pricing" onclick="playSfx('click')" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 font-display text-base font-black text-white border border-amber-400/50 transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-key text-black"></i> MUA KEY BẢN QUYỀN
+          <i class="fa-solid fa-key text-black"></i> <span data-i18n="buyKeyBtn">MUA KEY BẢN QUYỀN</span>
         </a>
         <a href="catalog.html" target="_blank" onclick="playSfx('click')" class="w-full sm:w-auto px-5 py-3 rounded-xl glass-panel font-display text-sm font-bold text-muted hover:text-accent hover:border-accent/50 transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-images text-accent"></i> KHÁM PHÁ KHÔNG GIỚI HẠN ↗
+          <i class="fa-solid fa-images text-accent"></i> <span data-i18n="catalogBtn">KHÁM PHÁ KHÔNG GIỚI HẠN</span> ↗
         </a>
       </div>
 
       <div class="hero-proof" aria-label="Thông tin nhanh">
-        <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> 13 mục tính năng</span>
-        <span><i class="fa-solid fa-key" aria-hidden="true"></i> Key riêng theo bản</span>
-        <span><i class="fa-brands fa-telegram" aria-hidden="true"></i> Hỗ trợ Telegram</span>
+        <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> 12 SKINS + WORLD</span>
+        <span><i class="fa-solid fa-key" aria-hidden="true"></i> <span data-i18n="proofKey">Key riêng theo bản</span></span>
+        <span><i class="fa-brands fa-telegram" aria-hidden="true"></i> <span data-i18n="proofSupport">Hỗ trợ Telegram</span></span>
       </div>
 
       <div class="studio-product">
@@ -677,7 +707,7 @@
   </details>
 
   <!-- VANTIX 2.1.3 SKINS MENU -->
-<section id="features" class="relative py-24 bg-bg/50"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div class="text-center mb-16"><span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent">VN-KEEN.SKIN · PHIÊN BẢN 2.1.3</span><h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">KHÁM PHÁ 13 MỤC TÍNH NĂNG</h2><p class="mt-4 text-muted">Ảnh chụp trực tiếp trong phần mềm. Bấm vào ảnh để xem rõ từng tính năng.</p></div><div class="feature-photo-grid"><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/general.png" data-feature-title="General · Kho đồ tổng quan" aria-label="Xem ảnh lớn: General"><img src="images/features/general.png" alt="Giao diện VN-KEEN.SKIN: General" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">01 / SKINS · General</p><h3>Kho đồ tổng quan</h3><p>Xem các vật phẩm đã thêm vào inventory.</p></div></article>
+<section id="features" class="relative py-24 bg-bg/50"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div class="text-center mb-16"><span class="font-cyber text-xs font-bold tracking-[0.25em] text-accent">VN-KEEN.SKIN · PHIÊN BẢN 2.1.3</span><h2 class="font-cyber mt-3 text-3xl sm:text-5xl font-black text-fg">KHÁM PHÁ 12 SKINS + WORLD</h2><p class="mt-4 text-muted">Ảnh chụp trực tiếp trong phần mềm. Bấm vào ảnh để xem rõ từng tính năng.</p></div><div class="feature-photo-grid"><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/general.png" data-feature-title="General · Kho đồ tổng quan" aria-label="Xem ảnh lớn: General"><img src="images/features/general.png" alt="Giao diện VN-KEEN.SKIN: General" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">01 / SKINS · General</p><h3>Kho đồ tổng quan</h3><p>Xem các vật phẩm đã thêm vào inventory.</p></div></article>
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/weapons.png" data-feature-title="Weapons · Skin súng" aria-label="Xem ảnh lớn: Weapons"><img src="images/features/weapons.png" alt="Giao diện VN-KEEN.SKIN: Weapons" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">02 / SKINS · Weapons</p><h3>Skin súng</h3><p>Chọn mẫu súng, paint kit, Wear, Seed, StatTrak, sticker và móc khóa.</p></div></article>
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/knives.png" data-feature-title="Knives · Skin dao" aria-label="Xem ảnh lớn: Knives"><img src="images/features/knives.png" alt="Giao diện VN-KEEN.SKIN: Knives" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">03 / SKINS · Knives</p><h3>Skin dao</h3><p>Xem trước mẫu dao, tùy chỉnh Wear, Seed và tên riêng.</p></div></article>
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/gloves.png" data-feature-title="Gloves · Găng tay" aria-label="Xem ảnh lớn: Gloves"><img src="images/features/gloves.png" alt="Giao diện VN-KEEN.SKIN: Gloves" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">04 / SKINS · Gloves</p><h3>Găng tay</h3><p>Chọn mẫu găng tay và paint kit, điều chỉnh Wear và Seed.</p></div></article>
@@ -688,7 +718,7 @@
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/keychains.png" data-feature-title="Keychains · Móc khóa" aria-label="Xem ảnh lớn: Keychains"><img src="images/features/keychains.png" alt="Giao diện VN-KEEN.SKIN: Keychains" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">09 / SKINS · Keychains</p><h3>Móc khóa</h3><p>Duyệt các mẫu charm và móc khóa cho vũ khí.</p></div></article>
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/sprays.png" data-feature-title="Sprays · Graffiti" aria-label="Xem ảnh lớn: Sprays"><img src="images/features/sprays.png" alt="Giao diện VN-KEEN.SKIN: Sprays" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">10 / SKINS · Sprays</p><h3>Graffiti</h3><p>Tìm kiếm và lựa chọn các mẫu hình xịt.</p></div></article>
 <article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/crates.png" data-feature-title="Crates · Hòm & gói vật phẩm" aria-label="Xem ảnh lớn: Crates"><img src="images/features/crates.png" alt="Giao diện VN-KEEN.SKIN: Crates" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">11 / SKINS · Crates</p><h3>Hòm & gói vật phẩm</h3><p>Duyệt các nhóm hòm, capsule, gói lưu niệm, music kit và chìa khóa.</p></div></article>
-<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/pet.png" data-feature-title="Pet · Thú cưng" aria-label="Xem ảnh lớn: Pet"><img src="images/features/pet.png" alt="Giao diện VN-KEEN.SKIN: Pet" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">12 / SKINS · Pet</p><h3>Thú cưng</h3><p>Chọn pet và thiết lập Seed, Level, ngày nâng cấp cùng hạn thức ăn.</p></div></article><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/world.png" data-feature-title="WORLD · Môi trường, camera và thời tiết" aria-label="Xem ảnh lớn: WORLD"><img src="images/features/world.png" alt="Giao diện WORLD của VN-KEEN.SKIN: tùy chỉnh môi trường, góc nhìn, thời tiết và độ ướt" width="1155" height="799" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">13 / WORLD</p><h3>Môi trường, camera &amp; thời tiết</h3><p>Tùy chỉnh màu môi trường, bầu trời, mặt trời, mây và ánh sáng. Điều chỉnh FOV, vị trí tay và vũ khí, góc nhìn thứ ba; thiết lập hiệu ứng thời tiết, mưa, độ ướt bề mặt và chuyển động lá.</p></div></article></div><section id="world-guide" hidden aria-labelledby="world-guide-title" class="mt-8 rounded-2xl border border-cyan-400/25 bg-slate-950/80 p-5 sm:p-8 text-sm leading-relaxed text-slate-300">
+<article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/pet.png" data-feature-title="Pet · Thú cưng" aria-label="Xem ảnh lớn: Pet"><img src="images/features/pet.png" alt="Giao diện VN-KEEN.SKIN: Pet" width="1920" height="1080" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">12 / SKINS · Pet</p><h3>Thú cưng</h3><p>Chọn pet và thiết lập Seed, Level, ngày nâng cấp cùng hạn thức ăn.</p></div></article><article class="feature-photo-card"><button type="button" class="feature-photo-open" data-feature-image="images/features/world.png" data-feature-title="WORLD · Môi trường, camera và thời tiết" aria-label="Xem ảnh lớn: WORLD"><img src="images/features/world.png" alt="Giao diện WORLD của VN-KEEN.SKIN: tùy chỉnh môi trường, góc nhìn, thời tiết và độ ướt" width="1155" height="799" loading="lazy"><span>Xem ảnh lớn ↗</span></button><div class="feature-photo-copy"><p class="feature-photo-label">12 / WORLD</p><h3>Môi trường, camera &amp; thời tiết</h3><p>Tùy chỉnh màu môi trường, bầu trời, mặt trời, mây và ánh sáng. Điều chỉnh FOV, vị trí tay và vũ khí, góc nhìn thứ ba; thiết lập hiệu ứng thời tiết, mưa, độ ướt bề mặt và chuyển động lá.</p></div></article></div><section id="world-guide" hidden aria-labelledby="world-guide-title" class="mt-8 rounded-2xl border border-cyan-400/25 bg-slate-950/80 p-5 sm:p-8 text-sm leading-relaxed text-slate-300">
   <p class="text-xs font-bold tracking-widest text-cyan-300">WORLD · MÔ TẢ &amp; HƯỚNG DẪN</p>
   <h3 id="world-guide-title" class="mt-2 text-2xl font-bold text-white">Tùy chỉnh không gian và góc nhìn theo ý bạn</h3>
   <p class="mt-3">Tab WORLD gồm bốn nhóm: môi trường, camera và góc nhìn, hiệu ứng thời tiết, độ ướt và gió. Tên tiếng Anh bên dưới được giữ giống giao diện để bạn dễ tìm đúng tùy chọn.</p>
@@ -1020,10 +1050,12 @@
 
       <!-- Terms & Policy Box -->
       <div id="terms" class="mt-12 glass-panel rounded-2xl p-6 border border-cyan-500/20 text-xs text-muted space-y-2">
-        <p class="font-cyber text-sm font-bold text-fg uppercase"><i class="fa-solid fa-scale-balanced mr-1 text-accent"></i> Điều Khoản Dịch Vụ</p>
+        <p class="font-cyber text-sm font-bold text-fg uppercase"><i class="fa-solid fa-scale-balanced mr-1 text-accent"></i> Điều Khoản Dịch Vụ & Chính Sách</p>
         <ul class="space-y-1.5 list-disc list-inside font-mono">
           <li>Key <strong>VN-KEEN-SKIN</strong> chỉ dùng cho bản VN-KEEN.SKIN.</li>
-          <li>Được hỗ trợ kỹ thuật cài đặt 1-1 trực tiếp qua Telegram & Discord Server.</li>
+          <li>Được hỗ trợ kỹ thuật cài đặt 1-1 trực tiếp qua Telegram, Discord và email <strong>hotro@vn-keen.skin</strong>.</li>
+          <li>Chính sách hoàn tiền áp dụng trong trường hợp key không thể kích hoạt do lỗi hệ thống hoặc nhầm phiên bản.</li>
+          <li>Bảo mật thông tin tài khoản, thanh toán và nội dung chuyển khoản được lưu trữ an toàn trên hệ thống hỗ trợ xác minh.</li>
           <li>Chỉ thử nghiệm offline với bot; phần mềm bên thứ ba có thể vi phạm điều khoản CS2 và gây rủi ro tài khoản.</li>
         </ul>
       </div>
@@ -1042,12 +1074,18 @@
           <p class="mt-4 max-w-md text-xs leading-relaxed text-muted">
             VN-KEEN cung cấp VN-KEEN.SKIN phiên bản 2.1.3. Khách hàng đã có key cũ có thể tiếp tục xem key trong Kho License Key.
           </p>
+          <div class="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.12em] text-slate-300">
+            <a href="#terms" class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 hover:border-emerald-400/60 hover:text-emerald-300">Chính sách hoàn tiền</a>
+            <a href="#terms" class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 hover:border-cyan-400/60 hover:text-cyan-300">Bảo mật</a>
+            <a href="#terms" class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 hover:border-amber-400/60 hover:text-amber-300">Điều khoản</a>
+          </div>
         </div>
         <div>
           <p class="font-cyber text-xs font-bold text-fg uppercase tracking-widest mb-4">LIÊN HỆ TRỰC TIẾP</p>
           <ul class="space-y-2 text-xs font-mono">
             <li><a href="https://t.me/VN_KEEN" target="_blank" rel="noopener" class="hover:text-accent flex items-center gap-2"><i class="fa-brands fa-telegram text-accent"></i> Telegram: @VN_KEEN</a></li>
             <li class="flex items-center gap-2 text-sky-300"><i class="fa-solid fa-qrcode"></i> Zalo: quét mã QR bên cạnh</li>
+            <li><a href="mailto:hotro@vn-keen.skin" class="hover:text-accent flex items-center gap-2"><i class="fa-solid fa-envelope text-amber-400"></i> hotro@vn-keen.skin</a></li>
             <li><a href="https://discord.gg/8Rw3B5Tp9X" target="_blank" rel="noopener" class="hover:text-accent flex items-center gap-2"><i class="fa-brands fa-discord text-purple-400"></i> Discord Server VIP</a></li>
             <li><span class="text-subtle"><i class="fa-solid fa-clock text-amber-400"></i> Thời gian phản hồi tùy tình trạng hỗ trợ</span></li>
           </ul>
@@ -1606,6 +1644,99 @@
       }
     }
 
+    const translations = {
+      vi: {
+        navFeatures: 'Tính năng Skin',
+        navCatalog: 'Kho Skin',
+        navSupport: 'Hỗ trợ',
+        loginBtn: 'Đăng Nhập',
+        registerBtn: 'Đăng Ký',
+        pricingCTA: 'BẢNG GIÁ',
+        versionBadge: 'PHIÊN BẢN 2.1.3',
+        heroTitleMain: 'Mod Skin Counter-Strike 2.',
+        heroTitleAccent: 'MỖI TRẬN ĐẤU, MỘT PHONG CÁCH.',
+        heroSubtitle: 'Tùy chỉnh kho đồ CS2 với skin súng, dao, găng tay, sticker, keychain và nhiều lựa chọn cá nhân hóa trong một giao diện trực quan.',
+        downloadBtn: 'TẢI MODSKIN',
+        buyKeyBtn: 'MUA KEY BẢN QUYỀN',
+        catalogBtn: 'KHÁM PHÁ KHÔNG GIỚI HẠN',
+        proofKey: 'Key riêng theo bản',
+        proofSupport: 'Hỗ trợ Telegram'
+      },
+      en: {
+        navFeatures: 'Skin Features',
+        navCatalog: 'Skin Vault',
+        navSupport: 'Support',
+        loginBtn: 'Login',
+        registerBtn: 'Register',
+        pricingCTA: 'PRICING',
+        versionBadge: 'VERSION 2.1.3',
+        heroTitleMain: 'Mod Skin for Counter-Strike 2.',
+        heroTitleAccent: 'EACH MATCH, ONE STYLE.',
+        heroSubtitle: 'Customize your CS2 inventory with weapon skins, knives, gloves, stickers, keychains and more in a clean, intuitive interface.',
+        downloadBtn: 'DOWNLOAD MODSKIN',
+        buyKeyBtn: 'BUY LICENSE KEY',
+        catalogBtn: 'EXPLORE LIMITLESS',
+        proofKey: 'Unique per-version key',
+        proofSupport: 'Telegram support'
+      },
+      zh: {
+        navFeatures: '皮肤功能',
+        navCatalog: '皮肤库',
+        navSupport: '支持',
+        loginBtn: '登录',
+        registerBtn: '注册',
+        pricingCTA: '价格',
+        versionBadge: '版本 2.1.3',
+        heroTitleMain: '反恐精英 2 皮肤修改.',
+        heroTitleAccent: '每一场比赛，都有自己的风格.',
+        heroSubtitle: '在清晰直观的界面中自定义你的 CS2 皮肤库存，包括武器皮肤、匕首、手套、贴纸、挂件等。',
+        downloadBtn: '下载 MODSKIN',
+        buyKeyBtn: '购买授权密钥',
+        catalogBtn: '探索无限可能',
+        proofKey: '按版本独立密钥',
+        proofSupport: 'Telegram 支持'
+      }
+    };
+
+    function detectLanguage() {
+      const stored = localStorage.getItem('vnkeen-lang');
+      if (stored && translations[stored]) return stored;
+
+      const browserLang = (navigator.language || '').toLowerCase();
+      if (browserLang.startsWith('zh')) return 'zh';
+      if (browserLang.startsWith('en')) return 'en';
+      return 'vi';
+    }
+
+    function applyLanguage(lang) {
+      const nextLang = translations[lang] ? lang : 'vi';
+      const root = document.documentElement;
+      root.lang = nextLang;
+
+      document.querySelectorAll('[data-i18n]').forEach((node) => {
+        const text = translations[nextLang][node.dataset.i18n];
+        if (text) node.textContent = text;
+      });
+
+      document.querySelectorAll('.lang-toggle').forEach((button) => {
+        button.classList.toggle('active', button.dataset.lang === nextLang);
+      });
+
+      localStorage.setItem('vnkeen-lang', nextLang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const initialLang = detectLanguage();
+      applyLanguage(initialLang);
+
+      document.querySelectorAll('.lang-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          applyLanguage(button.dataset.lang);
+          playSfx('click');
+        });
+      });
+    });
+
     /* ============================================================
        2. THREE.JS 3D CYBERPUNK SCENE (Dark CS2 Embers & Holo Rings)
        ============================================================ */
@@ -2125,6 +2256,45 @@
       card.addEventListener('mouseleave', () => {
         card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
       });
+    });
+
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileNavPanel = document.getElementById('mobile-nav-panel');
+    if (mobileMenuToggle && mobileNavPanel) {
+      mobileMenuToggle.addEventListener('click', () => {
+        const isOpen = !mobileNavPanel.classList.contains('hidden');
+        mobileNavPanel.classList.toggle('hidden', isOpen);
+        mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+        const icon = mobileMenuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', isOpen);
+          icon.classList.toggle('fa-xmark', !isOpen);
+        }
+      });
+
+      mobileNavPanel.querySelectorAll('a, button').forEach((item) => {
+        item.addEventListener('click', () => {
+          mobileNavPanel.classList.add('hidden');
+          mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          const icon = mobileMenuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          }
+        });
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileNavPanel && !mobileNavPanel.classList.contains('hidden')) {
+        mobileNavPanel.classList.add('hidden');
+        mobileMenuToggle?.setAttribute('aria-expanded', 'false');
+        const icon = mobileMenuToggle?.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+        }
+      }
     });
 
     /* ============================================================
@@ -3100,5 +3270,46 @@
   <script src="ai-widget.js?v=policy-5"></script>
   <script type="module" src="download-integrity.mjs?v=20261003-LicenseGate-14188"></script>
   <script src="vantix-site-controls.js?v=20261003"></script>
-</body>
+  <script>
+    (() => {
+      const STORAGE_KEY = 'vnkeen-lang';
+      const VALID_LANGS = new Set(['vi', 'en', 'zh']);
+      const readStoredLang = () => {
+        try { return localStorage.getItem(STORAGE_KEY) || ''; } catch (error) { return ''; }
+      };
+      const writeStoredLang = (lang) => {
+        try { localStorage.setItem(STORAGE_KEY, lang); } catch (error) { /* ignore private-mode limits */ }
+      };
+      const detectPreferredLang = () => {
+        const stored = readStoredLang();
+        if (VALID_LANGS.has(stored)) return stored;
+        const navLang = (navigator.language || '').toLowerCase();
+        if (navLang.startsWith('zh')) return 'zh';
+        if (navLang.startsWith('en')) return 'en';
+        return 'vi';
+      };
+      const applyLang = (lang) => {
+        const safeLang = VALID_LANGS.has(lang) ? lang : 'vi';
+        document.documentElement.lang = safeLang;
+        document.documentElement.setAttribute('data-lang', safeLang);
+        document.querySelectorAll('.lang-toggle').forEach((button) => {
+          const isActive = button.dataset.lang === safeLang;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        writeStoredLang(safeLang);
+      };
+      const run = () => {
+        applyLang(detectPreferredLang());
+        document.querySelectorAll('.lang-toggle').forEach((button) => {
+          button.addEventListener('click', () => applyLang(button.dataset.lang));
+        });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run, { once: true });
+      } else {
+        run();
+      }
+    })();
+  </script></body>
 </html>
