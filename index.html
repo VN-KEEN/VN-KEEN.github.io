@@ -3289,7 +3289,7 @@
       window.applySiteLanguage = applySiteLanguage;
       document.addEventListener('DOMContentLoaded', () => {
         let saved = 'vi';
-        try { saved = localStorage.getItem(languageKey) || 'vi'; } catch (error) {}
+                applySiteLanguage('vi');
         applySiteLanguage(saved);
       });
     })();
