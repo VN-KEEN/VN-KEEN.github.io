@@ -286,6 +286,39 @@
       0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
       40% { transform: scale(1); opacity: 1; }
     }
+    @media (max-width: 600px) {
+      #vnkeen-ai-widget-root {
+        right: 12px;
+        bottom: 12px;
+      }
+      .vnk-ai-btn {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 14px;
+      }
+      .vnk-ai-btn .vnk-icon-wrap {
+        width: 30px;
+        height: 30px;
+      }
+      .vnk-ai-btn > span:not(.vnk-badge) {
+        display: none;
+      }
+      .vnk-ai-btn .vnk-badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      .vnk-chat-box {
+        width: calc(100vw - 24px);
+        height: min(560px, calc(100vh - 88px));
+        max-width: none;
+        max-height: none;
+        border-radius: 16px;
+      }
+    }
   `;
   document.head.appendChild(style);
 

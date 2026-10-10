@@ -1,5 +1,5 @@
 (() => {
-  const downloadName = 'VN-KEEN.SKIN.V2.1.3.zip';
+  const downloadName = 'VN-KEEN.SKIN.V2.1.4.zip';
 
   // Keep old homepage links working while the site moves to the VANTIX file name.
   document.querySelectorAll('a[download]').forEach((link) => {
