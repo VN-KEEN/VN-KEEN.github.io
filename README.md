@@ -28,6 +28,7 @@ Chạy Node.js 24 trở lên từ thư mục này:
 
 ```powershell
 node restore-public-assets.mjs
+node test-asset-restore.mjs
 node audit-public-links.mjs
 node cs2-session-test.mjs
 node retired-product-test.mjs
@@ -41,10 +42,12 @@ node test-wallet-webhook.mjs
 Triển khai sau khi đăng nhập Cloudflare:
 
 ```powershell
-wrangler pages deploy public --project-name vn-keen --branch main
+./deploy-website.ps1
 ```
 
 Cloudflare cung cấp bindings D1/AI và secrets cho API. Không lưu API key, token, dữ liệu khách hàng, file `.dev.vars`, khóa ký hoặc bản sao database trong Git. Sau khi triển khai, kiểm tra trang chủ, API, checksum ZIP và manifest trên miền chính.
+
+GitHub tự deploy phải có Build command `node restore-public-assets.mjs`, output `public`. Script publish ghim một deployment đầy đủ vào `public-assets.json.fallbackOrigin`; commit manifest sau khi publish để lần build GitHub có nguồn tài nguyên bất biến. Không đẩy thay đổi checksum tài nguyên mới lên GitHub trước khi publish đủ file lớn. Bộ khôi phục từ chối HTML của trang SPA, kiểm tra kích thước/SHA-256 rồi mới ghi file.
 
 `index.html` ở gốc chỉ chuyển khách từ GitHub Pages sang miền chính; giao diện thật nằm tại `public/index.html`.
 
