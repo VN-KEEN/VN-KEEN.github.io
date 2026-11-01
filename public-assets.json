@@ -304,8 +304,8 @@
     },
     {
       "path": "public/updates/app.exe",
-      "size": 16613376,
-      "sha256": "40a19cce1f57d56c62920bfaa26a67860e28f8acf781327f3946870ca37a18d8"
+      "size": 18757632,
+      "sha256": "65e4dbba9b915a931b73915e01e6272e423eb06d5b1c77e5d09d6be5c3ccf6b1"
     },
     {
       "path": "public/vendor/model-viewer.min.js",
@@ -314,8 +314,8 @@
     },
     {
       "path": "public/VN-KEEN.SKIN-CS2-V2.1.6.zip",
-      "size": 12930627,
-      "sha256": "6fb106adc511a6a0f78e5c16ef8b4917b11006f0b1a7a91f11f3a9ceca11f1f7"
+      "size": 12935032,
+      "sha256": "1b55f1f67d9a1790f7b3ee6cc9591211bd53131f0108cc1811c0c554c2dee2c5"
     }
   ]
 }

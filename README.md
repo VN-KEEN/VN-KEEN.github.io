@@ -16,7 +16,7 @@ Model 3D, ảnh/dữ liệu sinh sẵn lớn và EXE/ZIP được giữ trên we
 
 ## Bản hiện tại
 
-V2.1.6, build 21603: PGUP mở/đóng menu; cập nhật bằng nút trong app; tự chuẩn bị offset khi CS2 sẵn sàng; mỗi key một phiên đồng thời. Khách dùng V2.1.5 cần tải bộ mới một lần.
+V2.1.6, build 21604: PGUP mở/đóng menu; cập nhật bằng nút trong app; tự chuẩn bị offset khi CS2 sẵn sàng; dumper nhúng trong EXE và đi theo bản cập nhật; mỗi key một phiên đồng thời. Khách dùng V2.1.5 cần tải bộ mới một lần.
 
 `public/updates/latest.json` và `latest.sig` xác định EXE đã ký. Khi phát hành app, dùng script `publish-online-update.ps1` ở source APP, tăng build và build lại. Không tự sửa manifest hoặc dùng lại số build cho EXE khác.
 
