@@ -20,6 +20,8 @@ V2.1.6, build 21603: PGUP mở/đóng menu; cập nhật bằng nút trong app; 
 
 `public/updates/latest.json` và `latest.sig` xác định EXE đã ký. Khi phát hành app, dùng script `publish-online-update.ps1` ở source APP, tăng build và build lại. Không tự sửa manifest hoặc dùng lại số build cho EXE khác.
 
+Tham số `-Rebuild` build lại DLL và launcher, sau đó tạo gói website; `release/` và `release/online-update/` được đồng bộ cùng một EXE/ZIP để tránh mở nhầm bản cũ.
+
 ## Kiểm tra và triển khai
 
 Chạy Node.js 24 trở lên từ thư mục này:
