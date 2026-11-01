@@ -8,17 +8,12 @@ const PASSWORD_ITERATIONS = 100000;
 const MAX_BODY_BYTES = 8192;
 const AUTH_WINDOW_SECONDS = 15 * 60;
 
-export const PLANS = Object.freeze({
-  daily: Object.freeze({ id: 'daily', name: 'Gói Thuê 1 Ngày (24H)', amount: 20000, days: 1 }),
-  weekly: Object.freeze({ id: 'weekly', name: 'Gói Thuê 7 Ngày', amount: 100000, days: 7 }),
-  monthly: Object.freeze({ id: 'monthly', name: 'Gói Thuê 30 Ngày (1 Tháng)', amount: 300000, days: 30 }),
-  quarterly: Object.freeze({ id: 'quarterly', name: 'Gói Thuê 90 Ngày', amount: 800000, days: 90 }),
-  lifetime: Object.freeze({ id: 'lifetime', name: 'Gói Bản Quyền Vĩnh Viễn', amount: 2000000, days: null })
-});
+import { PLANS } from '../product-plans.mjs';
+export { PLANS };
 
 export const PRODUCTS = Object.freeze({
-  skin: Object.freeze({ id: 'skin', name: 'VN-KEEN-SKIN-VANTIX', scope: 'VN-KEEN-SKIN', prefix: 'VN-KEEN-SKIN' }),
-  aim: Object.freeze({ id: 'aim', name: 'VN-KEEN-ESSENTIALS', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
+  skin: Object.freeze({ id: 'skin', name: 'KEY MODSKIN', scope: 'VN-KEEN-SKIN-SESSION', prefix: 'VN-KEEN-SKIN' }),
+  aim: Object.freeze({ id: 'aim', name: 'KEY HACKWALL', scope: 'VN-KEEN-AIM', prefix: 'VN-KEEN-AIM' })
 });
 
 const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev', 'https://vn-keen.skin', 'https://www.vn-keen.skin']);
@@ -278,10 +273,10 @@ function makeLicenseKey(product = 'skin') {
 
 async function createProviderLicense(env, order) {
   if (!env.LICENSEGATE_API_KEY) fail(202, 'LICENSE_PENDING', 'LicenseGate chưa được cấu hình. Số dư vẫn được giữ nguyên.');
-  const expirationDate = order.days == null ? '2099-12-31T23:59:59.000Z' : new Date(Date.parse(order.created_at) + order.days * 86400 * 1000).toISOString();
+  const expirationDate = order.days == null ? '2036-12-31T16:59:59.000Z' : new Date(Date.parse(order.created_at) + order.days * 86400 * 1000).toISOString();
   const product = PRODUCTS[order.product];
   if (!product || !order.license_key?.startsWith(product.prefix + '-')) fail(202, 'LICENSE_PENDING', 'Sản phẩm của key không khớp. Liên hệ quản trị viên.');
-  const input = { active: true, name: 'WALLET-' + order.request_id, notes: 'VN-KEEN Wallet / ' + product.id + ' / ' + order.plan, licenseKey: order.license_key, licenseScope: product.scope, expirationDate, ipLimit: 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY' };
+  const input = { active: true, name: 'WALLET-' + order.request_id, notes: 'VN-KEEN Wallet / ' + product.id + ' / ' + order.plan, licenseKey: order.license_key, licenseScope: product.scope, expirationDate, ipLimit: product.scope === 'VN-KEEN-SKIN-SESSION' ? 10 : 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY' };
   let response;
   try {
     response = await fetch('https://api.licensegate.io/admin/licenses', { method: 'POST', headers: { Authorization: env.LICENSEGATE_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(input), signal: AbortSignal.timeout(8000) });
@@ -296,7 +291,7 @@ async function createProviderLicense(env, order) {
   const providerExpiry = data.expirationDate == null ? NaN : Date.parse(data.expirationDate);
   const expectedExpiry = Date.parse(input.expirationDate);
   if (data.licenseKey !== input.licenseKey || data.licenseScope !== input.licenseScope ||
-      data.active !== true || data.ipLimit !== 1 || data.name !== input.name ||
+      data.active !== true || data.ipLimit !== (product.scope === 'VN-KEEN-SKIN-SESSION' ? 10 : 1) || data.name !== input.name ||
       !Number.isInteger(data.id) || !Number.isFinite(providerExpiry) ||
       Math.abs(providerExpiry - expectedExpiry) > 1000) {
     fail(202, 'LICENSE_PENDING', 'LicenseGate chưa xác nhận được key. Số dư vẫn được giữ nguyên.');
@@ -319,6 +314,7 @@ async function reserveOrder(env, username, product, plan, requestId, now) {
     });
     return { order: existing, claimed: false };
   }
+  if(product !== 'skin')fail(410,'PRODUCT_RETIRED','Website hiện chỉ bán key MODSKIN CS2.');
   if (!env.LICENSEGATE_API_KEY) fail(503, 'LICENSE_PROVIDER_NOT_CONFIGURED', 'Máy chủ chưa cấu hình LicenseGate. Chưa giữ hoặc trừ tiền.');
   const stamp = new Date(now * 1000).toISOString();
   const leaseToken = newLeaseToken();

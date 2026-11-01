@@ -144,6 +144,15 @@
       background: rgba(239, 68, 68, 0.2);
       color: #ef4444;
     }
+    .vnk-act-btn.vnk-vision-btn {
+      color: #67e8f9;
+      background: rgba(6, 182, 212, 0.14);
+    }
+    .vnk-act-btn.vnk-vision-btn:hover,
+    .vnk-act-btn.vnk-vision-btn.has-image {
+      background: rgba(34, 211, 238, 0.28);
+      color: #cffafe;
+    }
     .vnk-messages {
       flex: 1;
       overflow-y: auto;
@@ -217,6 +226,14 @@
       gap: 8px;
       align-items: center;
     }
+    .vnk-vision-status {
+      padding: 7px 14px 0;
+      background: rgba(15, 23, 42, 0.9);
+      color: #a5f3fc;
+      font-size: 10px;
+      font-family: monospace;
+    }
+    .vnk-vision-status[hidden] { display: none; }
     .vnk-input {
       flex: 1;
       background: rgba(2, 6, 23, 0.7);
@@ -269,6 +286,43 @@
       0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
       40% { transform: scale(1); opacity: 1; }
     }
+    @media (max-width: 600px) {
+      #vnkeen-ai-widget-root {
+        right: 12px;
+        bottom: 12px;
+        bottom: calc(12px + var(--vnk-keyboard-offset, 0px));
+      }
+      .vnk-ai-btn {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 14px;
+      }
+      .vnk-ai-btn .vnk-icon-wrap {
+        width: 30px;
+        height: 30px;
+      }
+      .vnk-ai-btn > span:not(.vnk-badge) {
+        display: none;
+      }
+      .vnk-ai-btn .vnk-badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      .vnk-chat-box {
+        width: calc(100vw - 24px);
+        height: min(560px, calc(100vh - 88px));
+        height: min(560px, calc(var(--vnk-viewport-height, 100dvh) - 88px));
+        max-width: none;
+        max-height: min(560px, calc(var(--vnk-viewport-height, 100dvh) - 88px));
+        border-radius: 16px;
+      }
+      .vnk-input { font-size: 16px; }
+      .vnk-send-btn { width: 44px; height: 44px; flex: 0 0 44px; }
+    }
   `;
   document.head.appendChild(style);
 
@@ -279,15 +333,18 @@
     <div class="vnk-chat-box" id="vnkChatBox">
       <div class="vnk-chat-header">
         <div class="vnk-chat-title">
-          <img src="images/VN-KEEN.jpg" alt="VN-KEEN AI" onerror="this.src='favicon.jpg'">
+          <img src="images/brand-icon.png?v=circle1" alt="VN-KEEN AI" onerror="this.src='favicon.png?v=circle1'">
           <div>
-            <h4>VN-KEEN AI STUDIO</h4>
-            <p>● Gemini 3.8 Flash Online</p>
+            <h4>CHĂM SÓC KHÁCH HÀNG</h4>
+            <p>Tư vấn sản phẩm · Mua key · Hỗ trợ cài đặt</p>
           </div>
         </div>
         <div class="vnk-chat-actions">
-          <a href="ai.html" target="_blank" class="vnk-act-btn" title="Mở trang Trợ Lý AI toàn màn hình" style="text-decoration:none;">
-            <i class="fa-solid fa-up-right-from-square"></i>
+          <button class="vnk-act-btn vnk-vision-btn" id="vnkVisionBtn" title="Gửi ảnh để AI nhìn và phân tích" aria-label="Gửi ảnh để AI nhìn và phân tích">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+          <a href="#contact" class="vnk-act-btn" title="Mở mã QR Zalo hỗ trợ" style="text-decoration:none;">
+            <i class="fa-solid fa-qrcode"></i>
           </a>
           <button class="vnk-act-btn" id="vnkClearBtn" title="Xóa lịch sử trò chuyện">
             <i class="fa-solid fa-rotate-right"></i>
@@ -297,45 +354,64 @@
           </button>
         </div>
       </div>
+      <input type="file" id="vnkVisionInput" accept="image/png,image/jpeg,image/webp" hidden>
       <div class="vnk-messages" id="vnkMessages">
         <div class="vnk-msg ai">
-          Xin chào! Tôi là <strong>VN-KEEN AI</strong> 🤖. Tôi có thể tư vấn <strong>14,000+ skin CS2</strong>, hướng dẫn cài đặt, thanh toán và giải đáp các câu hỏi về website.
+          Chào bạn! Mình là trợ lý <strong>VN-KEEN</strong>, hỗ trợ chọn sản phẩm, mua key và cài đặt. Bạn cần mình giúp gì?
           <div class="vnk-chips">
-            <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-            <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
-            <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
-            <span class="vnk-chip" data-q="Skin AK-47 và AWP nào xịn nhất?">⚡ AK-47 & AWP xịn</span>
+            <span class="vnk-chip" data-q="Giới thiệu MODSKIN">💬 Chọn sản phẩm</span>
+            <span class="vnk-chip" data-q="Bảng giá các gói key VN-KEEN">💎 Xem bảng giá</span>
+            <span class="vnk-chip" data-q="Hướng dẫn mua key trên website">🛒 Mua key ngay</span>
+            <span class="vnk-chip" data-q="Hướng dẫn tải và cài đặt sản phẩm">🛠️ Hỗ trợ cài đặt</span>
           </div>
         </div>
       </div>
+      <div class="vnk-vision-status" id="vnkVisionStatus" role="status" aria-live="polite" hidden></div>
       <div class="vnk-input-zone">
-        <input type="text" class="vnk-input" id="vnkInput" placeholder="Hỏi AI về CS2 hoặc bất kỳ điều gì..." autocomplete="off">
+        <input type="text" class="vnk-input" id="vnkInput" placeholder="Nhập câu hỏi về cài đặt, key hoặc hỗ trợ..." autocomplete="off">
         <button class="vnk-send-btn" id="vnkSendBtn" title="Gửi câu hỏi">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
       </div>
     </div>
-    <button class="vnk-ai-btn" id="vnkToggleBtn" title="Mở Trợ Lý AI VN-KEEN">
+    <button class="vnk-ai-btn" id="vnkToggleBtn" title="Mở chăm sóc khách hàng VN-KEEN">
       <div class="vnk-icon-wrap">
-        <i class="fa-solid fa-robot"></i>
+        <i class="fa-solid fa-headset"></i>
       </div>
-      <span>TRỢ LÝ AI CS2</span>
+      <span>CHĂM SÓC KHÁCH HÀNG</span>
       <span class="vnk-badge"></span>
     </button>
   `;
   document.body.appendChild(root);
+  const syncVisualViewport = () => {
+    const viewport = window.visualViewport;
+    const height = viewport?.height || window.innerHeight;
+    const keyboardOffset = viewport
+      ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)
+      : 0;
+    root.style.setProperty('--vnk-viewport-height', `${height}px`);
+    root.style.setProperty('--vnk-keyboard-offset', `${keyboardOffset}px`);
+  };
+  syncVisualViewport();
+  window.addEventListener('resize', syncVisualViewport);
+  window.visualViewport?.addEventListener('resize', syncVisualViewport);
+  window.visualViewport?.addEventListener('scroll', syncVisualViewport);
 
   // 3. Logic & Event Handlers
   const box = document.getElementById('vnkChatBox');
   const toggleBtn = document.getElementById('vnkToggleBtn');
   const closeBtn = document.getElementById('vnkCloseBtn');
   const clearBtn = document.getElementById('vnkClearBtn');
+  const visionBtn = document.getElementById('vnkVisionBtn');
+  const visionInput = document.getElementById('vnkVisionInput');
+  const visionStatus = document.getElementById('vnkVisionStatus');
   const sendBtn = document.getElementById('vnkSendBtn');
   const input = document.getElementById('vnkInput');
   const messagesContainer = document.getElementById('vnkMessages');
 
   let history = [];
   let isThinking = false;
+  let pendingVision = null;
 
   function toggleBox() {
     box.classList.toggle('open');
@@ -347,15 +423,97 @@
   toggleBtn.addEventListener('click', toggleBox);
   closeBtn.addEventListener('click', () => box.classList.remove('open'));
 
+  function clearVisionAttachment() {
+    pendingVision = null;
+    visionInput.value = '';
+    visionBtn.classList.remove('has-image');
+    visionStatus.hidden = true;
+    visionStatus.textContent = '';
+  }
+
+  function setVisionStatus(text) {
+    visionStatus.textContent = text;
+    visionStatus.hidden = !text;
+  }
+
+  function prepareVisionImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !/^image\/(png|jpe?g|webp)$/i.test(file.type)) {
+        reject(new Error('Chỉ nhận ảnh PNG, JPG hoặc WebP.'));
+        return;
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        reject(new Error('Ảnh tối đa 12 MB.'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Không đọc được ảnh.'));
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => reject(new Error('Ảnh không hợp lệ.'));
+        image.onload = () => {
+          const maxSide = 1600;
+          const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const context = canvas.getContext('2d');
+          if (!context) {
+            reject(new Error('Trình duyệt không hỗ trợ đọc ảnh.'));
+            return;
+          }
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(blob => {
+            if (!blob) {
+              reject(new Error('Không chuẩn bị được ảnh.'));
+              return;
+            }
+            const encoded = new FileReader();
+            encoded.onerror = () => reject(new Error('Không mã hóa được ảnh.'));
+            encoded.onload = () => {
+              const value = String(encoded.result || '');
+              const comma = value.indexOf(',');
+              if (comma < 0) {
+                reject(new Error('Dữ liệu ảnh không hợp lệ.'));
+                return;
+              }
+              resolve({ mimeType: 'image/jpeg', data: value.slice(comma + 1) });
+            };
+            encoded.readAsDataURL(blob);
+          }, 'image/jpeg', 0.86);
+        };
+        image.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  visionBtn.addEventListener('click', () => visionInput.click());
+  visionInput.addEventListener('change', async () => {
+    const file = visionInput.files?.[0];
+    if (!file) return;
+    setVisionStatus('Đang chuẩn bị ảnh cho AI…');
+    try {
+      pendingVision = await prepareVisionImage(file);
+      visionBtn.classList.add('has-image');
+      setVisionStatus(`👁 Đã chọn ảnh “${file.name.slice(0, 48)}”. Nhập câu hỏi hoặc bấm gửi để AI phân tích.`);
+    } catch (error) {
+      clearVisionAttachment();
+      setVisionStatus(`Không thể dùng ảnh: ${error.message}`);
+    }
+  });
+
   clearBtn.addEventListener('click', () => {
     history = [];
+    clearVisionAttachment();
     messagesContainer.innerHTML = `
       <div class="vnk-msg ai">
-        Đã làm mới đoạn chat! Bạn cần VN-KEEN AI hỗ trợ điều gì?
+        Mình sẵn sàng hỗ trợ bạn. Bạn muốn chọn sản phẩm, xem giá hay hướng dẫn mua key?
         <div class="vnk-chips">
-          <span class="vnk-chip" data-q="Combo Dao và Găng tay CS2 nào đẹp nhất?">🔪 Combo Dao + Găng</span>
-          <span class="vnk-chip" data-q="Phần mềm bên thứ ba có những rủi ro gì với tài khoản?">🛡️ Xem cảnh báo rủi ro</span>
-          <span class="vnk-chip" data-q="Bảng giá VIP và cách nạp tiền quét QR SePay?">💎 Bảng giá & Nạp SePay</span>
+          <span class="vnk-chip" data-q="Giới thiệu MODSKIN">💬 Chọn sản phẩm</span>
+          <span class="vnk-chip" data-q="Bảng giá các gói key VN-KEEN">💎 Xem bảng giá</span>
+          <span class="vnk-chip" data-q="Hướng dẫn mua key trên website">🛒 Mua key ngay</span>
+          <span class="vnk-chip" data-q="Hướng dẫn tải và cài đặt sản phẩm">🛠️ Hỗ trợ cài đặt</span>
         </div>
       </div>
     `;
@@ -369,7 +527,10 @@
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(new RegExp('\x60\x60\x60([\s\S]*?)\x60\x60\x60', 'g'), '<pre style="background:rgba(0,0,0,0.4);padding:8px;border-radius:6px;overflow-x:auto;"><code>$1</code></pre>')
       .replace(new RegExp('\x60([^\x60]+)\x60', 'g'), '<code style="background:rgba(255,255,255,0.1);padding:2px 4px;border-radius:4px;color:#00e5ee;">$1</code>')
-      .replace(/\n/g, '<br>');
+      .replace(/\n/g, '<br>')
+      // Apply after Markdown rendering, only to text, including existing code blocks.
+      .replace(/(<[^>]*>)|(-allow_third_party_software)(?![A-Za-z0-9_-])/g,
+        (match, tag, option) => tag || '<span class="vnk-launch-option" style="color:#00e5ee;background:rgba(0,229,238,0.08);padding:2px 4px;border-radius:4px;font-family:monospace;">' + option + '</span>');
   }
 
   function appendMessage(role, text) {
@@ -384,54 +545,131 @@
   function showTyping() {
     const div = document.createElement('div');
     div.className = 'vnk-msg ai vnk-typing-node';
-    div.innerHTML = '<div class="vnk-typing"><span></span><span></span><span></span></div>';
+    div.setAttribute('role', 'status');
+    div.innerHTML = 'AI đang trả lời…<div class="vnk-typing"><span></span><span></span><span></span></div>';
     messagesContainer.appendChild(div);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     return div;
   }
 
+  function getPageContext() {
+    const hash = window.location.hash || '#top';
+    let sectionTitle = '';
+    try {
+      const section = document.querySelector(hash);
+      sectionTitle = section?.querySelector('h1,h2,h3')?.textContent?.trim() || '';
+    } catch {}
+    return [
+      `Trang: ${window.location.pathname}${hash}`,
+      `Tiêu đề: ${document.title}`,
+      sectionTitle ? `Mục đang xem: ${sectionTitle}` : ''
+    ].filter(Boolean).join('\n').slice(0, 1400);
+  }
+
+  function getDirectSupportAnswer(text) {
+    if (text === 'Giới thiệu MODSKIN') return 'MODSKIN giúp tùy biến skin CS2. Bạn có thể xem các tính năng và ảnh giao diện ở trang chủ.';
+    if (text === 'Bảng giá các gói key VN-KEEN') return 'Key MODSKIN: **20.000đ/1 ngày**, **100.000đ/7 ngày**, **300.000đ/30 ngày**, **800.000đ/90 ngày**. Gói vĩnh viễn liên hệ nhân viên báo giá qua QR Zalo ở mục Liên hệ.';
+    return '';
+  }
+
+  function supportFallback(text, hasVision = false) {
+    return 'AI đang tạm thời không phản hồi nên mình chưa thể trả lời câu hỏi này. Bạn thử gửi lại sau nhé; nếu cần nhân viên, quét QR Zalo ở mục Liên hệ.' + (hasVision ? '\n\nẢnh chưa được phân tích.' : '');
+  }
+
+  async function requestWithRetry(url, options) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 60000);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        const contentType = response.headers?.get('content-type') || '';
+        const data = contentType && !/application\/(?:[a-z.+-]*\+)?json/i.test(contentType)
+          ? null
+          : await response.json().catch(() => null);
+        if (![502, 503, 504].includes(response.status) || attempt === 1) {
+          return { response, data };
+        }
+      } catch (error) {
+        throw error;
+      } finally {
+        clearTimeout(timer);
+      }
+      await new Promise(resolve => setTimeout(resolve, 700));
+    }
+  }
+
   async function handleSend(userText) {
-    const text = (userText || input.value || '').trim();
+    const attachedImage = pendingVision;
+    const typedText = (userText || input.value || '').trim();
+    const text = typedText || (attachedImage ? 'Hãy nhìn ảnh đính kèm và cho tôi biết tình trạng, nguyên nhân có thể có và cách xử lý.' : '');
     if (!text || isThinking) return;
 
     input.value = '';
-    appendMessage('user', text);
+    appendMessage('user', attachedImage ? `${text}\n📷 Đã đính kèm ảnh để AI phân tích.` : text);
     history.push({ role: 'user', text });
+    clearVisionAttachment();
+
+    const directReply = attachedImage || !userText ? '' : getDirectSupportAnswer(text);
+    if (directReply) {
+      appendMessage('ai', directReply);
+      history.push({ role: 'assistant', text: directReply });
+      return;
+    }
 
     isThinking = true;
     const typingNode = showTyping();
 
     try {
       // Xác định endpoint API (/api/ai-chat hoặc fallback tới /api/chat)
-      const apiUrl = (window.location.hostname.endsWith('pages.dev') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? '/api/ai-chat'
-        : 'https://vn-keen.pages.dev/api/ai-chat';
-      const res = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          history: history.slice(-10),
-          model: 'gemini-3.8-flash'
-        })
+      const hostname = window.location.hostname.toLowerCase();
+      const sameOriginApi = hostname.endsWith('.pages.dev')
+        || hostname === 'vn-keen.skin'
+        || hostname === 'www.vn-keen.skin'
+        || hostname === 'localhost'
+        || hostname === '127.0.0.1';
+      const apiUrl = sameOriginApi ? '/api/ai-chat' : 'https://vn-keen.pages.dev/api/ai-chat';
+      const { response: res, data: responseData } = await requestWithRetry(apiUrl, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            history: history.slice(0, -1).slice(-20),
+            pageContext: getPageContext(),
+            image: attachedImage || undefined
+          })
       });
+      let data = responseData;
+      if (!data) throw new Error('AI endpoint returned a non-JSON response.');
+      if (data.geo_blocked && data.direct_key) {
+        const { routeChat } = await import('./ai-router.mjs?v=rotation-1');
+        const geoContents = history.slice(-7).map((item, index, items) => {
+          const parts = [{ text: item.text }];
+          if (attachedImage && index === items.length - 1 && item.role === 'user') {
+            parts.push({ inlineData: attachedImage });
+          }
+          return { role: item.role === 'assistant' ? 'model' : 'user', parts };
+        });
+        data = await routeChat(data.direct_key, geoContents, data.system_instruction || '');
+      }
 
       typingNode.remove();
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        appendMessage('ai', '⚠️ Lỗi: ' + (errData.error || 'Không thể kết nối máy chủ AI. Hãy thử lại.'));
+      if (!res.ok || data.ok === false || data.geo_blocked) {
+        console.error('Customer-support AI request failed.', {
+          status: res.status,
+          error: data.error || data.message?.text || 'AI API did not return a usable answer.'
+        });
+        appendMessage('ai', supportFallback(text, Boolean(attachedImage)));
         return;
       }
 
-      const data = await res.json();
       const reply = data.message?.text || data.text || 'Đã nhận được phản hồi.';
       appendMessage('ai', reply);
       history.push({ role: 'assistant', text: reply });
 
     } catch (err) {
       typingNode.remove();
-      appendMessage('ai', '⚠️ Lỗi mạng hoặc máy chủ đang ngoại tuyến: ' + err.message);
+      console.error('Customer-support AI request failed.', err);
+      appendMessage('ai', supportFallback(text, Boolean(attachedImage)));
     } finally {
       isThinking = false;
     }

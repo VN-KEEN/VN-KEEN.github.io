@@ -50,7 +50,7 @@ export async function handleLicenseExpiry(request, env, now = Math.floor(Date.no
     if (!upstream.ok) return reply({ success: false, code: 'PROVIDER_UNAVAILABLE' }, 503, origin);
     const license = await upstream.json();
     const scope = key.startsWith('VN-KEEN-SKIN-') ? 'VN-KEEN-SKIN' : 'VN-KEEN-AIM';
-    if (license?.licenseKey !== key || license.licenseScope !== scope || license.active !== true)
+    if (license?.licenseKey !== key || !(scope === 'VN-KEEN-SKIN' ? ['VN-KEEN-SKIN','VN-KEEN-SKIN-SESSION'] : [scope]).includes(license.licenseScope) || license.active !== true)
       return reply({ success: false, code: 'NOT_FOUND' }, 404, origin);
     const expiryMs = Date.parse(license.expirationDate);
     if (!Number.isFinite(expiryMs)) return reply({ success: false, code: 'EXPIRY_UNAVAILABLE' }, 503, origin);

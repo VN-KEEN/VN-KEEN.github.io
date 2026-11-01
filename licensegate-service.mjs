@@ -1,13 +1,10 @@
 // LicenseGate checkout is isolated from the existing KeyAuth payment flow.
 // Secrets are Cloudflare bindings, never browser configuration.
-export const PLANS = Object.freeze({
-  daily: { amount: 20000, days: 1 },
-  monthly: { amount: 300000, days: 30 },
-  lifetime: { amount: 2000000, days: null }
-});
+import { PLANS as WALLET_PLANS } from './product-plans.mjs';
+export const PLANS = Object.freeze(Object.fromEntries(Object.entries(WALLET_PLANS).map(([id,p])=>[id,{amount:p.amount,days:p.days}])));
 
-const SCOPES = { skin: 'VN-KEEN-SKIN', aim: 'VN-KEEN-AIM' };
-const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.pages.dev']);
+const SCOPES = { skin: 'VN-KEEN-SKIN-SESSION', aim: 'VN-KEEN-AIM' };
+const ORIGINS = new Set(['https://vn-keen.github.io', 'https://vn-keen.skin']);
 const encoder = new TextEncoder();
 export async function hash(value) {
   const bytes = await crypto.subtle.digest('SHA-256', encoder.encode(value));
@@ -57,7 +54,7 @@ export async function fulfill(env, order) {
     active: true, name: order.id, notes: 'VN-KEEN website / ' + order.product + ' / ' + order.plan,
     licenseKey: order.license_key, licenseScope: SCOPES[order.product],
     expirationDate: expirationDate,
-    ipLimit: 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY'
+    ipLimit: order.product === 'skin' ? 10 : 1, validationPoints: 1000, validationLimit: 1000, replenishAmount: 1000, replenishInterval: 'DAY'
   };
   let response = await provider(env, '/admin/licenses', { method: 'POST', body: JSON.stringify(input) });
   if (response.status === 400) {
@@ -68,7 +65,7 @@ export async function fulfill(env, order) {
   const expiry = license.expirationDate == null ? null : Date.parse(license.expirationDate);
   const expectedExpiry = order.expires_at === null ? Date.parse('2099-12-31T23:59:59.000Z') : order.expires_at * 1000;
   if (license.licenseKey !== input.licenseKey || license.licenseScope !== input.licenseScope ||
-      license.active !== true || license.ipLimit !== 1 || license.name !== order.id || !Number.isInteger(license.id) ||
+      license.active !== true || license.ipLimit !== (order.product === 'skin' ? 10 : 1) || license.name !== order.id || !Number.isInteger(license.id) ||
       Math.abs((expiry || 0) - (expectedExpiry || 0)) > 1000) fail(503, 'LICENSE_PROVIDER_MISMATCH');
   await env.LICENSE_DB.prepare("UPDATE lg_orders SET status='FULFILLED', provider_id=? WHERE id=? AND status='PAID'")
     .bind(license.id, order.id).run();
@@ -76,6 +73,7 @@ export async function fulfill(env, order) {
 async function checkout(request, env, now) {
   if (env.LICENSEGATE_CHECKOUT_ENABLED !== 'true') fail(503, 'CHECKOUT_NOT_ENABLED');
   const body = await readBody(request);
+  if(body.product !== 'skin')fail(410,'PRODUCT_RETIRED');
   // AIM prices must be supplied explicitly rather than silently using SKIN prices.
   const plan = Object.hasOwn(PLANS, body.plan) ? PLANS[body.plan] : null;
   if (!plan || !Object.hasOwn(SCOPES, body.product)) fail(400, 'INVALID_PLAN');

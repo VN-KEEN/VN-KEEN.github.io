@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import schema from './functions/cs2-session-schema.mjs';
+import {handleSession,CS2_SCOPE} from './functions/cs2-session-service.mjs';
+const sqlite=new DatabaseSync(':memory:');sqlite.exec(schema);sqlite.exec('CREATE TABLE wallet_auth_limits(bucket TEXT PRIMARY KEY,attempts INTEGER,expires_at INTEGER)');
+const wrap=(sql,values=[])=>({bind(...args){return wrap(sql,args)},async first(){return sqlite.prepare(sql).get(...values)||null},async run(){return sqlite.prepare(sql).run(...values)},async all(){return {results:sqlite.prepare(sql).all(...values)}}});
+const env={LICENSE_DB:{prepare:wrap,batch:async stmts=>Promise.all(stmts.map(s=>s.run()))},LICENSEGATE_API_KEY:'test-only'};
+const license={id:123,licenseKey:'VN-KEEN-SKIN-TEST-ONLY-TEST-ONLY',licenseScope:'VN-KEEN-SKIN',ipLimit:1,expirationDate:'2099-12-31T23:59:59.000Z',active:true};
+globalThis.fetch=async(url,options)=>{if(options.method==='PATCH')Object.assign(license,JSON.parse(options.body));return Response.json(license)};
+const a={key:license.licenseKey,token:'a'.repeat(64),instanceId:'a'.repeat(32)},b={key:license.licenseKey,token:'b'.repeat(64),instanceId:'b'.repeat(32)};
+async function call(action,body,now=1000){const r=await handleSession(new Request('https://vn-keen.skin/api/license-session/'+action,{method:'POST',body:JSON.stringify(body)}),env,action,now);return {status:r.status,...await r.json()};}
+assert.equal((await call('verify',{key:a.key})).success,true);
+const race=await Promise.all([call('acquire',a),call('acquire',b)]);assert.equal(race.filter(r=>r.success).length,1);assert.equal(race.filter(r=>r.code==='SESSION_BUSY').length,1);
+const winner=race[0].success?a:b,loser=race[0].success?b:a;
+assert.equal(license.ipLimit,10);assert.equal(license.licenseScope,CS2_SCOPE);
+assert.equal((await call('acquire',winner,1001)).success,true);
+assert.equal((await call('heartbeat',winner,1015)).success,true);
+await call('release',loser,1016);assert.equal((await call('acquire',loser,1016)).code,'SESSION_BUSY');
+assert.equal((await call('acquire',loser,1106)).success,true);
+assert.equal((await call('heartbeat',winner,1107)).code,'SESSION_EXPIRED');
+license.active=false;assert.equal((await call('heartbeat',loser,1137)).code,'NOT_ACTIVE');
+license.active=true;assert.equal((await call('acquire',a,1140)).success,true);
+await call('release',a,1141);assert.equal((await call('acquire',b,1142)).success,true);
+license.expirationDate='1970-01-01T00:20:00.000Z';assert.equal((await call('acquire',a,1201)).code,'EXPIRED');
+assert.equal((await call('heartbeat',{token:'x',instanceId:'y'})).code,'INVALID_SESSION');
+console.log('PASS: IP-independent verify, one concurrent winner, retry, wrong release, heartbeat, timeout handover, stale token rejection, revocation, explicit release, expiry.');

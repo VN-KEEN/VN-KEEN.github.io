@@ -1,80 +1,49 @@
-# VN-KEEN
+# VN-KEEN.SKIN — Website CS2
 
-Website: https://vn-keen.pages.dev/
+Website chính: https://vn-keen.skin/ — Cloudflare Pages, project `vn-keen`.
 
-## LicenseGate checkout deployment
+## Cấu trúc
 
-The public checkout is served from the static site and calls the Cloudflare Pages
-API at `https://vn-keen.pages.dev/api/licensegate/`. Before accepting payments,
-configure these Cloudflare Pages bindings for every deployed environment:
+- `public/`: source giao diện, ảnh nhỏ và dữ liệu cập nhật có chữ ký; tài nguyên lớn được khôi phục theo manifest.
+- `functions/`: API tài khoản, ví, thanh toán, license và phiên sử dụng.
+- `migrations/`: cấu trúc D1, lưu ngoài thư mục public.
+- Các module `.mjs` ở gốc: cấu hình giá chung, hướng dẫn và xử lý phía máy chủ.
+- `*-test.mjs`, `test-*.mjs`, `test-*.cjs`: kiểm thử; không đưa vào thư mục public.
 
-- D1 database binding: `LICENSE_DB` (apply `migrations/0001_licensegate.sql`,
-  `migrations/0002_wallet.sql`, `migrations/0003_wallet_auth_orders.sql`, and
-  `migrations/0004_wallet_products.sql` in
-  order)
-- Secret `LICENSEGATE_API_KEY`
-- Variable `LICENSEGATE_USER_ID` (LicenseGate public user code)
-- Secret `SEPAY_WEBHOOK_SECRET`
-- Variable `SEPAY_ACCOUNT_NUMBER`
-- Variable `LICENSEGATE_CHECKOUT_ENABLED=true`
+Source app Windows được quản lý riêng trong thư mục `VN-KEEN.SKIN-CS2-V2.1.6-APP` của chủ dự án. Repo công khai này chứa thông tin và cách khôi phục bản phát hành app, không chứa khóa ký riêng hoặc source app.
 
-Wallet account registration, bearer sessions, deposit-code top-ups, and
-balance purchases require all four migrations. Existing rows in
-`wallet_accounts` without a `wallet_credentials` row are intentionally locked
-until an operator verifies and migrates them; a new browser registration must
-not claim a legacy balance.
+Model 3D, ảnh/dữ liệu sinh sẵn lớn và EXE/ZIP được giữ trên website chính, không nhân bản vào Git. `public-assets.json` ghi đường dẫn, kích thước và SHA-256; chạy `node restore-public-assets.mjs` sau khi clone để khôi phục đúng các file đó. Máy source đang phát hành đã có đủ file. Giữ một bản sao ngoại tuyến các tài nguyên này cùng source.
 
-Set the SePay webhook URL to (this route handles both checkout orders and
-authenticated wallet deposit codes):
+## Bản hiện tại
 
-`https://vn-keen.pages.dev/api/licensegate/webhook`
+V2.1.6, build 21603: PGUP mở/đóng menu; cập nhật bằng nút trong app; tự chuẩn bị offset khi CS2 sẵn sàng; mỗi key một phiên đồng thời. Khách dùng V2.1.5 cần tải bộ mới một lần.
 
-The browser only receives an order token. It never receives the LicenseGate or
-SePay secrets, and it shows a key only after the authenticated order status is
-`FULFILLED`.
+`public/updates/latest.json` và `latest.sig` xác định EXE đã ký. Khi phát hành app, dùng script `publish-online-update.ps1` ở source APP, tăng build và build lại. Không tự sửa manifest hoặc dùng lại số build cho EXE khác.
 
-Production configuration is managed in the Cloudflare Pages project settings;
-environment changes take effect on the next deployment.
+## Kiểm tra và triển khai
 
-## Separate wallet products
+Chạy Node.js 24 trở lên từ thư mục này:
 
-- `product: "skin"`: VN-KEEN-SKIN-VANTIX, LicenseGate scope/key prefix `VN-KEEN-SKIN`.
-- `product: "aim"`: VN-KEEN-ESSENTIALS, LicenseGate scope/key prefix `VN-KEEN-AIM`.
-- Both use daily 20,000 VND, monthly 300,000 VND, lifetime 2,000,000 VND.
-- Missing product is accepted as SKIN for legacy clients. Unknown products are rejected.
-- A request ID is bound to both product and plan. Retrying cannot change either,
-  charge twice, or reuse a SKIN key as an AIM license. The UI keeps one retry
-  marker per account with its product, matching the single active-order rule.
-- My Keys labels each product and links to its corresponding download. Essentials
-  uses the versioned `VN-KEEN-ESSENTIALS-20261003-LicenseGate-14188.zip` download with one
-  launcher EXE; its launcher verifies the LicenseGate AIM scope.
+```powershell
+node restore-public-assets.mjs
+node audit-public-links.mjs
+node cs2-session-test.mjs
+node retired-product-test.mjs
+node test-ai-routing.mjs
+node test-ai-retry.cjs
+node test-license-expiry.mjs
+node test-payos-service.mjs
+node test-wallet-webhook.mjs
+```
 
-## Download release integrity
+Triển khai sau khi đăng nhập Cloudflare:
 
-`downloads.json` records release file names, byte lengths and SHA-256 digests.
-The Essentials page links to this metadata for an independent hash comparison.
-Ordinary Essentials download clicks on the homepage and Essentials page fetch the
-metadata and verify the ZIP's size and SHA-256 before offering a Blob download.
-The verifier fails closed on missing metadata, oversized/truncated files, unsupported
-Web Crypto, or a hash mismatch; SKIN downloads are unchanged. Direct URLs and
-JavaScript-disabled browsers do not run this client-side verification.
-A matching hash establishes that a download matches the published release; it is
-not an antivirus verdict or an Authenticode signature. Do not disable the launcher
-payload hash checks or antivirus protection to work around a mismatch.
+```powershell
+wrangler pages deploy public --project-name vn-keen --branch main
+```
 
-Essentials links use a versioned file name so existing CDN or browser caches cannot
-reuse a differently packaged release. `_redirects` routes both historic Essentials
-ZIP URLs to this release with a temporary redirect. `_headers` makes the versioned
-release immutable and revalidates metadata and stable aliases. Verify redirects
-and the remote ZIP hash after deploying; old CDN objects may require a scoped
-cache purge. `VN-KEEN-ESSENTIALS.zip` remains a byte-identical compatibility alias.
+Cloudflare cung cấp bindings D1/AI và secrets cho API. Không lưu API key, token, dữ liệu khách hàng, file `.dev.vars`, khóa ký hoặc bản sao database trong Git. Sau khi triển khai, kiểm tra trang chủ, API, checksum ZIP và manifest trên miền chính.
 
-Apply migration 0004 **before deploying this code**. It only adds a product
-column/index; all historical wallet orders stay SKIN, and no balances, existing
-keys, reservations, or ledger entries are altered. Check `PRAGMA table_info(wallet_orders)`
-before applying; do not run its `ALTER TABLE` twice. The older direct checkout
-service still uses its separate `AIM_PRICE_*` environment settings.
+`index.html` ở gốc chỉ chuyển khách từ GitHub Pages sang miền chính; giao diện thật nằm tại `public/index.html`.
 
-Regression checks: `node test-wallet-service.mjs`, `node test-wallet-client.mjs`,
-`node test-wallet-webhook.mjs`, and `node test-download-release.mjs`. These use
-mocks/local files and databases, not paid production purchases.
+Các gói cũ và ảnh không sử dụng đã bỏ khỏi nhánh hiện tại. Lịch sử commit được giữ để có thể khôi phục.

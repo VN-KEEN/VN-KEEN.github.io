@@ -1,0 +1,47 @@
+/* Homepage controls and product distinction. */
+#top>div.relative{row-gap:0;align-items:start}
+#top h1{font-size:clamp(30px,3.6vw,48px)!important;line-height:1.18!important;letter-spacing:-1.3px}
+#top .hero-eyebrow{margin-bottom:24px!important}
+#top h1+p{margin-top:20px!important;line-height:1.75}
+#top .hero-actions{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:24px!important;gap:12px;align-self:start}
+#top .hero-actions a,#top .hero-actions a:last-child{font-size:14px!important;line-height:1.4!important;white-space:normal!important;height:auto;min-height:84px;padding:16px 12px;flex-direction:column;gap:6px;border-radius:12px}
+#top .hero-actions .hero-primary[href='#pricing']{grid-column:1/-1;min-height:48px;flex-direction:row;background:var(--studio-lime)!important;color:#18200b!important;border-color:var(--studio-lime)!important;box-shadow:none!important}
+#top .hero-actions .hero-primary i{color:#18200b!important}
+#top .hero-actions a.hero-secondary[download],#top .hero-actions a.hero-tertiary[download]{background:#131c20!important;color:#f1f5f3!important;border:1px solid #87c94080!important;box-shadow:none!important}
+#top .hero-actions a[download] i{color:#1e9700!important;font-size:14px}
+#top .hero-actions .download-title{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800}
+#top .hero-actions .download-meta{color:#b9c4bd;font-size:11px;font-weight:500;text-transform:none;letter-spacing:0}
+#top .hero-actions a[download]:hover{background:#1d2c22!important;border-color:#1e9700!important}
+#top .hero-proof{margin-top:20px!important;padding-top:16px!important;align-self:start}
+#top .studio-product{grid-row:1/6;align-self:start!important}
+#top .studio-product-bottom small{font-size:11px;letter-spacing:.3px;line-height:1.5}
+#nav>div>div>a.nav-open-case{background:#20292d!important;color:#d0dbd5!important;border:1px solid #ffffff20!important}
+#nav>div>div>a.nav-open-case i{color:#a9b9af!important}
+#nav #mobile-nav-panel .mobile-nav-links a[href='#pricing']{display:flex!important;background:#243522!important;border:1px solid #8ac94d70!important;color:#dbf7bc!important}
+#nav #mobile-nav-panel .mobile-nav-links a span{color:inherit!important}
+@media(min-width:901px){#top{padding-top:144px!important}#top>div.relative{grid-template-rows:auto auto auto auto auto;align-content:start}#top .studio-product{grid-row:1/6}#top .hero-eyebrow,#top h1,#top h1+p,#top .hero-actions,#top .hero-proof{align-self:start}}
+@media(max-width:900px){#top h1{font-size:clamp(30px,5vw,42px)!important}#top .studio-product{grid-row:auto!important}}
+@media(max-width:600px){#top h1{font-size:30px!important;letter-spacing:-.8px}#top .hero-eyebrow{margin-bottom:20px!important}#top h1+p{font-size:14px;margin-top:16px!important}#top .hero-actions{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:20px!important;gap:10px}#top .hero-actions a,#top .hero-actions a:last-child{min-height:88px;font-size:13px!important;padding:12px 8px}#top .hero-actions .hero-primary[href='#pricing']{min-height:48px}#top .hero-actions .download-meta{font-size:10px;line-height:1.5}#nav .mobile-nav-links{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-photo-copy>p:last-child{font-size:14px}}
+
+/* Override legacy high-specificity control sizing. */
+#top #downloads.hero-actions a{display:flex!important;height:auto!important;min-height:88px!important;font-size:14px!important;line-height:1.4!important}
+#top #downloads.hero-actions a.hero-primary{min-height:48px!important;font-size:14px!important}
+@media(min-width:901px){#top>div.relative{grid-template-rows:repeat(5,max-content)}}
+@media(max-width:600px){#top #downloads.hero-actions a{font-size:13px!important}}
+
+/* Approved green accent sampled from the AIM menu reference. */
+#top .hero-actions a.hero-secondary[download],#top .hero-actions a.hero-tertiary[download]{border-color:#1e970080!important}
+
+/* Compact support control and squared brand icons, preview only. */
+#vnkeen-ai-widget-root .vnk-ai-btn{border-radius:6px!important;background:#101b12!important;border:1px solid #1e9700!important;color:#8cde75!important;box-shadow:0 4px 16px #0005!important}
+#vnkeen-ai-widget-root .vnk-ai-btn .vnk-icon-wrap{border-radius:4px!important;background:transparent!important;color:#8cde75!important}
+/* Approved transparent circle logo: no background tile or image clipping. */
+.vnkeen-brand{display:flex;align-items:center;flex-shrink:0;background:none!important;box-shadow:none!important}
+.vnkeen-brand img{display:block;width:204px;height:50px;object-fit:contain;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important}
+#contact img[alt="Logo"],#vnkeen-ai-widget-root img{object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+@media(max-width:600px){.vnkeen-brand img{width:164px;height:42px}}
+
+/* Equal purchase and download buttons */
+#top #downloads.hero-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch}
+#top #downloads.hero-actions>a,#top #downloads.hero-actions>a.hero-primary[href='#pricing']{grid-column:auto!important;box-sizing:border-box;width:100%!important;height:64px!important;min-height:64px!important;padding:12px 10px!important;flex-direction:row!important;align-items:center;justify-content:center;gap:8px}
+@media(max-width:600px){#top #downloads.hero-actions>a,#top #downloads.hero-actions>a.hero-primary[href='#pricing']{height:60px!important;min-height:60px!important;font-size:12px!important}}

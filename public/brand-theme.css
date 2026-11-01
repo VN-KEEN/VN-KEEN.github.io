@@ -1,0 +1,177 @@
+/* VN-KEEN forest palette: interface only; item rarity and error colors stay intact. */
+:root {
+  color-scheme: dark;
+  --brand-bg:#0b0f0c; --brand-panel:#151c17; --brand-accent:#35bd15;
+  --brand-hover:#45d522; --brand-fg:#f2f5f2; --brand-muted:#a3b0a5;
+  --brand-border:#2a382d;
+  --studio-bg:var(--brand-bg); --studio-panel:var(--brand-panel);
+  --studio-lime:var(--brand-accent); --studio-muted:var(--brand-muted);
+  --studio-line:var(--brand-border);
+}
+html,body {background:var(--brand-bg)!important;color:var(--brand-fg)!important}
+::selection {background:#35bd1540;color:var(--brand-fg)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible {
+  outline:2px solid var(--brand-hover)!important;outline-offset:4px;
+}
+body :where(.text-muted,.text-gray-400,.text-slate-400){color:var(--brand-muted)!important}
+body :where(.text-accent,.text-cyan-300,.text-cyan-400,.text-sky-300,.text-sky-400,
+  .text-blue-300,.text-blue-400,.text-purple-300,.text-purple-400,.text-violet-300,
+  .text-violet-400,.text-teal-300,.text-teal-400,.text-emerald-300,.text-emerald-400){color:var(--brand-accent)!important}
+body :where(.border-cyan-400\/30,.border-cyan-500\/20,.border-cyan-500\/30,
+  .border-purple-500\/30,.border-emerald-400\/30,.border-emerald-500\/30){border-color:var(--brand-border)!important}
+body :where(.glass-panel,.glass-card){background:var(--brand-panel)!important;border-color:var(--brand-border)!important;box-shadow:none!important}
+body :where(.neon-glow-cyan,.neon-glow-purple){text-shadow:none!important}
+body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,select){
+  background-color:#101611!important;color:var(--brand-fg)!important;border-color:var(--brand-border)!important;
+}
+body :where(input,textarea)::placeholder{color:#819184!important}
+#nav,body>header{background:#101612f2!important;border-color:var(--brand-border)!important;box-shadow:0 8px 28px #0003!important}
+#nav #nav-guest-zone button,#nav #nav-user-zone button,#nav .nav-open-case,
+#nav a[href='#pricing'],#nav #mobile-nav-panel a,#nav #mobile-nav-panel button{
+  background:#1b261e!important;background-image:none!important;color:var(--brand-fg)!important;
+  border:1px solid var(--brand-border)!important;box-shadow:none!important;
+}
+#nav #nav-guest-zone button:last-child,#nav a[href='#pricing']{
+  background:var(--brand-accent)!important;color:#0b1a08!important;border-color:var(--brand-accent)!important;
+}
+#nav #nav-guest-zone button i,#nav #nav-user-zone button i,#nav a[href='#pricing'] *,#nav .nav-open-case i{color:inherit!important;background:none!important}
+#nav #nav-guest-zone button:hover,#nav #nav-user-zone button:hover,#nav .nav-open-case:hover{background:#25382a!important;border-color:var(--brand-accent)!important}
+#nav #nav-guest-zone button:last-child:hover,#nav a[href='#pricing']:hover{background:var(--brand-hover)!important}
+#top>.absolute,#top::before,#top::after{display:none!important}
+#top{background:radial-gradient(ellipse at 82% 24%,#1a341b55,transparent 55%),var(--brand-bg)!important}
+#top h1{color:var(--brand-fg)!important}
+#top h1 span{background:none!important;color:var(--brand-accent)!important;-webkit-text-fill-color:var(--brand-accent)!important;text-shadow:none!important;filter:none!important}
+#top .hero-eyebrow{background:#18251b!important;border-color:#3a6133!important;color:var(--brand-accent)!important;box-shadow:none!important}
+#top .hero-eyebrow .text-amber-300,#top .hero-eyebrow .text-amber-400{color:#a4e894!important}
+#top .hero-eyebrow .bg-amber-400{background:var(--brand-accent)!important}
+#top .hero-eyebrow .bg-amber-500\/20{background:#35bd151a!important;color:#a4e894!important}
+#top #downloads a.hero-primary{background:var(--brand-accent)!important;border-color:var(--brand-accent)!important;color:#0b1a08!important}
+#top #downloads a.hero-primary:hover{background:var(--brand-hover)!important}
+#top #downloads a[download]{background:var(--brand-panel)!important;border-color:#3e6239!important;color:var(--brand-fg)!important}
+#top #downloads a[download]:hover{background:#203025!important;border-color:var(--brand-accent)!important}
+#top .hero-proof a{background:var(--brand-panel)!important;border-color:var(--brand-border)!important;color:var(--brand-muted)!important;box-shadow:none!important}
+#vantix-update,#world-guide{background:var(--brand-panel)!important;background-image:none!important;border-color:var(--brand-border)!important;color:var(--brand-muted)!important}
+#vantix-update summary,#world-guide summary{color:var(--brand-accent)!important}
+#vantix-update article,#vantix-update section>div,#world-guide details{background:#101712!important;background-image:none!important;border-color:var(--brand-border)!important}
+.feature-products button,.feature-photo-card,.feature-photo-copy{background:var(--brand-panel)!important;border-color:var(--brand-border)!important}
+.feature-products button[aria-selected=true]{background:#1b2c1c!important;border-color:var(--brand-accent)!important;box-shadow:inset 0 3px var(--brand-accent)!important}
+.feature-products button span,.feature-products button small,.feature-photo-copy>p:last-child{color:var(--brand-muted)!important}
+.feature-photo-label,.product-gallery-note{color:var(--brand-accent)!important}
+#features,#pricing,#faq,footer{background:var(--brand-bg)!important;border-color:var(--brand-border)!important}
+#pricing h2 span{background:none!important;color:var(--brand-accent)!important;-webkit-text-fill-color:var(--brand-accent)!important}
+#pricing #pricing-tiers>.grid>div,#pricing .plan-card,#faq details{background:var(--brand-panel)!important;border-color:var(--brand-border)!important;box-shadow:none!important}
+#pricing [data-product-choice]{background:#1b261e!important;border-color:var(--brand-border)!important}
+#pricing [aria-pressed=true],#pricing [data-product-choice].active{background:#20371f!important;border-color:var(--brand-accent)!important}
+#pricing #pricing-tiers button,#pricing button[data-plan-button],#pricing .plan-button{
+  background:var(--brand-accent)!important;background-image:none!important;color:#0b1a08!important;
+  border:1px solid var(--brand-accent)!important;box-shadow:none!important;
+}
+#pricing #pricing-tiers button:hover,#pricing button[data-plan-button]:hover,#pricing .plan-button:hover{background:var(--brand-hover)!important;filter:none!important}
+#pricing button span,#pricing button i{color:inherit!important}
+#pricing #pricing-tiers>.grid>div:not(#vip-lifetime-card) :where(.text-amber-300,.text-amber-400,.text-yellow-400){color:var(--brand-accent)!important}
+#pricing #pricing-tiers>.grid>div:not(#vip-lifetime-card)>.absolute{background:#254322!important;color:#b7efaa!important;box-shadow:none!important}
+#pricing #vip-lifetime-card{border-color:#7b6636!important}
+#pricing #vip-lifetime-card button{background:#d6b862!important;border-color:#d6b862!important;color:#211b08!important}
+#pricing #vip-lifetime-card button:hover{background:#e5c875!important}
+#pricing #vip-lifetime-card .text-purple-300,#pricing #vip-lifetime-card .text-purple-400{color:#d6b862!important}
+#auth-modal>div,#checkout-modal>div,#topup-modal>div,#mykeys-modal>div{border-color:var(--brand-border)!important}
+#auth-submit-btn,button[type=submit]{background:var(--brand-accent)!important;background-image:none!important;color:#0b1a08!important;box-shadow:none!important}
+#vnkeen-ai-widget-root .vnk-ai-btn{background:var(--brand-panel)!important;border-color:var(--brand-accent)!important;color:#91dc7e!important;box-shadow:0 4px 16px #0004!important}
+#vnkeen-ai-widget-root .vnk-chat-box{background:var(--brand-panel)!important;border-color:var(--brand-border)!important}
+#vnkeen-ai-widget-root .vnk-send-btn{background:var(--brand-accent)!important;color:#0b1a08!important}
+#vnkeen-ai-widget-root .vnk-icon-wrap{color:inherit!important;background:transparent!important}
+/* Catalogue navigation only: preserve inline item rarity colors and artwork. */
+.tab-btn{background:var(--brand-panel)!important;border-color:var(--brand-border)!important;color:var(--brand-muted)!important}
+.tab-btn.active{background:var(--brand-accent)!important;border-color:var(--brand-accent)!important;color:#0b1a08!important;box-shadow:none!important}
+.case-top a{color:var(--brand-accent)!important}
+.case-picker-card{background:var(--brand-panel)!important;border-color:var(--brand-border)!important}
+#btn-open-case{background:var(--brand-accent)!important;color:#0b1a08!important;box-shadow:none!important}
+body[data-page='ai'] header a,body[data-page='ai'] header .text-amber-400{color:var(--brand-fg)!important}
+body[data-page='ai'] .bg-gradient-to-r,body[data-page='ai'] .bg-gradient-to-br{background:var(--brand-panel)!important;background-image:none!important;box-shadow:none!important}
+body[data-page='ai'] button[type=submit],body[data-page='ai'] header a[href*='t.me']{background:var(--brand-accent)!important;color:#0b1a08!important}
+body[data-page='ai'] header .bg-amber-500\/20{background:#35bd151a!important;color:var(--brand-accent)!important;border-color:#35bd1533!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Keep catalogue shortcuts uniform; colored item artwork is not recolored. */
+#top .brand-category-links a{background:#151c17!important;background-image:none!important;border:1px solid #2a382d!important;color:#f2f5f2!important;opacity:1!important;box-shadow:none!important}
+#top .brand-category-links a span:not(.item-icon),#top .brand-category-links a i{color:inherit!important;opacity:1!important}
+#top .brand-category-links a:hover{background:#1c2b1e!important;color:#45d522!important;border-color:#35bd15!important}
+#pricing #vip-lifetime-card{background:#151c17!important;background-image:none!important;border:1px solid #cfae46!important;box-shadow:0 0 0 1px #cfae4614!important;opacity:1!important}
+#pricing #vip-lifetime-card .vip-lifetime-badge span{background:#f5cc481c!important;background-image:none!important;color:#f5cc48!important;border:1px solid #d8b34780!important;box-shadow:none!important;opacity:1!important}
+#pricing #vip-lifetime-card .vip-lifetime-title{color:#fff4cd!important}
+#pricing #vip-lifetime-card .vip-lifetime-crown,#pricing #vip-lifetime-card .vip-lifetime-benefits i{color:#f5cc48!important;opacity:1!important}
+#pricing #vip-lifetime-card .vip-lifetime-description{color:#c0cbbf!important}
+#pricing #vip-lifetime-card .vip-lifetime-benefits{background:#101611!important;background-image:none!important;border:1px solid #50482d!important;color:#f2f5f2!important}
+#pricing #vip-lifetime-card .vip-lifetime-benefits li{color:#f2f5f2!important;border-color:#2a382d!important}
+#pricing #vip-lifetime-card .vip-lifetime-action button{background:#f5cc48!important;background-image:none!important;color:#201905!important;border-color:#f5cc48!important;box-shadow:none!important;opacity:1!important}
+#pricing #vip-lifetime-card .vip-lifetime-action button:hover{background:#ffdc67!important;border-color:#ffdc67!important;filter:none!important}
+
+/* Pricing navigation: explicit foreground overrides legacy nested spans. */
+#nav a[href="#pricing"],#nav a[href="#pricing"] span,#nav a[href="#pricing"] i{
+ color:#0b1a08!important;-webkit-text-fill-color:#0b1a08!important;
+ font-size:13px!important;font-weight:700!important;letter-spacing:0!important;
+ text-shadow:none!important;filter:none!important;opacity:1!important;
+}
+#nav a[href="#pricing"] span{background:transparent!important;line-height:1.3!important}
+
+/* VIP gold: a restrained metallic sheen, with reduced-motion support. */
+#pricing #vip-lifetime-card{position:relative;isolation:isolate;overflow:hidden;border-color:#d5ac46!important;background:radial-gradient(ellipse at 50% 0%,#d9aa351a,transparent 62%),#151c17!important;box-shadow:0 0 28px #d4a72c14,inset 0 1px 0 #ffe7a42b!important}
+#pricing #vip-lifetime-card .vip-lifetime-title{color:#f5d478!important;background:linear-gradient(110deg,#b88a28 0%,#f6d67e 24%,#fff3bd 40%,#d3a641 55%,#ffe8a0 75%,#ba8c2f 100%)!important;background-size:220% 100%!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;animation:vnkeen-gold-title 8s ease-in-out infinite;text-shadow:none!important}
+#pricing #vip-lifetime-card .vip-lifetime-badge span{background:linear-gradient(120deg,#4d3816,#241e11 50%,#58421b)!important;color:#ffe7a0!important;border-color:#d4aa52!important;box-shadow:inset 0 1px #fff1b533!important}
+#pricing #vip-lifetime-card .vip-lifetime-crown{color:#f6d67e!important;filter:drop-shadow(0 0 5px #efc65a55)}
+#pricing #vip-lifetime-card .vip-lifetime-action button{position:relative;overflow:hidden;background:linear-gradient(115deg,#b88a2b,#f5d57b 28%,#ffe9a9 46%,#d4a844 70%,#f4d37b)!important;color:#251b07!important;border-color:#ebc871!important;box-shadow:inset 0 1px 0 #fff3c688,0 5px 18px #b8892426!important}
+#pricing #vip-lifetime-card .vip-lifetime-action button::after{content:"";position:absolute;top:-50%;bottom:-50%;left:-60%;width:35%;pointer-events:none;transform:skewX(-22deg);background:linear-gradient(90deg,transparent,#fff9dc88,transparent);animation:vnkeen-gold-sheen 7s ease-in-out infinite}
+#pricing #vip-lifetime-card::before,#pricing #vip-lifetime-card::after{content:"✦";position:absolute;pointer-events:none;color:#ffe6a3;line-height:1;z-index:0;animation:vnkeen-gold-sparkle 6s ease-in-out infinite}
+#pricing #vip-lifetime-card::before{top:22px;left:25px;font-size:13px}
+#pricing #vip-lifetime-card::after{bottom:22px;right:25px;font-size:10px;animation-delay:3s}
+#pricing #vip-lifetime-card>div{position:relative;z-index:1}
+@keyframes vnkeen-gold-title{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes vnkeen-gold-sheen{0%,65%{left:-60%;opacity:0}70%{opacity:.8}88%{left:130%;opacity:.8}100%{left:130%;opacity:0}}
+@keyframes vnkeen-gold-sparkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:.9;transform:scale(1.15)}}
+@media(prefers-reduced-motion:reduce){#pricing #vip-lifetime-card .vip-lifetime-title,#pricing #vip-lifetime-card::before,#pricing #vip-lifetime-card::after,#pricing #vip-lifetime-card .vip-lifetime-action button::after{animation:none!important}#pricing #vip-lifetime-card .vip-lifetime-action button::after{display:none}#pricing #vip-lifetime-card .vip-lifetime-title{background-position:40% 50%!important}}
+
+/* Give stacked Vietnamese accents room inside the gold text paint box. */
+#pricing #vip-lifetime-card .vip-lifetime-title {
+  line-height: 1.65 !important;
+  padding-block: .18em .12em !important;
+  overflow: visible !important;
+  height: auto !important;
+  font-family: Arial, "Segoe UI", sans-serif !important;
+}
+
+/* Calm rental tiers; reserve the accent action for the recommended month. */
+#pricing #pricing-tiers>.grid>div:not(#vip-lifetime-card) .text-4xl {
+ color:#f2f5f2!important;-webkit-text-fill-color:#f2f5f2!important;
+}
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]){
+ background:#1a281e!important;background-image:none!important;color:#d9e6d7!important;
+ border:1px solid #405b42!important;box-shadow:none!important;
+}
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]):hover{
+ background:#253b29!important;border-color:#6b9568!important;color:#fff!important;
+}
+#pricing #pricing-tiers button[data-plan-button="monthly"]{
+ background:#35bd15!important;color:#0b1a08!important;border-color:#35bd15!important;
+}
+
+/* Green rental labels on the subdued tier actions. */
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]),
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]):hover {
+ color:#55d936!important;
+}
+
+/* All rental actions: black labels on brand green. */
+#pricing #pricing-tiers button[data-plan-button],
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]),
+#pricing #pricing-tiers button[data-plan-button]:not([data-plan-button="monthly"]):hover {
+ background:#35bd15!important;background-image:none!important;
+ color:#0b1a08!important;-webkit-text-fill-color:#0b1a08!important;
+ border:1px solid #35bd15!important;box-shadow:none!important;
+}
+#pricing #pricing-tiers button[data-plan-button]:hover{background:#45d522!important;border-color:#45d522!important}
+
+/* Compact download actions. */
+#top #downloads a[download]{
+ min-height:50px!important;height:50px!important;padding:0 20px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+}

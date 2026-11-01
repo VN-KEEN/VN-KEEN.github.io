@@ -31,7 +31,7 @@ export async function createPayosLink(env, account, amount, now = Math.floor(Dat
   if(!Number.isSafeInteger(amount)||amount<1000||amount>10000000) throw Object.assign(new Error('Số tiền nạp phải từ 1.000đ đến 10.000.000đ.'),{status:400,code:'INVALID_TOPUP_AMOUNT'});
   const description=String(account.deposit_code||'').slice(0,23); if(!/^VNW[A-F0-9]{20}$/.test(description)) throw Object.assign(new Error('Mã nạp tiền không hợp lệ.'),{status:503,code:'INVALID_DEPOSIT_CODE'});
   const orderCode=now*1000+crypto.getRandomValues(new Uint16Array(1))[0]%1000;
-  const returnUrl='https://vn-keen.pages.dev/?payment=success#pricing'; const cancelUrl='https://vn-keen.pages.dev/?payment=cancel#pricing';
+  const returnUrl='https://vn-keen.skin/?payment=success#pricing'; const cancelUrl='https://vn-keen.skin/?payment=cancel#pricing';
   const payload={orderCode,amount,description,returnUrl,cancelUrl}; payload.signature=await hmacHex(env.PAYOS_CHECKSUM_KEY,signatureText(payload));
   let response; try { response=await fetch('https://api-merchant.payos.vn/v2/payment-requests',{method:'POST',signal:AbortSignal.timeout(10000),headers:{'Content-Type':'application/json','x-client-id':env.PAYOS_CLIENT_ID,'x-api-key':env.PAYOS_API_KEY},body:JSON.stringify(payload)}); } catch { throw Object.assign(new Error('Không kết nối được payOS.'),{status:503,code:'PAYOS_UNAVAILABLE'}); }
   let data; try{data=await response.json();}catch{data=null;} if(!response.ok||data?.code!=='00'||typeof data?.data?.checkoutUrl!=='string') throw Object.assign(new Error('payOS chưa tạo được yêu cầu thanh toán.'),{status:503,code:'PAYOS_CREATE_FAILED'});
